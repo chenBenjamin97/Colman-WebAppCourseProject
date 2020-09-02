@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewData["Title"] = "CreateNewTransaction";
+}
+
+<h1>CreateNewTransaction</h1>
+
+@model WaterTransaction
+<form asp-action="CreateNewTransaction" enctype="multipart/form-data">
+    <b>File Details:</b> <br>
+    User ID: <input asp-for="UserID" /> <br>
+    Water Meter ID: <input asp-for="WaterMeterID" /> <br>
+    Water Meter Last Read: <input asp-for="WaterMeterLastReadDate" type="date" /> <br>
+    Image: <input asp-for="WaterMeterImg" /> <br>
+    <input type="submit" />
+</form>
+

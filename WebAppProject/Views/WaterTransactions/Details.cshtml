@@ -1,0 +1,39 @@
+﻿@model WebAppProject.Models.WaterTransaction
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>WaterTransaction</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WaterMeterLastReadDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.WaterMeterLastReadDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ImgPath)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ImgPath)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.UserID)
+        </dd>
+        <dd class="col-sm-10">
+            <img src="@Url.Content("~/" + @ViewData["ImgPath"].ToString())" alt="error" />
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.WaterMeterID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
