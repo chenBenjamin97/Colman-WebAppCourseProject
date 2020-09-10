@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +6,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebAppProject.Data;
 using WebAppProject.Models;
+using System.Data;
+using System.Diagnostics.Eventing.Reader;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Http;
 
 namespace WebAppProject.Controllers
 {
+
     public class UsersController : Controller
     {
         private readonly MvcProjectContext _context;
@@ -24,6 +28,118 @@ namespace WebAppProject.Controllers
         {
             return View(await _context.User.ToListAsync());
         }
+
+        /**********************************************   log in and register   **************************************************************/
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult Register(User user)
+        {
+            if (ModelState.IsValid)
+            {               
+                
+                var objUser = _context.User.Where(u => u.Email.Equals(user.Email) && u.UserName.Equals(user.UserName));
+                if (objUser == null)
+                {  
+                    user.IsAdmin = false;
+                    _context.Add(user);
+                    _context.SaveChanges();
+                    return RedirectToAction("Login");
+                }
+              
+            }
+            else
+            {
+                ModelState.AddModelError("", "Some Error Occured!");
+            }
+            return View(user);
+        }
+
+
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public ActionResult Login(string username, string password)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var objUser = _context.User.Where(u => u.UserName.Equals(username) && u.Password.Equals(password)) ; 
+
+                    if (objUser.FirstOrDefault() != null)
+                    {
+
+
+                        if (objUser.FirstOrDefault().IsAdmin == false) //check if is not admin
+                        {
+                            HttpContext.Session.SetString("IsAdmin", "false");
+                            HttpContext.Session.SetString("UserId", objUser.First().UserID.ToString());
+                            HttpContext.Session.SetString("UserName", objUser.First().UserName.ToString());
+
+                          //  return RedirectToAction("Home", "Index"); // what is the page that whould open?
+                        }
+                        else
+                        {
+                                HttpContext.Session.SetString("UserId", objUser.First().UserID.ToString());
+                                HttpContext.Session.SetString("UserName", objUser.First().UserName.ToString());
+                                HttpContext.Session.SetString("IsAdmin", "true");
+                               // return RedirectToAction("Index", "AdminInfoes");// what is the page that whould open?
+                        }
+
+                         return RedirectToAction("Index"); // what is the page that whould open?
+
+
+                      }
+
+                else
+                    {
+                                return RedirectToAction("Index","Home" );// what is the page that whould open?
+                     }
+                }
+            
+            return View(); //change 
+        }
+
+
+    [HttpPost]
+    public ActionResult LogOff()
+        {
+        HttpContext.Session.SetString("UserId", null);
+        HttpContext.Session.SetString("UserName", null);
+        HttpContext.Session.SetString("IsAdmin", null);
+        return RedirectToAction("Home", "???");   //change 
+        }
+
+        public ActionResult LogedOff()
+        {
+            return View();  //change 
+        }
+
+
+        [HttpPost]
+        public ActionResult LoggedIn()
+        {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                return View();//change 
+            }
+            else
+            {
+                return RedirectToAction("Home", "Flights");  //change 
+            }
+        }
+
+
+
 
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
