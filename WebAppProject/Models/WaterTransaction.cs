@@ -11,12 +11,15 @@ namespace WebAppProject.Models
 {
     public class WaterTransaction
     {
+        [Display(Name = "Client ID")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int UserID { get; set; }
 
+        [Display(Name = "Last Read Date")]
         [DataType(DataType.Date)]
         public DateTime WaterMeterLastReadDate { get; set; }
 
+        [Display(Name = "Electricity Meter ID")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key] // Primary Key
         public int WaterMeterID { get; set; }

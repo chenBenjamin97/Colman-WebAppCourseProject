@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 
 namespace WebAppProject.Models
 {
-    public class PropertyTax
+    public class PropertyTaxTransaction
     {
+        [Display(Name = "Client ID")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int UserID { get; set; }
+
+        [Display(Name = "Property ID")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key] // Primary Key
         public int PropertyID { get; set; }

@@ -11,79 +11,93 @@
     <h1>Search By Catagory:</h1>
     <form asp-action="SearchAndResult">
         <h3>Search For:</h3>
-    
+
         <input type="radio" id="User" name="SearchDB" value="User"
                checked>
         <label for="User">User</label> <br>
-    
+
         <input type="radio" id="WaterTransaction" name="SearchDB" value="WaterTransaction">
         <label for="WaterTransaction">Water Transaction</label> <br>
 
         <input type="radio" id="ElectricityTransaction" name="SearchDB" value="ElectricityTransaction">
         <label for="ElectricityTransaction">Electricity Transaction</label> <br>
 
+        <input type="radio" id="PropertyTaxTransaction" name="SearchDB" value="PropertyTaxTransaction">
+        <label for="PropertyTaxTransaction">Property Tax Transaction</label> <br>
+
         <div id="UserCatagories">
             <h5>Where:</h5>
-    
-            <input type="radio" id="UserID" name="SearchCatagory" value="UserID" 
+
+            <input type="radio" id="UserID" name="SearchCatagory" value="UserID"
                    checked>
             <label for="UserID"><i>ID</i></label>
-    
+
             <input type="radio" id="UserFirstName" name="SearchCatagory" value="FirstName">
             <label for="UserFirstName"><i>First Name</i></label>
-    
+
             <input type="radio" id="UserLastName" name="SearchCatagory" value="LastName">
             <label for="UserLastName"><i>Last Name</i></label>
-    
+
             <input type="radio" id="UserEmail" name="SearchCatagory" value="Email">
             <label for="User"><i>Email Address</i></label>
-    
+
             <input type="radio" id="UserCity" name="SearchCatagory" value="City">
             <label for="UserCity"><i>City</i></label>
-    
+
             <input type="radio" id="UserStreet" name="SearchCatagory" value="Street">
             <label for="UserStreet"><i>Street</i></label>
-    
+
             <input type="radio" class="dateInput" id="EnteranceDate" name="SearchCatagory" value="EnteranceDate">
             <label for="EnteranceDate"><i>Enterance Date</i></label>
-    
+
             <input type="radio" id="IsAdmin" name="SearchCatagory" value="IsAdmin">
             <label for="IsAdmin"><i>Admins</i></label>
         </div>
-    
-    
+
+
         <div id="WaterTransactionCatagories">
             <h5>Where:</h5>
-    
-            <input type="radio" id="WaterID" name="SearchCatagory" value="UserID" 
+
+            <input type="radio" id="WaterID" name="SearchCatagory" value="UserID"
                    checked>
             <label for="WaterID"><i>User ID</i></label>
-    
+
             <input type="radio" id="WaterMeterID" name="SearchCatagory" value="WaterMeterID">
             <label for="WaterMeterID"><i>Water Meter ID</i></label>
-    
+
             <input type="radio" class="dateInput" id="WaterMeterLastReadDate" name="SearchCatagory" value="WaterMeterLastReadDate">
             <label for="WaterMeterLastReadDate"><i>Last Read Date</i></label>
         </div>
-    
-    
+
+
         <div id="ElectricityTransactionCatagories">
             <h5>Where:</h5>
-    
-            <input type="radio" id="ElectricityID" name="SearchCatagory" value="UserID" 
+
+            <input type="radio" id="UserID" name="SearchCatagory" value="UserID"
                    checked>
             <label for="ElectricityID"><i>User ID</i></label>
-    
-            <input type="radio" id="WaterMeterID" name="SearchCatagory" value="WaterMeterID">
-            <label for="WaterMeterID"><i>Water Meter ID</i></label>
-    
+
+            <input type="radio" id="ElectricityMeterID" name="SearchCatagory" value="ElectricityMeterID">
+            <label for="ElectricityMeterID"><i>Electricity Meter ID</i></label>
+
             <input type="radio" class="dateInput" id="ElectricityMeterLastRead" name="SearchCatagory" value="ElectricityMeterLastRead">
             <label for="ElectricityMeterLastRead"><i>Last Read Date</i></label>
         </div>
-    
+
+        <div id="PropertyTaxTransactionCatagories">
+            <h5>Where:</h5>
+
+            <input type="radio" id="PropertyID" name="SearchCatagory" value="UserID"
+                   checked>
+            <label for="ElectricityID"><i>User ID</i></label>
+
+            <input type="radio" id="PropertyTaxTransactionID" name="SearchCatagory" value="PropertyID">
+            <label for="PropertyTaxTransactionID"><i>Property ID</i></label>
+        </div>
+
         <div id="SearchContainer">
-        <b>Contains:</b> <br>
-        <input type="search" id="SearchInput" placeholder="Key Word" name="SearchKeyWord" required />
+            <b>Contains:</b> <br>
+            <input type="search" id="SearchInput" placeholder="Key Word" name="SearchKeyWord" required />
         </div>
 
         <input type="submit" value="Search" />
@@ -95,44 +109,44 @@
     @if (Model.Users != null)
     {
         <h3>Users Results:</h3>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            User ID
-                        </th>
-                        <th>
-                            First Name
-                        </th>
-                        <th>
-                            Last Name
-                        </th>
-                        <th>
-                            Email Address
-                        </th>
-                        <th>
-                            Enterance Date
-                        </th>
-                        <th>
-                            City
-                        </th>
-                        <th>
-                            Street
-                        </th>
-                        <th>
-                            Street Number
-                        </th>
-                        <th>
-                            Apartment Number
-                        </th>
-                        <th>
-                            Is Admin
-                        </th>
-                        <th>
-                            User Name
-                        </th>
-                    </tr>
-                </thead>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        User ID
+                    </th>
+                    <th>
+                        First Name
+                    </th>
+                    <th>
+                        Last Name
+                    </th>
+                    <th>
+                        Email Address
+                    </th>
+                    <th>
+                        Enterance Date
+                    </th>
+                    <th>
+                        City
+                    </th>
+                    <th>
+                        Street
+                    </th>
+                    <th>
+                        Street Number
+                    </th>
+                    <th>
+                        Apartment Number
+                    </th>
+                    <th>
+                        Is Admin
+                    </th>
+                    <th>
+                        User Name
+                    </th>
+                </tr>
+            </thead>
             <tbody>
                 @foreach (User user in Model.Users)
                 {
@@ -180,11 +194,11 @@
             </tbody>
         </table>
     }
-    
+
     @if (Model.WaterTransactions != null)
     {
         <h3>Water Transactions Results:</h3>
-    
+
         <table class="table">
             <thead>
                 <tr>
@@ -228,11 +242,11 @@
             </tbody>
         </table>
     }
-    
+
     @if (Model.ElectricityTransaction != null)
     {
         <h3>Electricity Transactions Results:</h3>
-    
+
         <table class="table">
             <thead>
                 <tr>
@@ -276,12 +290,55 @@
             </tbody>
         </table>
     }
+
+    @if (Model.PropertyTaxTransactions != null)
+    {
+        <h3>Electricity Transactions Results:</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Property ID
+                    </th>
+                    <th>
+                        Image File Path
+                    </th>
+                    <th>
+                        User ID
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (PropertyTaxTransaction transaction in Model.PropertyTaxTransactions)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.PropertyID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.ImgPath)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.User.UserID)
+                        </td>
+                        <td>
+                            <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.PropertyID">Edit</a> |
+                            <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.PropertyID">Details</a> |
+                            <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@transaction.PropertyID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 }
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function () { // Init form state
         $('#WaterTransactionCatagories').hide();
         $('#ElectricityTransactionCatagories').hide();
+        $('#PropertyTaxTransactionCatagories').hide();
     })
 
 
@@ -291,14 +348,22 @@
                 $('#UserCatagories').show();
                 $('#WaterTransactionCatagories').hide();
                 $('#ElectricityTransactionCatagories').hide();
+                $('#PropertyTaxTransactionCatagories').hide();
             } else if ($('#WaterTransaction').is(':checked')) {
                 $('#UserCatagories').hide();
                 $('#WaterTransactionCatagories').show();
                 $('#ElectricityTransactionCatagories').hide();
-            } else { // Means ElectricityTransaction is checked
+                $('#PropertyTaxTransactionCatagories').hide();
+            } else if ($('#ElectricityTransaction').is(':checked')) {
                 $('#UserCatagories').hide();
                 $('#WaterTransactionCatagories').hide();
                 $('#ElectricityTransactionCatagories').show();
+                $('#PropertyTaxTransactionCatagories').hide();
+            } else { // Means PropertyTaxTransaction is checked
+                $('#UserCatagories').hide();
+                $('#WaterTransactionCatagories').hide();
+                $('#ElectricityTransactionCatagories').hide();
+                $('#PropertyTaxTransactionCatagories').show();
             }
         })
     })
@@ -311,7 +376,7 @@
             } else {
                 $('#SearchContainer').show();
                 $('#SearchInput').prop('required', true);
-            } 
+            }
         })
     })
 

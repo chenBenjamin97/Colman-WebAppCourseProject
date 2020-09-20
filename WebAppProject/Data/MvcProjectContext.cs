@@ -17,6 +17,6 @@ namespace WebAppProject.Data
         public DbSet<WaterTransaction> WaterTransactions { get; set; }
         public DbSet<ElectricityTransaction> ElectricityTransactions { get; set; }
         public DbSet<WebAppProject.Models.ViewModel> ViewModel { get; set; }
-        public DbSet<PropertyTax> PropertyTax { get; set; }
+        public DbSet<PropertyTaxTransaction> PropertyTaxTransactions { get; set; }
     }
 }

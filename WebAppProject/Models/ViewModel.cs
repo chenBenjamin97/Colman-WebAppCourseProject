@@ -19,5 +19,8 @@ namespace WebAppProject.Models
 
         [NotMapped]
         public List<ElectricityTransaction> ElectricityTransaction { get; set; }
+
+        [NotMapped]
+        public List<PropertyTaxTransaction> PropertyTaxTransactions { get; set; }
     }
 }
