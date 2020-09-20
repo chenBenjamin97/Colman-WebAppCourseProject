@@ -35,32 +35,6 @@ namespace WebAppProject.Controllers
             return View();
         }
 
-
-        [HttpPost]
-        public ActionResult Register(User user)
-        {
-            if (ModelState.IsValid)
-            {               
-                
-                var objUser = _context.User.Where(u => u.Email.Equals(user.Email) && u.UserName.Equals(user.UserName));
-                if (objUser == null)
-                {  
-                    user.IsAdmin = false;
-                    _context.Add(user);
-                    _context.SaveChanges();
-                    return RedirectToAction("Login");
-                }
-              
-            }
-            else
-            {
-                ModelState.AddModelError("", "Some Error Occured!");
-            }
-            return View(user);
-        }
-
-
-
         public ActionResult Login()
         {
             return View();
@@ -174,10 +148,21 @@ namespace WebAppProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var objUser = await _context.User.Where(u => u.Email.Equals(user.Email) || u.UserName.Equals(user.UserName)).ToListAsync();
+                if (objUser.Count == 0)
+                {
+                    user.IsAdmin = false;
+                    _context.Add(user);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Login");
+                }
+                else
+                {
+                ModelState.AddModelError("", "This Email address / username is already taken");
+                }
+
             }
+
             return View(user);
         }
 
@@ -211,25 +196,33 @@ namespace WebAppProject.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                var objUser = await _context.User.Where(u => u.Email.Equals(user.Email) || u.UserName.Equals(user.UserName)).ToListAsync();
+                if (objUser.Count == 0 || (objUser.Count == 1 && objUser[0].UserID.Equals(id)))
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    try
+                    {
+                        _context.Update(user);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!UserExists(user.UserID))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return View(user);
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!UserExists(user.UserID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    ModelState.AddModelError("", "This Email address / username is already taken");
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View();
         }
 
         // GET: Users/Delete/5
