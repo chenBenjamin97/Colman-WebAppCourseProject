@@ -1,11 +1,17 @@
-﻿using System;
+using System;
+// Check if needed / conflicts
+using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
+
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebAppProject.Data;
 using WebAppProject.Models;
+using System.Web;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using Microsoft.AspNetCore.Mvc.RazorPages;

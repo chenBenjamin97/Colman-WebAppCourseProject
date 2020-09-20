@@ -151,8 +151,18 @@ namespace WebAppProject.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var waterTransaction = await _context.WaterTransactions.FindAsync(id);
+            
+            // Delete file from disk:
+            var fileNameSplitted = waterTransaction.ImgPath.Split('.');
+            var userID = waterTransaction.UserID;
+            var fileExtension = fileNameSplitted[fileNameSplitted.Length - 1];
+            var fileToDeletePath = Path.Combine(Config.PhysicalWaterFilesPath, userID + "." + fileExtension);
+            System.IO.File.Delete(fileToDeletePath);
+
+            // Delete transaction from DB:
             _context.WaterTransactions.Remove(waterTransaction);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

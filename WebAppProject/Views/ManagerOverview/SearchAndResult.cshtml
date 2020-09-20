@@ -1,0 +1,329 @@
+﻿@model ViewModel
+
+@{
+    ViewData["Title"] = "Search And Stats";
+}
+
+<a asp-action="Stats">Overall Stats, Press Here</a>
+
+@if (ViewData["AfterSearch"].Equals(false))
+{
+    <h1>Search By Catagory:</h1>
+    <form asp-action="SearchAndResult">
+        <h3>Search For:</h3>
+    
+        <input type="radio" id="User" name="SearchDB" value="User"
+               checked>
+        <label for="User">User</label> <br>
+    
+        <input type="radio" id="WaterTransaction" name="SearchDB" value="WaterTransaction">
+        <label for="WaterTransaction">Water Transaction</label> <br>
+
+        <input type="radio" id="ElectricityTransaction" name="SearchDB" value="ElectricityTransaction">
+        <label for="ElectricityTransaction">Electricity Transaction</label> <br>
+
+        <div id="UserCatagories">
+            <h5>Where:</h5>
+    
+            <input type="radio" id="UserID" name="SearchCatagory" value="UserID" 
+                   checked>
+            <label for="UserID"><i>ID</i></label>
+    
+            <input type="radio" id="UserFirstName" name="SearchCatagory" value="FirstName">
+            <label for="UserFirstName"><i>First Name</i></label>
+    
+            <input type="radio" id="UserLastName" name="SearchCatagory" value="LastName">
+            <label for="UserLastName"><i>Last Name</i></label>
+    
+            <input type="radio" id="UserEmail" name="SearchCatagory" value="Email">
+            <label for="User"><i>Email Address</i></label>
+    
+            <input type="radio" id="UserCity" name="SearchCatagory" value="City">
+            <label for="UserCity"><i>City</i></label>
+    
+            <input type="radio" id="UserStreet" name="SearchCatagory" value="Street">
+            <label for="UserStreet"><i>Street</i></label>
+    
+            <input type="radio" class="dateInput" id="EnteranceDate" name="SearchCatagory" value="EnteranceDate">
+            <label for="EnteranceDate"><i>Enterance Date</i></label>
+    
+            <input type="radio" id="IsAdmin" name="SearchCatagory" value="IsAdmin">
+            <label for="IsAdmin"><i>Admins</i></label>
+        </div>
+    
+    
+        <div id="WaterTransactionCatagories">
+            <h5>Where:</h5>
+    
+            <input type="radio" id="WaterID" name="SearchCatagory" value="UserID" 
+                   checked>
+            <label for="WaterID"><i>User ID</i></label>
+    
+            <input type="radio" id="WaterMeterID" name="SearchCatagory" value="WaterMeterID">
+            <label for="WaterMeterID"><i>Water Meter ID</i></label>
+    
+            <input type="radio" class="dateInput" id="WaterMeterLastReadDate" name="SearchCatagory" value="WaterMeterLastReadDate">
+            <label for="WaterMeterLastReadDate"><i>Last Read Date</i></label>
+        </div>
+    
+    
+        <div id="ElectricityTransactionCatagories">
+            <h5>Where:</h5>
+    
+            <input type="radio" id="ElectricityID" name="SearchCatagory" value="UserID" 
+                   checked>
+            <label for="ElectricityID"><i>User ID</i></label>
+    
+            <input type="radio" id="WaterMeterID" name="SearchCatagory" value="WaterMeterID">
+            <label for="WaterMeterID"><i>Water Meter ID</i></label>
+    
+            <input type="radio" class="dateInput" id="ElectricityMeterLastRead" name="SearchCatagory" value="ElectricityMeterLastRead">
+            <label for="ElectricityMeterLastRead"><i>Last Read Date</i></label>
+        </div>
+    
+        <div id="SearchContainer">
+        <b>Contains:</b> <br>
+        <input type="search" id="SearchInput" placeholder="Key Word" name="SearchKeyWord" required />
+        </div>
+
+        <input type="submit" value="Search" />
+    </form>
+}
+
+@if (ViewData["AfterSearch"].Equals(true))
+{
+    @if (Model.Users != null)
+    {
+        <h3>Users Results:</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            User ID
+                        </th>
+                        <th>
+                            First Name
+                        </th>
+                        <th>
+                            Last Name
+                        </th>
+                        <th>
+                            Email Address
+                        </th>
+                        <th>
+                            Enterance Date
+                        </th>
+                        <th>
+                            City
+                        </th>
+                        <th>
+                            Street
+                        </th>
+                        <th>
+                            Street Number
+                        </th>
+                        <th>
+                            Apartment Number
+                        </th>
+                        <th>
+                            Is Admin
+                        </th>
+                        <th>
+                            User Name
+                        </th>
+                    </tr>
+                </thead>
+            <tbody>
+                @foreach (User user in Model.Users)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => user.UserID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => user.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => user.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => user.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => user.EnteranceDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => user.PropertyCity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => user.PropertyStreet)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => user.PropertyStreetNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => user.ApartmentNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => user.IsAdmin)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => user.UserName)
+                        </td>
+                        <td>
+                            <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserID">Edit</a> |
+                            <a asp-controller="Users" asp-action="Details" asp-route-id="@user.UserID">Details</a> |
+                            <a asp-controller="Users" asp-action="Delete" asp-route-id="@user.UserID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    
+    @if (Model.WaterTransactions != null)
+    {
+        <h3>Water Transactions Results:</h3>
+    
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Water Meter ID
+                    </th>
+                    <th>
+                        Water Meter Last Read Date
+                    </th>
+                    <th>
+                        Image File Path
+                    </th>
+                    <th>
+                        User ID
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (WaterTransaction transaction in Model.WaterTransactions)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.WaterMeterID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.WaterMeterLastReadDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.ImgPath)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.User.UserID)
+                        </td>
+                        <td>
+                            <a asp-controller="WaterTransactions" asp-action="Edit" asp-route-id="@transaction.WaterMeterID">Edit</a> |
+                            <a asp-controller="WaterTransactions" asp-action="Details" asp-route-id="@transaction.WaterMeterID">Details</a> |
+                            <a asp-controller="WaterTransactions" asp-action="Delete" asp-route-id="@transaction.WaterMeterID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    
+    @if (Model.ElectricityTransaction != null)
+    {
+        <h3>Electricity Transactions Results:</h3>
+    
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Electricity Meter ID
+                    </th>
+                    <th>
+                        Electricity Meter Last Read Date
+                    </th>
+                    <th>
+                        Image File Path
+                    </th>
+                    <th>
+                        User ID
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ElectricityTransaction transaction in Model.ElectricityTransaction)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.ElectricityMeterID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.ElectricityMeterLastRead)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.ImgPath)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.User.UserID)
+                        </td>
+                        <td>
+                            <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.ElectricityMeterID">Edit</a> |
+                            <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.ElectricityMeterID">Details</a> |
+                            <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@transaction.ElectricityMeterID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+<script>
+    $(document).ready(function () {
+        $('#WaterTransactionCatagories').hide();
+        $('#ElectricityTransactionCatagories').hide();
+    })
+
+
+    $(document).ready(function () {
+        $(':radio').click(function () {
+            if ($('#User').is(':checked')) {
+                $('#UserCatagories').show();
+                $('#WaterTransactionCatagories').hide();
+                $('#ElectricityTransactionCatagories').hide();
+            } else if ($('#WaterTransaction').is(':checked')) {
+                $('#UserCatagories').hide();
+                $('#WaterTransactionCatagories').show();
+                $('#ElectricityTransactionCatagories').hide();
+            } else { // Means ElectricityTransaction is checked
+                $('#UserCatagories').hide();
+                $('#WaterTransactionCatagories').hide();
+                $('#ElectricityTransactionCatagories').show();
+            }
+        })
+    })
+
+    $(document).ready(function () {
+        $(':radio').click(function () {
+            if ($('#IsAdmin').is(':checked')) {
+                $('#SearchContainer').hide();
+                $('#SearchInput').prop('required', false);
+            } else {
+                $('#SearchContainer').show();
+                $('#SearchInput').prop('required', true);
+            } 
+        })
+    })
+
+    $(document).ready(function () {
+        $(':radio').click(function () {
+            if ($('.dateInput').is(':checked')) {
+                $('#SearchInput').prop('type', 'date');
+            } else {
+                $('#SearchInput').prop('type', 'text');
+            }
+        })
+    })
+
+</script>
+

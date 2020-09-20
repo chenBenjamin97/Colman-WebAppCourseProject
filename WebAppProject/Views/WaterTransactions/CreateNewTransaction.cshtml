@@ -8,10 +8,25 @@
 @model WaterTransaction
 <form asp-action="CreateNewTransaction" enctype="multipart/form-data">
     <b>File Details:</b> <br>
-    User ID: <input asp-for="UserID" /> <br>
-    Water Meter ID: <input asp-for="WaterMeterID" /> <br>
-    Water Meter Last Read: <input asp-for="WaterMeterLastReadDate" type="date" /> <br>
-    Image: <input asp-for="WaterMeterImg" /> <br>
+    User ID: <input asp-for="UserID" required/> <br>
+    Water Meter ID: <input asp-for="WaterMeterID" required/> <br>
+    Water Meter Last Read: <input asp-for="WaterMeterLastReadDate" type="date" required/> <br>
+    Image: <input asp-for="WaterMeterImg" id="fileInputField" accept="image/*" required/> <br>
     <input type="submit" />
 </form>
+
+<script>
+    $('form').submit(function (event) {
+        var fileExtension = $('#fileInputField').val().split('.').pop().toLowerCase();
+        switch (fileExtension) {
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+                return true;
+            default:
+                alert("Only jpg/jpeg/png files are allowed");
+                return false;
+        }
+    })
+</script>
 
