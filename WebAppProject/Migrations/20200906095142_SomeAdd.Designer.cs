@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAppProject.Data;
 
 namespace WebAppProject.Migrations
 {
     [DbContext(typeof(MvcProjectContext))]
-    partial class MvcProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20200906095142_SomeAdd")]
+    partial class SomeAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,24 +40,6 @@ namespace WebAppProject.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("ElectricityTransactions");
-                });
-
-            modelBuilder.Entity("WebAppProject.Models.PropertyTax", b =>
-                {
-                    b.Property<int>("PropertyID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImgPath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("PropertyID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("PropertyTax");
                 });
 
             modelBuilder.Entity("WebAppProject.Models.User", b =>
@@ -126,15 +110,6 @@ namespace WebAppProject.Migrations
                 {
                     b.HasOne("WebAppProject.Models.User", "User")
                         .WithMany("ElectricityTransactions")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("WebAppProject.Models.PropertyTax", b =>
-                {
-                    b.HasOne("WebAppProject.Models.User", "User")
-                        .WithMany("propertyTaxes")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
