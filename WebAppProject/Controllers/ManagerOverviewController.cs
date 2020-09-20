@@ -38,7 +38,8 @@ namespace WebAppProject.Controllers
             {
                 Users = await _context.User.ToListAsync(),
                 WaterTransactions = await _context.WaterTransactions.ToListAsync(),
-                ElectricityTransaction = await _context.ElectricityTransactions.ToListAsync()
+                ElectricityTransaction = await _context.ElectricityTransactions.ToListAsync(),
+                PropertyTaxTransactions = await _context.PropertyTaxTransactions.ToListAsync()
             };
             return View(viewModel);
         }
@@ -222,6 +223,7 @@ namespace WebAppProject.Controllers
             model.Users = null;
             model.WaterTransactions = null;
             model.ElectricityTransaction = null;
+            model.PropertyTaxTransactions = null;
 
             switch (SearchDB)
             {
@@ -287,6 +289,17 @@ namespace WebAppProject.Controllers
                     {
                         var ParsedDate = DateTime.Parse(SearchKeyWord);
                         model.ElectricityTransaction = await _context.ElectricityTransactions.Where(electricity => electricity.ElectricityMeterLastRead.Equals(ParsedDate)).ToListAsync();
+                    }
+                    break;
+
+                case "PropertyTaxTransaction":
+                    if (SearchCatagory.Equals("UserID"))
+                    {
+                       model.PropertyTaxTransactions = await _context.PropertyTaxTransactions.Where(property => property.UserID.ToString().Equals(SearchKeyWord)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("WaterMeterID"))
+                    {
+                        model.PropertyTaxTransactions = await _context.PropertyTaxTransactions.Where(property => property.PropertyID.ToString().Equals(SearchKeyWord)).ToListAsync();
                     }
                     break;
 

@@ -11,11 +11,11 @@ using WebAppProject.Models;
 
 namespace WebAppProject.Controllers
 {
-    public class PropertyTaxesController : Controller
+    public class PropertyTaxController : Controller
     {
         private readonly MvcProjectContext _context;
 
-        public PropertyTaxesController(MvcProjectContext context)
+        public PropertyTaxController(MvcProjectContext context)
         {
             _context = context;
         }
@@ -23,7 +23,7 @@ namespace WebAppProject.Controllers
         // GET: PropertyTaxes
         public async Task<IActionResult> Index()
         {
-            var mvcProjectContext = _context.PropertyTax.Include(p => p.User);
+            var mvcProjectContext = _context.PropertyTaxTransactions.Include(p => p.User);
             return View(await mvcProjectContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace WebAppProject.Controllers
                 return NotFound();
             }
 
-            var propertyTax = await _context.PropertyTax
+            var propertyTax = await _context.PropertyTaxTransactions
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(m => m.PropertyID == id);
             if (propertyTax == null)
@@ -58,7 +58,7 @@ namespace WebAppProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,PropertyID,ImgPath")] PropertyTax propertyTax)
+        public async Task<IActionResult> Create([Bind("UserID,PropertyID,ImgPath")] PropertyTaxTransaction propertyTax)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace WebAppProject.Controllers
                 return NotFound();
             }
 
-            var propertyTax = await _context.PropertyTax.FindAsync(id);
+            var propertyTax = await _context.PropertyTaxTransactions.FindAsync(id);
             if (propertyTax == null)
             {
                 return NotFound();
@@ -92,7 +92,7 @@ namespace WebAppProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,PropertyID,ImgPath")] PropertyTax propertyTax)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,PropertyID,ImgPath")] PropertyTaxTransaction propertyTax)
         {
             if (id != propertyTax.PropertyID)
             {
@@ -131,7 +131,7 @@ namespace WebAppProject.Controllers
                 return NotFound();
             }
 
-            var propertyTax = await _context.PropertyTax
+            var propertyTax = await _context.PropertyTaxTransactions
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(m => m.PropertyID == id);
             if (propertyTax == null)
@@ -147,15 +147,15 @@ namespace WebAppProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var propertyTax = await _context.PropertyTax.FindAsync(id);
-            _context.PropertyTax.Remove(propertyTax);
+            var propertyTax = await _context.PropertyTaxTransactions.FindAsync(id);
+            _context.PropertyTaxTransactions.Remove(propertyTax);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PropertyTaxExists(int id)
         {
-            return _context.PropertyTax.Any(e => e.PropertyID == id);
+            return _context.PropertyTaxTransactions.Any(e => e.PropertyID == id);
         }
         public IActionResult CreateNewTransaction()
         {

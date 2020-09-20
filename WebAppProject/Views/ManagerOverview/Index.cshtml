@@ -50,46 +50,46 @@
     <tbody>
         @foreach (User user in Model.Users)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => user.UserID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.EnteranceDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.PropertyCity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.PropertyStreet)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.PropertyStreetNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.ApartmentNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.IsAdmin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => user.UserName)
-            </td>
-            <td>
-                <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserID">Edit</a> |
-                <a asp-controller="Users" asp-action="Details" asp-route-id="@user.UserID">Details</a> |
-                <a asp-controller="Users" asp-action="Delete" asp-route-id="@user.UserID">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.UserID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.EnteranceDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.PropertyCity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.PropertyStreet)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.PropertyStreetNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.ApartmentNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.IsAdmin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.UserName)
+                </td>
+                <td>
+                    <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserID">Edit</a> |
+                    <a asp-controller="Users" asp-action="Details" asp-route-id="@user.UserID">Details</a> |
+                    <a asp-controller="Users" asp-action="Delete" asp-route-id="@user.UserID">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
@@ -116,30 +116,30 @@
     <tbody>
         @foreach (WaterTransaction transaction in Model.WaterTransactions)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => transaction.WaterMeterID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => transaction.WaterMeterLastReadDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => transaction.ImgPath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => transaction.User.UserID)
-            </td>
-            <td>
-                <a asp-controller="WaterTransactions" asp-action="Edit" asp-route-id="@transaction.WaterMeterID">Edit</a> |
-                <a asp-controller="WaterTransactions" asp-action="Details" asp-route-id="@transaction.WaterMeterID">Details</a> |
-                <a asp-controller="WaterTransactions" asp-action="Delete" asp-route-id="@transaction.WaterMeterID">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.WaterMeterID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.WaterMeterLastReadDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.ImgPath)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.User.UserID)
+                </td>
+                <td>
+                    <a asp-controller="WaterTransactions" asp-action="Edit" asp-route-id="@transaction.WaterMeterID">Edit</a> |
+                    <a asp-controller="WaterTransactions" asp-action="Details" asp-route-id="@transaction.WaterMeterID">Details</a> |
+                    <a asp-controller="WaterTransactions" asp-action="Delete" asp-route-id="@transaction.WaterMeterID">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
 
-<h3>Registered Electricity Transactions:</h3>
+<h3>Registered Property Tax Transactions:</h3>
 
 <table class="table">
     <thead>
@@ -161,26 +161,64 @@
     <tbody>
         @foreach (ElectricityTransaction transaction in Model.ElectricityTransaction)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => transaction.ElectricityMeterID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => transaction.ElectricityMeterLastRead)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => transaction.ImgPath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => transaction.User.UserID)
-            </td>
-            <td>
-                <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.ElectricityMeterID">Edit</a> |
-                <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.ElectricityMeterID">Details</a> |
-                <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@transaction.ElectricityMeterID">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.ElectricityMeterID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.ElectricityMeterLastRead)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.ImgPath)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.User.UserID)
+                </td>
+                <td>
+                    <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.ElectricityMeterID">Edit</a> |
+                    <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.ElectricityMeterID">Details</a> |
+                    <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@transaction.ElectricityMeterID">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
 
+<h3>Registered Proprty Tax Transactions:</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Property ID
+            </th>
+            <th>
+                Image File Path
+            </th>
+            <th>
+                User ID
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (PropertyTaxTransaction transaction in Model.PropertyTaxTransactions)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.PropertyID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.ImgPath)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.User.UserID)
+                </td>
+                <td>
+                    <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.PropertyID">Edit</a> |
+                    <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.PropertyID">Details</a> |
+                    <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@transaction.PropertyID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
