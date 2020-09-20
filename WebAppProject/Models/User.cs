@@ -28,5 +28,6 @@ namespace WebAppProject.Models
 
         public ICollection<WaterTransaction> WaterTransactions { get; set; }
         public ICollection<ElectricityTransaction> ElectricityTransactions { get; set; }
+        public ICollection<PropertyTax> propertyTaxes { get; set; }
     }
 }
