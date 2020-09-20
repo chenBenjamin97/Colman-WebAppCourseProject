@@ -24,6 +24,10 @@ namespace WebAppProject.Controllers
         // GET: ManagerOverview
         public async Task<IActionResult> Index()
         {
+            // Delete When Finish Debugging !!!
+            HttpContext.Session.SetString("IsAdmin", "true");
+            // ------------------------------------------------------------
+
             var NotAdminRedirection = ValidateAdmin(this.HttpContext);
             if (NotAdminRedirection != null)
             {
@@ -199,6 +203,118 @@ namespace WebAppProject.Controllers
             _context.ViewModel.Remove(viewModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchAndResult(string SearchDB, string SearchCatagory, string? SearchKeyWord)
+        {
+            ViewData["AfterSearch"] = true;
+
+            var NotAdminRedirection = ValidateAdmin(this.HttpContext);
+            if (NotAdminRedirection != null)
+            {
+                return NotAdminRedirection; // Redirect to Home/Index
+            }
+
+            ViewModel model = new ViewModel();
+
+            // Init:
+            model.Users = null;
+            model.WaterTransactions = null;
+            model.ElectricityTransaction = null;
+
+            switch (SearchDB)
+            {
+                case "User":
+                    if (SearchCatagory.Equals("UserID"))
+                    {
+                       model.Users = await _context.User.Where(user => user.UserID.ToString().Contains(SearchKeyWord)).ToListAsync();
+                    }   
+                    else if (SearchCatagory.Equals("FirstName"))
+                    {
+                        model.Users = await _context.User.Where(user => user.FirstName.Contains(SearchKeyWord)).ToListAsync();
+                    } 
+                    else if (SearchCatagory.Equals("LastName"))
+                    {
+                        model.Users = await _context.User.Where(user => user.LastName.Contains(SearchKeyWord)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("Email"))
+                    {
+                        model.Users = await _context.User.Where(user => user.Email.Contains(SearchKeyWord)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("City"))
+                    {
+                        model.Users = await _context.User.Where(user => user.PropertyCity.Contains(SearchKeyWord)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("EnteranceDate")) {
+                        var ParsedDate = DateTime.Parse(SearchKeyWord);
+                        model.Users = await _context.User.Where(user => user.EnteranceDate.Equals(ParsedDate)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("IsAdmin"))
+                    {
+                        model.Users = await _context.User.Where(user => user.IsAdmin.Equals(true)).ToListAsync();
+                    }
+
+                    break;
+
+                case "WaterTransaction":
+                    if (SearchCatagory.Equals("UserID"))
+                    {
+                        model.WaterTransactions = await _context.WaterTransactions.Where(water => water.UserID.ToString().Equals(SearchKeyWord)).ToListAsync();
+                    } 
+                    else if (SearchCatagory.Equals("WaterMeterID"))
+                    {
+                        model.WaterTransactions = await _context.WaterTransactions.Where(water => water.WaterMeterID.ToString().Equals(SearchKeyWord)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("WaterMeterLastReadDate"))
+                    {
+                        var ParsedDate = DateTime.Parse(SearchKeyWord);
+                        model.WaterTransactions = await _context.WaterTransactions.Where(water => water.WaterMeterLastReadDate.Equals(ParsedDate)).ToListAsync();
+                    }
+
+                    break;
+
+                case "ElectricityTransaction":
+                    if (SearchCatagory.Equals("UserID"))
+                    {
+                        model.ElectricityTransaction = await _context.ElectricityTransactions.Where(electricity => electricity.UserID.ToString().Equals(SearchKeyWord)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("WaterMeterID"))
+                    {
+                        model.ElectricityTransaction = await _context.ElectricityTransactions.Where(electricity => electricity.ElectricityMeterID.ToString().Equals(SearchKeyWord)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("WaterMeterLastReadDate"))
+                    {
+                        var ParsedDate = DateTime.Parse(SearchKeyWord);
+                        model.ElectricityTransaction = await _context.ElectricityTransactions.Where(electricity => electricity.ElectricityMeterLastRead.Equals(ParsedDate)).ToListAsync();
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+
+            return View(model);
+        }
+
+        public IActionResult Stats()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult SearchAndResult()
+        {
+            ViewData["AfterSearch"] = false;
+
+            var NotAdminRedirection = ValidateAdmin(this.HttpContext);
+            if (NotAdminRedirection != null)
+            {
+                return NotAdminRedirection; // Redirect to Home/Index
+            }
+
+            return View();
         }
 
         private bool ViewModelExists(int id)
