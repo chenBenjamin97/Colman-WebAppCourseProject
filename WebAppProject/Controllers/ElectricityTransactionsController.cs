@@ -62,6 +62,7 @@ namespace WebAppProject.Controllers
         {
             if (ModelState.IsValid)
             {
+                electricityTransaction.Status = Config.TransactionStatus.Open;
                 _context.Add(electricityTransaction);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -165,6 +166,8 @@ namespace WebAppProject.Controllers
         [HttpPost]
         public IActionResult CreateNewTransaction(WaterTransaction userInput)
         {
+            userInput.Status = Config.TransactionStatus.Open;
+
             string newFileName = userInput.UserID.ToString() + Path.GetExtension(userInput.WaterMeterImg.FileName);
 
             string PhysicalAddressOfSaveNewFile = Path.Combine(Config.PhysicalWaterFilesPath, newFileName);

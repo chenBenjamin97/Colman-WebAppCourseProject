@@ -207,7 +207,7 @@ namespace WebAppProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SearchAndResult(string SearchDB, string SearchCatagory, string? SearchKeyWord)
+        public async Task<IActionResult> SearchAndResult(string SearchDB, string SearchCatagory, Config.TransactionStatus wantedStatus, string? SearchKeyWord)
         {
             ViewData["AfterSearch"] = true;
 
@@ -262,16 +262,20 @@ namespace WebAppProject.Controllers
                 case "WaterTransaction":
                     if (SearchCatagory.Equals("UserID"))
                     {
-                        model.WaterTransactions = await _context.WaterTransactions.Where(water => water.UserID.ToString().Equals(SearchKeyWord)).ToListAsync();
+                        model.WaterTransactions = await _context.WaterTransactions.Where(water => water.UserID.ToString().Contains(SearchKeyWord)).ToListAsync();
                     } 
                     else if (SearchCatagory.Equals("WaterMeterID"))
                     {
-                        model.WaterTransactions = await _context.WaterTransactions.Where(water => water.WaterMeterID.ToString().Equals(SearchKeyWord)).ToListAsync();
+                        model.WaterTransactions = await _context.WaterTransactions.Where(water => water.WaterMeterID.ToString().Contains(SearchKeyWord)).ToListAsync();
                     }
                     else if (SearchCatagory.Equals("WaterMeterLastReadDate"))
                     {
                         var ParsedDate = DateTime.Parse(SearchKeyWord);
                         model.WaterTransactions = await _context.WaterTransactions.Where(water => water.WaterMeterLastReadDate.Equals(ParsedDate)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("WaterTransactionStatus"))
+                    {
+                        model.WaterTransactions = await _context.WaterTransactions.Where(water => water.Status.Equals(wantedStatus)).ToListAsync();
                     }
 
                     break;
@@ -279,11 +283,11 @@ namespace WebAppProject.Controllers
                 case "ElectricityTransaction":
                     if (SearchCatagory.Equals("UserID"))
                     {
-                        model.ElectricityTransaction = await _context.ElectricityTransactions.Where(electricity => electricity.UserID.ToString().Equals(SearchKeyWord)).ToListAsync();
+                        model.ElectricityTransaction = await _context.ElectricityTransactions.Where(electricity => electricity.UserID.ToString().Contains(SearchKeyWord)).ToListAsync();
                     }
                     else if (SearchCatagory.Equals("WaterMeterID"))
                     {
-                        model.ElectricityTransaction = await _context.ElectricityTransactions.Where(electricity => electricity.ElectricityMeterID.ToString().Equals(SearchKeyWord)).ToListAsync();
+                        model.ElectricityTransaction = await _context.ElectricityTransactions.Where(electricity => electricity.ElectricityMeterID.ToString().Contains(SearchKeyWord)).ToListAsync();
                     }
                     else if (SearchCatagory.Equals("WaterMeterLastReadDate"))
                     {
@@ -295,11 +299,11 @@ namespace WebAppProject.Controllers
                 case "PropertyTaxTransaction":
                     if (SearchCatagory.Equals("UserID"))
                     {
-                       model.PropertyTaxTransactions = await _context.PropertyTaxTransactions.Where(property => property.UserID.ToString().Equals(SearchKeyWord)).ToListAsync();
+                       model.PropertyTaxTransactions = await _context.PropertyTaxTransactions.Where(property => property.UserID.ToString().Contains(SearchKeyWord)).ToListAsync();
                     }
                     else if (SearchCatagory.Equals("WaterMeterID"))
                     {
-                        model.PropertyTaxTransactions = await _context.PropertyTaxTransactions.Where(property => property.PropertyID.ToString().Equals(SearchKeyWord)).ToListAsync();
+                        model.PropertyTaxTransactions = await _context.PropertyTaxTransactions.Where(property => property.PropertyID.ToString().Contains(SearchKeyWord)).ToListAsync();
                     }
                     break;
 

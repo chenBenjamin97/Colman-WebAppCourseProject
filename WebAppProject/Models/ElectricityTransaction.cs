@@ -29,6 +29,8 @@ namespace WebAppProject.Models
         
         public string ImgPath { get; set; }
 
+        public Config.TransactionStatus Status { get; set; }
+
         public User User { get; set; }
     }
 }

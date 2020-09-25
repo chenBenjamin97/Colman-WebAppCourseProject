@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAppProject.Data;
 
 namespace WebAppProject.Migrations
 {
     [DbContext(typeof(MvcProjectContext))]
-    partial class MvcProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20200925144552_changedWaterStatusTypeAgain")]
+    partial class changedWaterStatusTypeAgain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

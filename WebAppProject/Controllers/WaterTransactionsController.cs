@@ -63,6 +63,8 @@ namespace WebAppProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserID,WaterMeterLastReadDate,WaterMeterID,ImgPath")] WaterTransaction waterTransaction)
         {
+            waterTransaction.Status = Config.TransactionStatus.Open;
+
             if (ModelState.IsValid)
             {
                 _context.Add(waterTransaction);
@@ -179,6 +181,8 @@ namespace WebAppProject.Controllers
         [HttpPost]
         public IActionResult CreateNewTransaction(WaterTransaction userInput)
         {
+            userInput.Status = Config.TransactionStatus.Open;
+
             string newFileName = userInput.UserID.ToString() + Path.GetExtension(userInput.WaterMeterImg.FileName);
 
             string PhysicalAddressOfSaveNewFile = Path.Combine(Config.PhysicalWaterFilesPath, newFileName);
