@@ -60,8 +60,10 @@ namespace WebAppProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserID,PropertyID,ImgPath")] PropertyTaxTransaction propertyTax)
         {
+
             if (ModelState.IsValid)
             {
+                propertyTax.Status = Config.TransactionStatus.Open;
                 _context.Add(propertyTax);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

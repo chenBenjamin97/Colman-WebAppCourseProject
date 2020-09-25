@@ -19,7 +19,7 @@ namespace WebAppProject.Models
         [DataType(DataType.Date)]
         public DateTime WaterMeterLastReadDate { get; set; }
 
-        [Display(Name = "Electricity Meter ID")]
+        [Display(Name = "Water Meter ID")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key] // Primary Key
         public int WaterMeterID { get; set; }
@@ -27,6 +27,8 @@ namespace WebAppProject.Models
         [NotMapped] //Make this property not be written to the DB
         public IFormFile WaterMeterImg { get; set; }
         public string ImgPath { get; set; }
+        public Config.TransactionStatus Status { get; set; }
+
         public User User { get; set; }
     }
 }

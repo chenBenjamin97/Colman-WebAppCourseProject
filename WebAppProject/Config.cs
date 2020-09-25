@@ -20,6 +20,11 @@ namespace WebAppProject
         public static string RelativeWaterFilesPath = Path.Combine(StaticImagesDirName, "Water"); //Used when client looks for file via http request to the web server
         public static string RelativePropertyTaxFilesPath = Path.Combine(StaticImagesDirName, "PropertyTax"); //Used when client looks for file via http request to the web server
 
+        public enum TransactionStatus
+        {
+            Open,
+            Closed
+        }
 
     }
 }
