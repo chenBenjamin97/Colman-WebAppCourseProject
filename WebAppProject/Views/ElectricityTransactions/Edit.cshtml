@@ -10,23 +10,30 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserID" class="control-label"></label>
-                <select asp-for="UserID" class="form-control" asp-items="ViewBag.UserID"></select>
+                <input asp-for="UserID" class="form-control" disabled="disabled" />
                 <span asp-validation-for="UserID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ElectricityMeterID" class="control-label"></label>
+                <input asp-for="ElectricityMeterID" class="form-control" disabled="disabled" />
+                <span asp-validation-for="ElectricityMeterID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" disabled="disabled" />
+                <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ElectricityMeterLastRead" class="control-label"></label>
                 <input asp-for="ElectricityMeterLastRead" class="form-control" />
                 <span asp-validation-for="ElectricityMeterLastRead" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="ElectricityMeterID" />
             <div class="form-group">
-                <label asp-for="ImgPath" class="control-label"></label>
-                <input asp-for="ImgPath" class="form-control" />
-                <span asp-validation-for="ImgPath" class="text-danger"></span>
+                Change Image (Not Required): <input asp-for="ElectricityMeterImg" id="fileInputField" accept="image/*" /> <br>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -42,3 +49,22 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script>
+    $('form').submit(function (event) {
+        if ($('#fileInputField').val()) { // Means user filled this field
+            var fileExtension = $('#fileInputField').val().split('.').pop().toLowerCase();
+            switch (fileExtension) {
+                case 'jpg':
+                case 'jpeg':
+                case 'png':
+                    return true;
+                default:
+                    alert("Only jpg/jpeg/png files are allowed");
+                    return false;
+            }
+        }
+
+        return true; // No file input
+    })
+</script>
