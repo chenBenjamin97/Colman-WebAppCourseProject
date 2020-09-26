@@ -55,6 +55,18 @@ namespace WebAppProject
                     RelativeAddressOfNewFile = Path.Combine(Config.RelativePropertyTaxFilesPath, newFileName);
                     break;
 
+                case "ContactApplication":
+                    newFileName = UserID.ToString() + '-' + ObjID.ToString() + Path.GetExtension(Img.FileName);
+                    PhysicalAddressOfSaveNewFile = Path.Combine(Config.PhysicalContactApplicationFilesPath, newFileName);
+
+                    using (var stream = new FileStream(PhysicalAddressOfSaveNewFile, FileMode.Create)) // Provides a convenient syntax that ensures the correct use of IDisposable objects
+                    {
+                        Img.CopyTo(stream);
+                    }
+
+                    RelativeAddressOfNewFile = Path.Combine(Config.RelativeContactApplicationFilesPath, newFileName);
+                    break;
+
                 default:
                     RelativeAddressOfNewFile = null; // Error
                     break;

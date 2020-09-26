@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,8 @@ namespace WebAppProject.Controllers
                 return NotFound();
             }
 
+            // Notice:
+            ViewData["ImgPath"] = contactApplication.ImgPath;
             return View(contactApplication);
         }
 
@@ -54,12 +57,33 @@ namespace WebAppProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ContactAppID,Title,Message,ContactType,CreateDate,ImgPath,Status")] ContactApplication contactApplication)
+        public async Task<IActionResult> Create([Bind("Title,Message,ContactType,Img")] ContactApplication contactApplication)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(contactApplication);
-                await _context.SaveChangesAsync();
+                // Init new Application:
+                contactApplication.UserID = (int)HttpContext.Session.GetInt32("UserID");
+                contactApplication.CreateDate = DateTime.Today;
+                contactApplication.Status = Config.TransactionStatus.Open;
+
+                if (contactApplication.Img != null)
+                {
+                    _context.Add(contactApplication);
+                    await _context.SaveChangesAsync(); // Let this contact application get ID from SQL server
+
+                    contactApplication.ImgPath = Image.Save(contactApplication.UserID, contactApplication.Img, getLastContactAppRegisteredID(), "ContactApplication");
+
+                    _context.Update(contactApplication);
+                    await _context.SaveChangesAsync(); // Update image path to this contact app ID
+                }
+                else // (ID is not needed yet because we are not saving an image)
+                {
+                    contactApplication.ImgPath = "No Image Attached";
+
+                    _context.Add(contactApplication);
+                    await _context.SaveChangesAsync(); // let this contact application get ID from SQL server
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(contactApplication);
@@ -86,23 +110,35 @@ namespace WebAppProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ContactAppID,Title,Message,ContactType,CreateDate,ImgPath,Status")] ContactApplication contactApplication)
+        public async Task<IActionResult> Edit(int id, [Bind("Title,Message,ContactType,Img")] ContactApplication ContactAppAfterEdit)
         {
-            if (id != contactApplication.ContactAppID)
+            var ContactAppBeforeEdit = await _context.ContactApplication.FindAsync(id);
+            if (ContactAppBeforeEdit == null)
             {
                 return NotFound();
             }
+
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(contactApplication);
+                    if (ContactAppAfterEdit.Img != null)
+                    {
+                        string newImgRelativePath = Image.Edit(ContactAppBeforeEdit.UserID, ContactAppBeforeEdit.ImgPath, ContactAppAfterEdit.Img, ContactAppBeforeEdit.ContactAppID, "ContactApplication");
+                        ContactAppBeforeEdit.ImgPath = newImgRelativePath;
+                    }
+
+                    ContactAppBeforeEdit.Title = ContactAppAfterEdit.Title;
+                    ContactAppBeforeEdit.Message = ContactAppAfterEdit.Message;
+                    ContactAppBeforeEdit.ContactType = ContactAppAfterEdit.ContactType;
+
+                    _context.Update(ContactAppBeforeEdit);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ContactApplicationExists(contactApplication.ContactAppID))
+                    if (!ContactApplicationExists(ContactAppAfterEdit.ContactAppID))
                     {
                         return NotFound();
                     }
@@ -113,7 +149,7 @@ namespace WebAppProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(contactApplication);
+            return View(ContactAppAfterEdit);
         }
 
         // GET: ContactApplications/Delete/5
@@ -140,14 +176,31 @@ namespace WebAppProject.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var contactApplication = await _context.ContactApplication.FindAsync(id);
+
+            // Delete file from disk (if image attached to this application):
+            if (contactApplication.ImgPath.Equals("No Image Attached") == false) // Means there is an image attached to this application
+            {
+                Image.Delete(contactApplication.ImgPath);
+            }
+
+            // Delete transaction from DB:
             _context.ContactApplication.Remove(contactApplication);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool ContactApplicationExists(int id)
         {
             return _context.ContactApplication.Any(e => e.ContactAppID == id);
+        }
+
+        private int getLastContactAppRegisteredID()
+        {
+            int lastRegisteredID = _context.ContactApplication.Max(app => app.ContactAppID);
+
+            return lastRegisteredID;
+
         }
     }
 }

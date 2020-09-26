@@ -36,6 +36,8 @@ namespace WebAppProject.Controllers
         {
             return View();
         }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
 
@@ -46,21 +48,19 @@ namespace WebAppProject.Controllers
 
                 var objUser = _context.User.Where(u => u.UserName.Equals(username) && u.Password.Equals(password)) ; 
 
-                    if (objUser.FirstOrDefault() != null)
+                    if (objUser.FirstOrDefault() != null) // Found user with matched Username AND Password
                     {
-
-
                         if (objUser.FirstOrDefault().IsAdmin == false) //check if is not admin
                         {
                             HttpContext.Session.SetString("IsAdmin", "false");
-                            HttpContext.Session.SetString("UserId", objUser.First().UserID.ToString());
+                            HttpContext.Session.SetString("UserID", objUser.First().UserID.ToString());
                             HttpContext.Session.SetString("UserName", objUser.First().UserName.ToString());
 
                           //  return RedirectToAction("Home", "Index"); // what is the page that whould open?
                         }
                         else
                         {
-                                HttpContext.Session.SetString("UserId", objUser.First().UserID.ToString());
+                                HttpContext.Session.SetString("UserID", objUser.First().UserID.ToString());
                                 HttpContext.Session.SetString("UserName", objUser.First().UserName.ToString());
                                 HttpContext.Session.SetString("IsAdmin", "true");
                                // return RedirectToAction("Index", "AdminInfoes");// what is the page that whould open?
@@ -84,7 +84,7 @@ namespace WebAppProject.Controllers
     [HttpPost]
     public ActionResult LogOff()
         {
-        HttpContext.Session.SetString("UserId", null);
+        HttpContext.Session.SetString("UserID", null);
         HttpContext.Session.SetString("UserName", null);
         HttpContext.Session.SetString("IsAdmin", null);
         return RedirectToAction("Home", "???");   //change 

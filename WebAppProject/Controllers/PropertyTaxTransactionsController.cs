@@ -24,9 +24,6 @@ namespace WebAppProject.Controllers
         // GET: PropertTaxTransactions
         public async Task<IActionResult> Index()
         {
-            // FOR DEBUG ONLY:
-            HttpContext.Session.SetInt32("UserID", 45);
-
             var mvcProjectContext = _context.PropertyTaxTransactions.Include(p => p.User);
             return View(await mvcProjectContext.ToListAsync());
         }
