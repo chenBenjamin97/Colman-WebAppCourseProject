@@ -7,44 +7,63 @@
 <h1>Details</h1>
 
 <div>
-    <h4>ContactApplication</h4>
+    <h4>Contact Application Info:</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ContactAppID)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ContactAppID)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Message)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Message)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ContactType)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ContactType)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserID)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CreateDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CreateDate)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImgPath)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImgPath)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Status)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Img)
+        </dt>
+        <dd class="col-sm-10">
+            @if (ViewData["ImgPath"].ToString().Equals("No Image Attached"))
+            {
+                <div>No image attached to this application</div>
+            }
+            else
+            {
+                <img src="@Url.Content("~/" + @ViewData["ImgPath"].ToString())" alt="No image attached to this application." style="width:70%;height:auto" />
+            }
         </dd>
     </dl>
 </div>

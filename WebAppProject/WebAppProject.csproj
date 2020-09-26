@@ -24,6 +24,7 @@
   <ItemGroup>
     <Folder Include="..\..\..\..\..\%2527שנה ב\סמסטר קיץ\פיתוח אפליקציות\WebAppProject\WebAppProject\wwwroot\UsersUploads\Elecrticity\" />
     <Folder Include="wwwroot\UsersUploads\Elecrticity\" />
+    <Folder Include="wwwroot\UsersUploads\ContactApplication\" />
     <Folder Include="wwwroot\UsersUploads\PropertyTax\" />
     <Folder Include="wwwroot\UsersUploads\Water\" />
   </ItemGroup>

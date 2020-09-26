@@ -13,17 +13,23 @@ namespace WebAppProject.Models
         [Key] //Primary Key
         [Display(Name = "Contact Application ID")]
         public int ContactAppID { get; set; }
+
+        [Display(Name ="Client ID")]
+        public int UserID { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
-        [Display(Name = "Contact Type")]
-        public Config.ContactAppType ContactType { get; set; } //The rellevant transaction
-        [Display(Name = "Create Date")]
+
+        [Display(Name = "Transaction Type")]
+        public Config.ContactAppType ContactType { get; set; } //The rellevant transaction type
+
+        [Display(Name = "Creation Date")]
         [DataType(DataType.Date)]
         public DateTime CreateDate { get; set; }
 
-        [Display(Name = "Added Image")]
         [NotMapped] //Make this property not be written to the DB
+        [Display(Name = "Added Image")]
         public IFormFile Img { get; set; }
+
         [Display(Name = "Image Path")]
         public string ImgPath { get; set; }
         public Config.TransactionStatus Status { get; set; }
