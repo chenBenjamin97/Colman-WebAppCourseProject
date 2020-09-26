@@ -22,27 +22,41 @@ namespace WebAppProject
                 case "Water":
                     newFileName = UserID.ToString() + '-' + ObjID.ToString() + Path.GetExtension(Img.FileName);
                     PhysicalAddressOfSaveNewFile = Path.Combine(Config.PhysicalWaterFilesPath, newFileName);
-
-                    if (System.IO.File.Exists(PhysicalAddressOfSaveNewFile)) { return null; }
                     
-                    Img.CopyTo(new FileStream(PhysicalAddressOfSaveNewFile, FileMode.Create));
-                    RelativeAddressOfNewFile = Path.Combine(Config.RelativeWaterFilesPath, newFileName);
-  
-                    return RelativeAddressOfNewFile;
+                    using (var stream = new FileStream(PhysicalAddressOfSaveNewFile, FileMode.Create)) // Provides a convenient syntax that ensures the correct use of IDisposable objects
+                    {
+                        Img.CopyTo(stream);
+                    }
 
+                    RelativeAddressOfNewFile = Path.Combine(Config.RelativeWaterFilesPath, newFileName);
+                    break;
+                    
                 case "Electricity":
                     newFileName = UserID.ToString() + '-' + ObjID.ToString() + Path.GetExtension(Img.FileName);
                     PhysicalAddressOfSaveNewFile = Path.Combine(Config.PhysicalElectricityFilesPath, newFileName);
 
-                    if (System.IO.File.Exists(PhysicalAddressOfSaveNewFile)) { return null; }
+                    using (var stream = new FileStream(PhysicalAddressOfSaveNewFile, FileMode.Create)) // Provides a convenient syntax that ensures the correct use of IDisposable objects
+                    {
+                        Img.CopyTo(stream);
+                    }
 
-                    Img.CopyTo(new FileStream(PhysicalAddressOfSaveNewFile, FileMode.Create));
                     RelativeAddressOfNewFile = Path.Combine(Config.RelativeElectricityFilesPath, newFileName);
+                    break;
 
-                    return RelativeAddressOfNewFile;
+                case "PropertyTax":
+                    newFileName = UserID.ToString() + '-' + ObjID.ToString() + Path.GetExtension(Img.FileName);
+                    PhysicalAddressOfSaveNewFile = Path.Combine(Config.PhysicalPropertyTaxFilesPath, newFileName);
+
+                    using (var stream = new FileStream(PhysicalAddressOfSaveNewFile, FileMode.Create)) // Provides a convenient syntax that ensures the correct use of IDisposable objects
+                    {
+                        Img.CopyTo(stream);
+                    }
+
+                    RelativeAddressOfNewFile = Path.Combine(Config.RelativePropertyTaxFilesPath, newFileName);
+                    break;
 
                 default:
-                    RelativeAddressOfNewFile = "Unknown"; // Error
+                    RelativeAddressOfNewFile = null; // Error
                     break;
             }
             
@@ -53,15 +67,16 @@ namespace WebAppProject
         {
             var relativePathSplitted = ImgRelativePath.Split('\\');
             var fileNameAndExtension = relativePathSplitted[relativePathSplitted.Length - 1];
-            
-            var fileToDeletePath = Path.Combine(Config.PhysicalWaterFilesPath, fileNameAndExtension);
+            var transactionType = relativePathSplitted[relativePathSplitted.Length - 2];
+
+            var fileToDeletePath = Path.Combine(Config.PhysicalUsersUploadsRootDirPath, transactionType, fileNameAndExtension);
             System.IO.File.Delete(fileToDeletePath);
         }
 
         //Returns the new image relative path (after the edit)
         public static string Edit(int UserID, string ImgPathBeforeEdit, IFormFile Img, int ObjID, string TransactionType)
         {
-            Image.Delete(ImgPathBeforeEdit);
+            // Image.Delete(ImgPathBeforeEdit); - Not needed: FileMode.Create overwrites if file with same name is exist already
 
             return Image.Save(UserID, Img, ObjID, TransactionType);
         }

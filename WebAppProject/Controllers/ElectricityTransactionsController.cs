@@ -43,7 +43,8 @@ namespace WebAppProject.Controllers
             {
                 return NotFound();
             }
-
+             // Notice:
+            ViewData["ImgPath"] = electricityTransaction.ImgPath;
             return View(electricityTransaction);
         }
 
@@ -106,9 +107,10 @@ namespace WebAppProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,ElectricityMeterLastRead,ElectricityMeterID,ImgPath")] ElectricityTransaction electricityTransaction)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,ElectricityMeterLastRead,ElectricityMeterID,ElectricityMeterImg,ImgPath")] ElectricityTransaction electricityTransactionAfterEdit)
         {
-            if (id != electricityTransaction.ElectricityMeterID)
+            var ElectricityTransactionBeforeEdit = await _context.ElectricityTransactions.FindAsync(id);
+            if (ElectricityTransactionBeforeEdit == null)
             {
                 return NotFound();
             }
@@ -117,12 +119,19 @@ namespace WebAppProject.Controllers
             {
                 try
                 {
-                    _context.Update(electricityTransaction);
+                    if (electricityTransactionAfterEdit.ElectricityMeterImg != null)
+                    {
+                        string newImgRelativePath = Image.Edit(ElectricityTransactionBeforeEdit.UserID, ElectricityTransactionBeforeEdit.ImgPath, electricityTransactionAfterEdit.ElectricityMeterImg, ElectricityTransactionBeforeEdit.ElectricityMeterID, "Electricity");
+                        ElectricityTransactionBeforeEdit.ImgPath = newImgRelativePath;
+                    }
+
+                    ElectricityTransactionBeforeEdit.ElectricityMeterLastRead = electricityTransactionAfterEdit.ElectricityMeterLastRead;
+                    _context.Update(ElectricityTransactionBeforeEdit);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ElectricityTransactionExists(electricityTransaction.ElectricityMeterID))
+                    if (!ElectricityTransactionExists(electricityTransactionAfterEdit.ElectricityMeterID))
                     {
                         return NotFound();
                     }
@@ -133,8 +142,8 @@ namespace WebAppProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", electricityTransaction.UserID);
-            return View(electricityTransaction);
+            ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", electricityTransactionAfterEdit.UserID);
+            return View(electricityTransactionAfterEdit);
         }
 
         // GET: ElectricityTransactions/Delete/5
@@ -162,8 +171,14 @@ namespace WebAppProject.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var electricityTransaction = await _context.ElectricityTransactions.FindAsync(id);
+
+            // Delete file from disk:
+            Image.Delete(electricityTransaction.ImgPath);
+
+            // Delete transaction from DB:
             _context.ElectricityTransactions.Remove(electricityTransaction);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

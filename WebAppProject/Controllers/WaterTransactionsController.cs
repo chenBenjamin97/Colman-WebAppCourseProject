@@ -121,7 +121,6 @@ namespace WebAppProject.Controllers
             {
                 try
                 {
-
                     if (waterTransactionAfterEdit.WaterMeterImg != null)
                     {
                         string newImgRelativePath = Image.Edit(waterTransactionBeforeEdit.UserID, waterTransactionBeforeEdit.ImgPath, waterTransactionAfterEdit.WaterMeterImg, waterTransactionBeforeEdit.WaterMeterID, "Water");

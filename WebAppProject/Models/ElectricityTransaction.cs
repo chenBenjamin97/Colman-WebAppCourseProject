@@ -25,8 +25,10 @@ namespace WebAppProject.Models
         public int ElectricityMeterID { get; set; }
 
         [NotMapped] //Make this property not be written to the DB
+        [Display(Name = "Added Image")]
         public IFormFile ElectricityMeterImg { get; set; }
-        
+
+        [Display(Name = "Image Path")]
         public string ImgPath { get; set; }
 
         public Config.TransactionStatus Status { get; set; }

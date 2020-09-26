@@ -10,7 +10,8 @@ namespace WebAppProject
     {
         private static string StaticImagesDirName = "UsersUploads";
 
-        private static string PhysicalWebServerRootDirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"); //No class need access to this folder (they use only sub-folders) 
+        private static string PhysicalWebServerRootDirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"); // Server files root folder
+        public static string PhysicalUsersUploadsRootDirPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", StaticImagesDirName); // Server files uploaded by users root folder
         public static string PhysicalElectricityFilesPath = Path.Combine(PhysicalWebServerRootDirPath, StaticImagesDirName, "Elecrticity");
         public static string PhysicalWaterFilesPath = Path.Combine(PhysicalWebServerRootDirPath, StaticImagesDirName, "Water");
         public static string PhysicalPropertyTaxFilesPath = Path.Combine(PhysicalWebServerRootDirPath, StaticImagesDirName, "PropertyTax");

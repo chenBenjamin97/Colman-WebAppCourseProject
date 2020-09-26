@@ -18,10 +18,12 @@ namespace WebAppProject.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key] // Primary Key
         public int PropertyID { get; set; }
-        
+
+        [Display(Name = "Image Path")]
         public string ImgPath { get; set; }
         
         [NotMapped] //Make this property not be written to the DB
+        [Display(Name = "Added Image")]
         public IFormFile PropertyTaxContractImg { get; set; }
         
         public Config.TransactionStatus Status { get; set; }
