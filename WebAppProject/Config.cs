@@ -25,6 +25,12 @@ namespace WebAppProject
             Open,
             Closed
         }
+        public enum ContactAppType
+        {
+            WaterTransaction,
+            ElectricityTransaction,
+            PropertyTaxTransaction
+        }
 
     }
 }

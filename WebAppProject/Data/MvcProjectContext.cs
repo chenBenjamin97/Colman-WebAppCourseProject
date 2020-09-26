@@ -18,5 +18,6 @@ namespace WebAppProject.Data
         public DbSet<ElectricityTransaction> ElectricityTransactions { get; set; }
         public DbSet<WebAppProject.Models.ViewModel> ViewModel { get; set; }
         public DbSet<PropertyTaxTransaction> PropertyTaxTransactions { get; set; }
+        public DbSet<WebAppProject.Models.ContactApplication> ContactApplication { get; set; }
     }
 }
