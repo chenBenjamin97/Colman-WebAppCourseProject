@@ -6,16 +6,12 @@
 
 <h1>Create</h1>
 
-<h4>ElectricityTransaction</h4>
+<h4>Electricity Transaction</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserID" class="control-label"></label>
-                <select asp-for="UserID" class ="form-control" asp-items="ViewBag.UserID"></select>
-            </div>
             <div class="form-group">
                 <label asp-for="ElectricityMeterLastRead" class="control-label"></label>
                 <input asp-for="ElectricityMeterLastRead" class="form-control" />
@@ -27,9 +23,7 @@
                 <span asp-validation-for="ElectricityMeterID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImgPath" class="control-label"></label>
-                <input asp-for="ImgPath" class="form-control" />
-                <span asp-validation-for="ImgPath" class="text-danger"></span>
+                Image: <input asp-for="ElectricityMeterImg" id="fileInputField" accept="image/*" required /> <br>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -45,3 +39,18 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script>
+    $('form').submit(function (event) {
+        var fileExtension = $('#fileInputField').val().split('.').pop().toLowerCase();
+        switch (fileExtension) {
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+                return true;
+            default:
+                alert("Only jpg/jpeg/png files are allowed");
+                return false;
+        }
+    })
+</script>

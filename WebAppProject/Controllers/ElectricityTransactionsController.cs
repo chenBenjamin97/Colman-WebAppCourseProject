@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -58,15 +59,27 @@ namespace WebAppProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,ElectricityMeterLastRead,ElectricityMeterID,ImgPath")] ElectricityTransaction electricityTransaction)
+        public async Task<IActionResult> Create([Bind("UserID,ElectricityMeterLastRead,ElectricityMeterID,ElectricityMeterImg,ImgPath")] ElectricityTransaction electricityTransaction)
         {
             if (ModelState.IsValid)
             {
-                electricityTransaction.Status = Config.TransactionStatus.Open;
+                electricityTransaction.UserID = (int)HttpContext.Session.GetInt32("UserID");
+
+                string ImgPathAfterSave = Image.Save(electricityTransaction.UserID, electricityTransaction.ElectricityMeterImg, electricityTransaction.ElectricityMeterID, "Electricity");
+                if (ImgPathAfterSave == null) // Another file with same name is already exist - "UserID-ElectricityMeterID" has to be unique
+                {
+                    ModelState.AddModelError("", "Another transaction with the same User ID Water Meter ID is already exist.");
+                    return View();
+                }
+
+                electricityTransaction.Status = Config.TransactionStatus.Open; // Init new transaction status
+
+                electricityTransaction.ImgPath = ImgPathAfterSave;
                 _context.Add(electricityTransaction);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", electricityTransaction.UserID);
             return View(electricityTransaction);
         }
@@ -157,30 +170,6 @@ namespace WebAppProject.Controllers
         private bool ElectricityTransactionExists(int id)
         {
             return _context.ElectricityTransactions.Any(e => e.ElectricityMeterID == id);
-        }
-        public IActionResult CreateNewTransaction()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult CreateNewTransaction(WaterTransaction userInput)
-        {
-            userInput.Status = Config.TransactionStatus.Open;
-
-            string newFileName = userInput.UserID.ToString() + Path.GetExtension(userInput.WaterMeterImg.FileName);
-
-            string PhysicalAddressOfSaveNewFile = Path.Combine(Config.PhysicalWaterFilesPath, newFileName);
-            userInput.WaterMeterImg.CopyTo(new FileStream(PhysicalAddressOfSaveNewFile, FileMode.Create));
-
-            string RelativeAddressOfNewFile = Path.Combine(Config.RelativeWaterFilesPath, newFileName);
-            WaterTransaction insertToDb = new WaterTransaction { UserID = userInput.UserID, ImgPath = RelativeAddressOfNewFile, WaterMeterID = userInput.WaterMeterID, WaterMeterLastReadDate = userInput.WaterMeterLastReadDate };
-
-            _context.WaterTransactions.Add(insertToDb);
-
-            _context.SaveChanges();
-
-            return RedirectToAction("Index");
         }
     }
 }

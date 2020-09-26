@@ -294,6 +294,11 @@ namespace WebAppProject.Controllers
                         var ParsedDate = DateTime.Parse(SearchKeyWord);
                         model.ElectricityTransaction = await _context.ElectricityTransactions.Where(electricity => electricity.ElectricityMeterLastRead.Equals(ParsedDate)).ToListAsync();
                     }
+                    else if (SearchCatagory.Equals("ElectricityTransactionStatus"))
+                    {
+                        model.ElectricityTransaction = await _context.ElectricityTransactions.Where(electricity => electricity.Status.Equals(wantedStatus)).ToListAsync();
+                    }
+                    
                     break;
 
                 case "PropertyTaxTransaction":
@@ -305,6 +310,11 @@ namespace WebAppProject.Controllers
                     {
                         model.PropertyTaxTransactions = await _context.PropertyTaxTransactions.Where(property => property.PropertyID.ToString().Contains(SearchKeyWord)).ToListAsync();
                     }
+                    else if (SearchCatagory.Equals("ElectricityTransactionStatus"))
+                    {
+                        model.PropertyTaxTransactions = await _context.PropertyTaxTransactions.Where(property => property.Status.Equals(wantedStatus)).ToListAsync();
+                    }
+
                     break;
 
                 default:

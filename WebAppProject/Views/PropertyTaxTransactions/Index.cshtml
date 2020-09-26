@@ -13,6 +13,15 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.UserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PropertyID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ImgPath)
             </th>
             <th>
@@ -24,6 +33,15 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PropertyID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ImgPath)
             </td>
