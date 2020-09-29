@@ -27,9 +27,6 @@ namespace WebAppProject.Controllers
 
         public IActionResult Index()
         {
-            // FOR DEBUG ONLY:
-            HttpContext.Session.SetInt32("UserID", 45);
-
             return View();
         }
 

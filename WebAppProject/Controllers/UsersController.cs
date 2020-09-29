@@ -34,60 +34,65 @@ namespace WebAppProject.Controllers
 
         public ActionResult Login()
         {
+            HttpContext.Session.SetInt32("UserID", -1);
+            HttpContext.Session.SetString("UserName", "null");
+            HttpContext.Session.SetString("IsAdmin", "null");
+            HttpContext.Session.SetString("FirstName", "null");
+
             return View();
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public ActionResult Login(string username, string password)
         {
             if (ModelState.IsValid)
             {
 
-                var objUser = _context.User.Where(u => u.UserName.Equals(username) && u.Password.Equals(password)) ; 
-
-                    if (objUser.FirstOrDefault() != null) // Found user with matched Username AND Password
+                var objUser = _context.User.Where(u => u.UserName.Equals(username) && u.Password.Equals(password)); 
+                    
+                if (objUser.FirstOrDefault() != null) // Found user with matched Username AND Password
+                {
+                    if (objUser.FirstOrDefault().IsAdmin == false) //check if is not admin
                     {
-                        if (objUser.FirstOrDefault().IsAdmin == false) //check if is not admin
-                        {
-                            HttpContext.Session.SetString("IsAdmin", "false");
+                        HttpContext.Session.SetString("IsAdmin", "false");
+                        HttpContext.Session.SetString("UserID", objUser.First().UserID.ToString());
+                        HttpContext.Session.SetString("UserName", objUser.First().UserName.ToString());
+                        HttpContext.Session.SetString("FirstName", objUser.First().FirstName.ToString());
+
+                        return RedirectToAction("Index", "Users"); // what is the page that whould open?
+                    } else {
                             HttpContext.Session.SetString("UserID", objUser.First().UserID.ToString());
                             HttpContext.Session.SetString("UserName", objUser.First().UserName.ToString());
+                            HttpContext.Session.SetString("IsAdmin", "true");
+                            HttpContext.Session.SetString("FirstName", objUser.First().FirstName.ToString());
+                           
+                            return RedirectToAction("Index", "ManagerOverview");// what is the page that whould open?
+                    }
+                } else {
+                    ModelState.AddModelError("", "Wrong usnername / password");
 
-                          //  return RedirectToAction("Home", "Index"); // what is the page that whould open?
-                        }
-                        else
-                        {
-                                HttpContext.Session.SetString("UserID", objUser.First().UserID.ToString());
-                                HttpContext.Session.SetString("UserName", objUser.First().UserName.ToString());
-                                HttpContext.Session.SetString("IsAdmin", "true");
-                               // return RedirectToAction("Index", "AdminInfoes");// what is the page that whould open?
-                        }
+                    HttpContext.Session.SetInt32("UserID", -1);
+                    HttpContext.Session.SetString("UserName", "null");
+                    HttpContext.Session.SetString("IsAdmin", "null");
+                    HttpContext.Session.SetString("FirstName", "null");
 
-                         return RedirectToAction("Index"); // what is the page that whould open?
-
-
-                      }
-
-                else
-                    {
-                                return RedirectToAction("Index","Home" );// what is the page that whould open?
-                     }
+                    return View();// Not reachable code
                 }
-            
-            return View(); //change 
-        }
+            }
+        
+        return View();
+    }
 
 
-    [HttpPost]
     public ActionResult LogOff()
         {
-        HttpContext.Session.SetString("UserID", null);
-        HttpContext.Session.SetString("UserName", null);
-        HttpContext.Session.SetString("IsAdmin", null);
-        return RedirectToAction("Home", "???");   //change 
+        HttpContext.Session.SetInt32("UserID", -1);
+        HttpContext.Session.SetString("UserName", "null");
+        HttpContext.Session.SetString("IsAdmin", "null");
+        HttpContext.Session.SetString("FirstName", "null");
+        return RedirectToAction("Login", "Users");
         }
 
         public ActionResult LogedOff()
