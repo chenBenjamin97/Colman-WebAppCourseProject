@@ -1,4 +1,5 @@
 ﻿@model WebAppProject.Models.User
+@using Microsoft.AspNetCore.Http
 
 @{
     ViewData["Title"] = "Edit";
@@ -53,11 +54,18 @@
                 <input asp-for="ApartmentNumber" class="form-control" />
                 <span asp-validation-for="ApartmentNumber" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsAdmin" /> @Html.DisplayNameFor(model => model.IsAdmin)
-                </label>
-            </div>
+            @{
+                string isAdmin = Context.Session.GetString("IsAdmin");
+
+                if (isAdmin == "true")
+                {
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsAdmin" /> @Html.DisplayNameFor(model => model.IsAdmin)
+                        </label>
+                    </div>
+                }
+            }
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
                 <input asp-for="UserName" class="form-control" />

@@ -24,8 +24,18 @@ namespace WebAppProject.Controllers
         // GET: PropertTaxTransactions
         public async Task<IActionResult> Index()
         {
-            var mvcProjectContext = _context.PropertyTaxTransactions.Include(p => p.User);
-            return View(await mvcProjectContext.ToListAsync());
+
+            if (HttpContext.Session.GetString("IsAdmin").Equals("true"))
+            {
+                var mvcProjectContext = _context.PropertyTaxTransactions.Include(p => p.User);
+                return View(await mvcProjectContext.ToListAsync());
+            }
+            else
+            {
+                var userID = HttpContext.Session.GetInt32("UserID");
+                var allowedToSee = _context.User.Where(u => u.UserID == userID);
+                return View(await allowedToSee.ToListAsync());
+            }
         }
 
         // GET: PropertTaxTransactions/Details/5
@@ -108,7 +118,7 @@ namespace WebAppProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,PropertyID,PropertyTaxContractImg,ImgPath")] PropertyTaxTransaction propertyTaxTransactionAfterEdit)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,PropertyID,PropertyTaxContractImg,ImgPath,Status")] PropertyTaxTransaction propertyTaxTransactionAfterEdit)
         {
             var propertyTaxTransactionBeforeEdit = await _context.PropertyTaxTransactions.FindAsync(id);
             if (propertyTaxTransactionBeforeEdit == null)
@@ -126,6 +136,7 @@ namespace WebAppProject.Controllers
                         propertyTaxTransactionBeforeEdit.ImgPath = newImgRelativePath;
                     }
 
+                    propertyTaxTransactionBeforeEdit.Status = propertyTaxTransactionAfterEdit.Status;
                     _context.Update(propertyTaxTransactionBeforeEdit);
                     await _context.SaveChangesAsync();
                 }

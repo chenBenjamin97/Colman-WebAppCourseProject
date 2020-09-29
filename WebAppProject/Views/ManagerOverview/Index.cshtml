@@ -218,25 +218,89 @@
     <tbody>
         @foreach (PropertyTaxTransaction transaction in Model.PropertyTaxTransactions)
         {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.PropertyID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.ImgPath)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.User.UserID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => transaction.Status)
+                </td>
+                <td>
+                    <a asp-controller="PropertyTaxTransactions" asp-action="Edit" asp-route-id="@transaction.PropertyID">Edit</a> |
+                    <a asp-controller="PropertyTaxTransactions" asp-action="Details" asp-route-id="@transaction.PropertyID">Details</a> |
+                    <a asp-controller="PropertyTaxTransactions" asp-action="Delete" asp-route-id="@transaction.PropertyID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+    <h3>Contact Applications:</h3>
+
+<table class="table">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => transaction.PropertyID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => transaction.ImgPath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => transaction.User.UserID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => transaction.Status)
-            </td>
-            <td>
-                <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.PropertyID">Edit</a> |
-                <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.PropertyID">Details</a> |
-                <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@transaction.PropertyID">Delete</a>
-            </td>
+            <th>
+                Application ID
+            </th>
+            <th>
+                Client ID
+            </th>
+            <th>
+                Transaction Type
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Meesage
+            </th>
+            <th>
+                Creation Date
+            </th>
+            <th>
+                Status
+            </th>
         </tr>
+    </thead>
+    <tbody>
+        @foreach (ContactApplication application in Model.ContactApplications)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => application.ContactAppID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => application.UserID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => application.ContactType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => application.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => application.Message)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => application.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => application.Status)
+                </td>
+                <td>
+                    <a asp-controller="ContactApplications" asp-action="Edit" asp-route-id="@application.ContactAppID">Edit</a> |
+                    <a asp-controller="ContactApplications" asp-action="Details" asp-route-id="@application.ContactAppID">Details</a> |
+                    <a asp-controller="ContactApplications" asp-action="Delete" asp-route-id="@application.ContactAppID">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

@@ -1,4 +1,5 @@
 ﻿@model WebAppProject.Models.WaterTransaction
+@using Microsoft.AspNetCore.Http
 
 @{
     ViewData["Title"] = "Edit";
@@ -22,11 +23,29 @@
                 <input asp-for="WaterMeterID" class="form-control" disabled="disabled" />
                 <span asp-validation-for="WaterMeterID" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" disabled="disabled" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
+            @{
+                string isAdmin = Context.Session.GetString("IsAdmin");
+
+                if (isAdmin == "true")
+                {
+                    <div class="form-group">
+                        <label asp-for="Status" class="control-label"></label>
+                        <select asp-for="Status" class="form-control">
+                            <option value=@Config.TransactionStatus.Open>Open</option>
+                            <option value=@Config.TransactionStatus.Closed>Closed</option>
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <label asp-for="Status" class="control-label"></label>
+                        <input asp-for="Status" class="form-control" disabled="disabled" />
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                }
+            }
             <div class="form-group">
                 <label asp-for="WaterMeterLastReadDate" class="control-label"></label>
                 <input asp-for="WaterMeterLastReadDate" class="form-control" />

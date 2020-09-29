@@ -24,23 +24,28 @@ namespace WebAppProject.Controllers
         // GET: ManagerOverview
         public async Task<IActionResult> Index()
         {
-            // Delete When Finish Debugging !!!
-            HttpContext.Session.SetString("IsAdmin", "true");
-            // ------------------------------------------------------------
+            // Validate logged in here
 
-            var NotAdminRedirection = ValidateAdmin(this.HttpContext);
-            if (NotAdminRedirection != null)
-            {
-                return NotAdminRedirection; // Redirect to Home/Index
+            ViewModel viewModel = new ViewModel();
+
+            if (isAdmin(this.HttpContext))
+            { // Admin
+                viewModel.Users = await _context.User.ToListAsync();
+                viewModel.WaterTransactions = await _context.WaterTransactions.ToListAsync();
+                viewModel.ElectricityTransaction = await _context.ElectricityTransactions.ToListAsync();
+                viewModel.PropertyTaxTransactions = await _context.PropertyTaxTransactions.ToListAsync();
+                viewModel.ContactApplications = await _context.ContactApplication.ToListAsync();
+            } else
+            { // Not Admin
+                var sessionUserID = HttpContext.Session.GetInt32("UserID");
+
+                viewModel.Users = await _context.User.Where(u => u.UserID == sessionUserID).ToListAsync();
+                viewModel.WaterTransactions = await _context.WaterTransactions.Where(u => u.UserID == sessionUserID).ToListAsync();
+                viewModel.ElectricityTransaction = await _context.ElectricityTransactions.Where(u => u.UserID == sessionUserID).ToListAsync();
+                viewModel.PropertyTaxTransactions = await _context.PropertyTaxTransactions.Where(u => u.UserID == sessionUserID).ToListAsync();
+                viewModel.ContactApplications = await _context.ContactApplication.Where(u => u.UserID == sessionUserID).ToListAsync();
             }
 
-            ViewModel viewModel = new ViewModel
-            {
-                Users = await _context.User.ToListAsync(),
-                WaterTransactions = await _context.WaterTransactions.ToListAsync(),
-                ElectricityTransaction = await _context.ElectricityTransactions.ToListAsync(),
-                PropertyTaxTransactions = await _context.PropertyTaxTransactions.ToListAsync()
-            };
             return View(viewModel);
         }
 
@@ -48,7 +53,7 @@ namespace WebAppProject.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             var NotAdminRedirection = ValidateAdmin(this.HttpContext);
-            if (NotAdminRedirection != null)
+            if (ValidateAdmin(this.HttpContext) != null)
             {
                 return NotAdminRedirection; // Redirect to Home/Index
             }
@@ -352,6 +357,11 @@ namespace WebAppProject.Controllers
         public ActionResult ValidateAdmin (HttpContext context)
         {
             return context.Session.GetString("IsAdmin") == "true" ? null : RedirectToAction("Index", "Home");
+        }
+
+        public bool isAdmin(HttpContext context)
+        {
+            return context.Session.GetString("IsAdmin") == "true" ? true : false;
         }
     }
 }

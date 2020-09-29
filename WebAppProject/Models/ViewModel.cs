@@ -22,5 +22,8 @@ namespace WebAppProject.Models
 
         [NotMapped]
         public List<PropertyTaxTransaction> PropertyTaxTransactions { get; set; }
+
+        [NotMapped]
+        public List<ContactApplication> ContactApplications { get; set; }
     }
 }

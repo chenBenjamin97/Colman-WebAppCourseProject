@@ -11,7 +11,7 @@ namespace WebAppProject.Models
     public class ContactApplication
     {
         [Key] //Primary Key
-        [Display(Name = "Contact Application ID")]
+        [Display(Name = "Application ID")]
         public int ContactAppID { get; set; }
 
         [Display(Name ="Client ID")]

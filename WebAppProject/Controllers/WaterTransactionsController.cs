@@ -25,8 +25,16 @@ namespace WebAppProject.Controllers
         // GET: WaterTransactions
         public async Task<IActionResult> Index()
         {
-            var mvcProjectContext = _context.WaterTransactions.Include(w => w.User);
-            return View(await mvcProjectContext.ToListAsync());
+            // Validate User logged in here
+
+            if (HttpContext.Session.GetString("IsAdmin").Equals("true")){
+                var mvcProjectContext = _context.WaterTransactions.Include(w => w.User);
+                return View(await mvcProjectContext.ToListAsync());
+            } else {
+                var userID = HttpContext.Session.GetInt32("UserID");
+                var allowedToSee = _context.WaterTransactions.Where(w => w.UserID == userID);
+                return View(await allowedToSee.ToListAsync());
+            }
         }
 
         // GET: WaterTransactions/Details/5
@@ -109,7 +117,7 @@ namespace WebAppProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,WaterMeterLastReadDate,WaterMeterID,WaterMeterImg,ImgPath")] WaterTransaction waterTransactionAfterEdit)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,WaterMeterLastReadDate,WaterMeterID,WaterMeterImg,ImgPath,Status")] WaterTransaction waterTransactionAfterEdit)
         {
             var waterTransactionBeforeEdit = await _context.WaterTransactions.FindAsync(id);
             if (waterTransactionBeforeEdit == null)
@@ -127,6 +135,7 @@ namespace WebAppProject.Controllers
                         waterTransactionBeforeEdit.ImgPath = newImgRelativePath;
                     }
 
+                    waterTransactionBeforeEdit.Status = waterTransactionAfterEdit.Status;
                     waterTransactionBeforeEdit.WaterMeterLastReadDate = waterTransactionAfterEdit.WaterMeterLastReadDate;
                     _context.Update(waterTransactionBeforeEdit);
                     await _context.SaveChangesAsync();

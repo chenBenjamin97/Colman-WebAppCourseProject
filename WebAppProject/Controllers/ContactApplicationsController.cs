@@ -23,6 +23,19 @@ namespace WebAppProject.Controllers
         // GET: ContactApplications
         public async Task<IActionResult> Index()
         {
+            // Validate User logged in here
+
+            if (HttpContext.Session.GetString("IsAdmin").Equals("true"))
+            {
+                return View(await _context.ContactApplication.ToListAsync());
+            }
+            else
+            {
+                var userID = HttpContext.Session.GetInt32("UserID");
+                var allowedToSee = _context.ContactApplication.Where(u => u.UserID == userID);
+                return View(await allowedToSee.ToListAsync());
+            }
+
             return View(await _context.ContactApplication.ToListAsync());
         }
 
@@ -110,7 +123,7 @@ namespace WebAppProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Title,Message,ContactType,Img")] ContactApplication ContactAppAfterEdit)
+        public async Task<IActionResult> Edit(int id, [Bind("Title,Message,ContactType,Img,Status")] ContactApplication ContactAppAfterEdit)
         {
             var ContactAppBeforeEdit = await _context.ContactApplication.FindAsync(id);
             if (ContactAppBeforeEdit == null)
@@ -129,6 +142,7 @@ namespace WebAppProject.Controllers
                         ContactAppBeforeEdit.ImgPath = newImgRelativePath;
                     }
 
+                    ContactAppBeforeEdit.Status = ContactAppAfterEdit.Status;
                     ContactAppBeforeEdit.Title = ContactAppAfterEdit.Title;
                     ContactAppBeforeEdit.Message = ContactAppAfterEdit.Message;
                     ContactAppBeforeEdit.ContactType = ContactAppAfterEdit.ContactType;

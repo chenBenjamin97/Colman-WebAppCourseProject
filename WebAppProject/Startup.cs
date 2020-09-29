@@ -59,7 +59,7 @@ namespace WebAppProject
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Users}/{action=Login}");
+                    pattern: "{controller=Users}/{action=Login}/{id?}");
             });
         }
     }

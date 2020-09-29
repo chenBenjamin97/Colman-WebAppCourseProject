@@ -23,7 +23,18 @@ namespace WebAppProject.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.User.ToListAsync());
+            // Validate User logged in here
+
+            if (HttpContext.Session.GetString("IsAdmin").Equals("true"))
+            {
+                return View(await _context.User.ToListAsync());
+            }
+            else
+            {
+                var userID = HttpContext.Session.GetInt32("UserID");
+                var allowedToSee = _context.User.Where(u => u.UserID == userID);
+                return View(await allowedToSee.ToListAsync());
+            }
         }
 
         /**********************************************   log in and register   **************************************************************/
@@ -36,7 +47,7 @@ namespace WebAppProject.Controllers
         {
             HttpContext.Session.SetInt32("UserID", -1);
             HttpContext.Session.SetString("UserName", "null");
-            HttpContext.Session.SetString("IsAdmin", "null");
+            HttpContext.Session.SetString("IsAdmin", "false");
             HttpContext.Session.SetString("FirstName", "null");
 
             return View();
@@ -57,40 +68,34 @@ namespace WebAppProject.Controllers
                     if (objUser.FirstOrDefault().IsAdmin == false) //check if is not admin
                     {
                         HttpContext.Session.SetString("IsAdmin", "false");
-                        HttpContext.Session.SetString("UserID", objUser.First().UserID.ToString());
+                        HttpContext.Session.SetInt32("UserID", objUser.First().UserID);
                         HttpContext.Session.SetString("UserName", objUser.First().UserName.ToString());
                         HttpContext.Session.SetString("FirstName", objUser.First().FirstName.ToString());
-
-                        return RedirectToAction("Index", "Users"); // what is the page that whould open?
                     } else {
-                            HttpContext.Session.SetString("UserID", objUser.First().UserID.ToString());
+                            HttpContext.Session.SetInt32("UserID", objUser.First().UserID);
                             HttpContext.Session.SetString("UserName", objUser.First().UserName.ToString());
                             HttpContext.Session.SetString("IsAdmin", "true");
                             HttpContext.Session.SetString("FirstName", objUser.First().FirstName.ToString());
-                           
-                            return RedirectToAction("Index", "ManagerOverview");// what is the page that whould open?
                     }
                 } else {
                     ModelState.AddModelError("", "Wrong usnername / password");
 
                     HttpContext.Session.SetInt32("UserID", -1);
                     HttpContext.Session.SetString("UserName", "null");
-                    HttpContext.Session.SetString("IsAdmin", "null");
+                    HttpContext.Session.SetString("IsAdmin", "false");
                     HttpContext.Session.SetString("FirstName", "null");
-
-                    return View();// Not reachable code
                 }
             }
-        
-        return View();
-    }
+
+            return RedirectToAction("Index", "ManagerOverview");
+        }
 
 
-    public ActionResult LogOff()
+        public ActionResult LogOff()
         {
         HttpContext.Session.SetInt32("UserID", -1);
         HttpContext.Session.SetString("UserName", "null");
-        HttpContext.Session.SetString("IsAdmin", "null");
+        HttpContext.Session.SetString("IsAdmin", "false");
         HttpContext.Session.SetString("FirstName", "null");
         return RedirectToAction("Login", "Users");
         }

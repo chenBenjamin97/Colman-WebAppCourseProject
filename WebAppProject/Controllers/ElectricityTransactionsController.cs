@@ -24,8 +24,17 @@ namespace WebAppProject.Controllers
         // GET: ElectricityTransactions
         public async Task<IActionResult> Index()
         {
-            var mvcProjectContext = _context.ElectricityTransactions.Include(e => e.User);
-            return View(await mvcProjectContext.ToListAsync());
+            if (HttpContext.Session.GetString("IsAdmin").Equals("true"))
+            {
+                var mvcProjectContext = _context.ElectricityTransactions.Include(e => e.User);
+                return View(await mvcProjectContext.ToListAsync());
+            }
+            else
+            {
+                var userID = HttpContext.Session.GetInt32("UserID");
+                var allowedToSee = _context.ElectricityTransactions.Where(u => u.UserID == userID);
+                return View(await allowedToSee.ToListAsync());
+            }
         }
 
         // GET: ElectricityTransactions/Details/5
@@ -107,7 +116,7 @@ namespace WebAppProject.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,ElectricityMeterLastRead,ElectricityMeterID,ElectricityMeterImg,ImgPath")] ElectricityTransaction electricityTransactionAfterEdit)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,ElectricityMeterLastRead,ElectricityMeterID,ElectricityMeterImg,Status")] ElectricityTransaction electricityTransactionAfterEdit)
         {
             var ElectricityTransactionBeforeEdit = await _context.ElectricityTransactions.FindAsync(id);
             if (ElectricityTransactionBeforeEdit == null)
@@ -126,6 +135,7 @@ namespace WebAppProject.Controllers
                     }
 
                     ElectricityTransactionBeforeEdit.ElectricityMeterLastRead = electricityTransactionAfterEdit.ElectricityMeterLastRead;
+                    ElectricityTransactionBeforeEdit.Status = electricityTransactionAfterEdit.Status;
                     _context.Update(ElectricityTransactionBeforeEdit);
                     await _context.SaveChangesAsync();
                 }
