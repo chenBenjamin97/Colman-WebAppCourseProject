@@ -50,6 +50,8 @@ namespace WebAppProject.Controllers
             HttpContext.Session.SetString("IsAdmin", "false");
             HttpContext.Session.SetString("FirstName", "null");
 
+            ViewData["isHomePage"] = "true";
+
             return View();
         }
 

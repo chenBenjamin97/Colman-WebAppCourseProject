@@ -3,36 +3,34 @@
     ViewData["Title"] = "Login";
 }
 
-<!--Added body tag in order to use in this view specific Background image:-->
-<body style="background-image: url(@Url.Content("~/FrontEndElements/LoginPage/city-network.jpg"))">
+<!--Loading Holders Logo icon to background-->
+<div>
+    <img src="@Url.Content("~/FrontEndElements/LoginPage/holdersLogo.jpg")" class="intrologo">
+</div>
 
-    <!--Loading Holders Logo icon to background-->
-    <div>
-        <img src="@Url.Content("~/FrontEndElements/LoginPage/holdersLogo.jpg")" class="intrologo">
-    </div>
+<!--Welcome Headline (background)-->
+<div class="fade-in">
+    <p><strong>Welcome to <span style="color: #a00000">HOLDERS</span></strong></p>
+</div>
 
-    <!--Welcome Headline (background)-->
-    <div class="fade-in">
-        <p><strong>Welcome to <span style="color: #a00000">HOLDERS</span></strong></p>
-    </div>
+<!--Login Box-->
+<div class="login-box">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <img src="~/FrontEndElements/LoginPage/avatar.png" class="avatar">
+    <h1>Login Here</h1>
+    <form asp-action="Login">
+        <p>User name</p>
+        <input type="text" name="username" placeholder="Enter User name" required>
+        <p>Password</p>
+        <input type="password" name="password" placeholder="Enter Password" required>
+        <input type="submit" name="submit" value="Login">
+        <a asp-action="Create">Create New Account</a>
+    </form>
+</div>
 
-    <!--Login Box-->
-    <div class="login-box">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <img src="~/FrontEndElements/LoginPage/avatar.png" class="avatar">
-        <h1>Login Here</h1>
-        <form asp-action="Login">
-            <p>User name</p>
-            <input type="text" name="username" placeholder="Enter User name" required>
-            <p>Password</p>
-            <input type="password" name="password" placeholder="Enter Password" required>
-            <input type="submit" name="submit" value="Login">
-            <a asp-action="Create">Create New Account</a>
-        </form>
-    </div>
-
-    <!--Video:-->
-    <div class="videoIframe">
-        <iframe width="600" height="400" src="https://www.youtube.com/embed/G7wF2_LjryI?autoplay=1&loop=1&mute=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-</body>
+<!--Video:-->
+<div class="videoIframe">
+    <video controls autoplay muted loop>
+        <source src="@Url.Content("~/FrontEndElements/LoginPage/videoplayback.mp4")" type="video/mp4" />
+    </video>
+</div>
