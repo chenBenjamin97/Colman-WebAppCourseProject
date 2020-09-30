@@ -212,7 +212,7 @@ namespace WebAppProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SearchAndResult(string SearchDB, string SearchCatagory, Config.TransactionStatus wantedStatus, string? SearchKeyWord)
+        public async Task<IActionResult> SearchAndResult(string SearchDB, string SearchCatagory, Config.TransactionStatus? wantedStatusWater, Config.TransactionStatus? wantedStatusElectricity, Config.TransactionStatus? wantedStatusPropertyTax, Config.TransactionStatus? wantedStatusContactApp, Config.ContactAppType? ContactType, string? SearchKeyWord)
         {
             ViewData["AfterSearch"] = true;
 
@@ -229,6 +229,7 @@ namespace WebAppProject.Controllers
             model.WaterTransactions = null;
             model.ElectricityTransaction = null;
             model.PropertyTaxTransactions = null;
+            model.ContactApplications = null;
 
             switch (SearchDB)
             {
@@ -278,9 +279,9 @@ namespace WebAppProject.Controllers
                         var ParsedDate = DateTime.Parse(SearchKeyWord);
                         model.WaterTransactions = await _context.WaterTransactions.Where(water => water.WaterMeterLastReadDate.Equals(ParsedDate)).ToListAsync();
                     }
-                    else if (SearchCatagory.Equals("WaterTransactionStatus"))
+                    else if (SearchCatagory.Equals("Status"))
                     {
-                        model.WaterTransactions = await _context.WaterTransactions.Where(water => water.Status.Equals(wantedStatus)).ToListAsync();
+                        model.WaterTransactions = await _context.WaterTransactions.Where(water => water.Status == wantedStatusWater).ToListAsync();
                     }
 
                     break;
@@ -299,11 +300,11 @@ namespace WebAppProject.Controllers
                         var ParsedDate = DateTime.Parse(SearchKeyWord);
                         model.ElectricityTransaction = await _context.ElectricityTransactions.Where(electricity => electricity.ElectricityMeterLastRead.Equals(ParsedDate)).ToListAsync();
                     }
-                    else if (SearchCatagory.Equals("ElectricityTransactionStatus"))
+                    else if (SearchCatagory.Equals("Status"))
                     {
-                        model.ElectricityTransaction = await _context.ElectricityTransactions.Where(electricity => electricity.Status.Equals(wantedStatus)).ToListAsync();
+                        model.ElectricityTransaction = await _context.ElectricityTransactions.Where(electricity => electricity.Status == wantedStatusElectricity).ToListAsync();
                     }
-                    
+
                     break;
 
                 case "PropertyTaxTransaction":
@@ -311,13 +312,46 @@ namespace WebAppProject.Controllers
                     {
                        model.PropertyTaxTransactions = await _context.PropertyTaxTransactions.Where(property => property.UserID.ToString().Contains(SearchKeyWord)).ToListAsync();
                     }
-                    else if (SearchCatagory.Equals("WaterMeterID"))
+                    else if (SearchCatagory.Equals("PropertyID"))
                     {
                         model.PropertyTaxTransactions = await _context.PropertyTaxTransactions.Where(property => property.PropertyID.ToString().Contains(SearchKeyWord)).ToListAsync();
                     }
-                    else if (SearchCatagory.Equals("ElectricityTransactionStatus"))
+                    else if (SearchCatagory.Equals("Status"))
                     {
-                        model.PropertyTaxTransactions = await _context.PropertyTaxTransactions.Where(property => property.Status.Equals(wantedStatus)).ToListAsync();
+                        model.PropertyTaxTransactions = await _context.PropertyTaxTransactions.Where(property => property.Status == wantedStatusPropertyTax).ToListAsync();
+                    }
+
+                    break;
+
+                case "ContactApplication":
+                    if (SearchCatagory.Equals("UserID"))
+                    {
+                        model.ContactApplications = await _context.ContactApplication.Where(app => app.UserID.ToString().Contains(SearchKeyWord)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("ApplicationID"))
+                    {
+                        model.ContactApplications = await _context.ContactApplication.Where(app => app.ContactAppID.ToString().Contains(SearchKeyWord)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("ApplicationTitle"))
+                    {
+                        model.ContactApplications = await _context.ContactApplication.Where(app => app.Title.ToString().Contains(SearchKeyWord)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("ApplicationMessage"))
+                    {
+                        model.ContactApplications = await _context.ContactApplication.Where(app => app.Message.ToString().Contains(SearchKeyWord)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("CreationDate"))
+                    {
+                        var ParsedDate = DateTime.Parse(SearchKeyWord);
+                        model.ContactApplications = await _context.ContactApplication.Where(app => app.CreateDate.Equals(ParsedDate)).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("ApplicationType"))
+                    {
+                        model.ContactApplications = await _context.ContactApplication.Where(app => app.ContactType == ContactType).ToListAsync();
+                    }
+                    else if (SearchCatagory.Equals("Status"))
+                    {
+                        model.ContactApplications = await _context.ContactApplication.Where(app => app.Status == wantedStatusContactApp).ToListAsync();
                     }
 
                     break;
