@@ -4,7 +4,7 @@
     ViewData["Title"] = "Search And Stats";
 }
 
-<a asp-action="Stats">Overall Stats, Press Here</a>
+<a asp-action="Stats">Overall Stats, Press Here</a><br>
 
 @if (ViewData["AfterSearch"].Equals(false))
 {
@@ -24,6 +24,9 @@
 
         <input type="radio" id="PropertyTaxTransaction" name="SearchDB" value="PropertyTaxTransaction">
         <label for="PropertyTaxTransaction">Property Tax Transaction</label> <br>
+
+        <input type="radio" id="ContactApplications" name="SearchDB" value="ContactApplication">
+        <label for="ContactApplications">Contact Applications</label> <br>
 
         <div id="UserCatagories">
             <h5>Where:</h5>
@@ -50,7 +53,7 @@
             <input type="radio" class="dateInput" id="EnteranceDate" name="SearchCatagory" value="EnteranceDate">
             <label for="EnteranceDate"><i>Enterance Date</i></label>
 
-            <input type="radio" id="IsAdmin" name="SearchCatagory" value="IsAdmin">
+            <input type="radio" class="hideTextFieldWhenSelected" id="IsAdmin" name="SearchCatagory" value="IsAdmin">
             <label for="IsAdmin"><i>Admins</i></label>
         </div>
 
@@ -68,11 +71,11 @@
             <input type="radio" class="dateInput" id="WaterMeterLastReadDate" name="SearchCatagory" value="WaterMeterLastReadDate">
             <label for="WaterMeterLastReadDate"><i>Last Read Date</i></label>
 
-            <input type="radio" id="WaterTransactionStatus" name="SearchCatagory" value="WaterTransactionStatus">
+            <input type="radio" class="hideTextFieldWhenSelected" id="WaterTransactionStatus" name="SearchCatagory" value="Status">
             <label for="WaterTransactionStatus">Status</label>
-            <select id="WaterTransactionStatusDropDown">
-                <option value="Open">Open</option>
-                <option value="Closed">Closed</option>
+            <select id="WaterTransactionStatusDropDown" name="wantedStatusWater">
+                <option value=@Config.TransactionStatus.Open>Open</option>
+                <option value=@Config.TransactionStatus.Closed>Closed</option>
             </select>
         </div>
 
@@ -90,11 +93,11 @@
             <input type="radio" class="dateInput" id="ElectricityMeterLastRead" name="SearchCatagory" value="ElectricityMeterLastRead">
             <label for="ElectricityMeterLastRead"><i>Last Read Date</i></label>
 
-            <input type="radio" id="ElectricityTransactionStatus" name="SearchCatagory" value="ElectricityTransactionStatus">
+            <input type="radio" class="hideTextFieldWhenSelected" id="ElectricityTransactionStatus" name="SearchCatagory" value="Status">
             <label for="ElectricityTransactionStatus">Status</label>
-            <select id="ElectricityTransactionStatusDropDown">
-                <option value="Open">Open</option>
-                <option value="Closed">Closed</option>
+            <select id="ElectricityTransactionStatusDropDown" name="wantedStatusElectricity">
+                <option value=@Config.TransactionStatus.Open>Open</option>
+                <option value=@Config.TransactionStatus.Closed>Closed</option>
             </select>
         </div>
 
@@ -108,11 +111,48 @@
             <input type="radio" id="PropertyTaxTransactionID" name="SearchCatagory" value="PropertyID">
             <label for="PropertyTaxTransactionID"><i>Property ID</i></label>
 
-            <input type="radio" id="PropertyTaxTransactionStatus" name="SearchCatagory" value="PropertyTaxTransactionStatus">
+            <input type="radio" class="hideTextFieldWhenSelected" id="PropertyTaxTransactionStatus" name="SearchCatagory" value="Status">
             <label for="PropertyTaxyTransactionStatus">Status</label>
-            <select id="PropertyTaxTransactionStatusDropDown">
-                <option value="Open">Open</option>
-                <option value="Closed">Closed</option>
+            <select id="PropertyTaxTransactionStatusDropDown" name="wantedStatusPropertyTax">
+                <option value=@Config.TransactionStatus.Open>Open</option>
+                <option value=@Config.TransactionStatus.Closed>Closed</option>
+            </select>
+        </div>
+
+        <div id="ContactApplicationCatagories">
+            <h5>Where:</h5>
+
+            <input type="radio" id="UserID" name="SearchCatagory" value="UserID"
+                   checked>
+            <label for="UserID"><i>User ID</i></label>
+
+            <input type="radio" id="ApplicationID" name="SearchCatagory" value="ApplicationID">
+            <label for="ApplicationID"><i>Application ID</i></label>
+
+            <input type="radio" id="ApplicationTitle" name="SearchCatagory" value="ApplicationTitle">
+            <label for="ApplicationTitle"><i>Title</i></label>
+
+            <input type="radio" id="ApplicationMessage" name="SearchCatagory" value="ApplicationMessage">
+            <label for="ApplicationMessage"><i>Message</i></label>
+
+            <input type="radio" class="dateInput" id="CreationDate" name="SearchCatagory" value="CreationDate">
+            <label for="CreationDate"><i>Creation Date</i></label>
+
+            <input type="radio" class="hideTextFieldWhenSelected" id="ApplicationType" name="SearchCatagory" value="ApplicationType">
+            <label for="ApplicationType">Transaction Type</label>
+
+            <select id="ApplicationTypeDropDown" name="ContactType">
+                <option value=@Config.ContactAppType.WaterTransaction>Water Transaction</option>
+                <option value=@Config.ContactAppType.ElectricityTransaction>Electricity Transaction</option>
+                <option value=@Config.ContactAppType.PropertyTaxTransaction>Property Tax Transaction</option>
+            </select>
+
+            <input type="radio" class="hideTextFieldWhenSelected" id="ApplicationStatus" name="SearchCatagory" value="Status">
+            <label for="ApplicationStatus">Status</label>
+
+            <select id="ApplicationStatusDropDown" name="wantedStatusContactApp">
+                <option value=@Config.TransactionStatus.Open>Open</option>
+                <option value=@Config.TransactionStatus.Closed>Closed</option>
             </select>
         </div>
 
@@ -127,6 +167,8 @@
 
 @if (ViewData["AfterSearch"].Equals(true))
 {
+    <a asp-action="SearchAndResult">Change Search Parameters Here</a>
+
     @if (Model.Users != null)
     {
         <h3>Users Results:</h3>
@@ -243,28 +285,28 @@
             <tbody>
                 @foreach (WaterTransaction transaction in Model.WaterTransactions)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => transaction.WaterMeterID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => transaction.WaterMeterLastReadDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => transaction.ImgPath)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => transaction.User.UserID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => transaction.Status)
-                    </td>
-                    <td>
-                        <a asp-controller="WaterTransactions" asp-action="Edit" asp-route-id="@transaction.WaterMeterID">Edit</a> |
-                        <a asp-controller="WaterTransactions" asp-action="Details" asp-route-id="@transaction.WaterMeterID">Details</a> |
-                        <a asp-controller="WaterTransactions" asp-action="Delete" asp-route-id="@transaction.WaterMeterID">Delete</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.WaterMeterID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.WaterMeterLastReadDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.ImgPath)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.User.UserID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.Status)
+                        </td>
+                        <td>
+                            <a asp-controller="WaterTransactions" asp-action="Edit" asp-route-id="@transaction.WaterMeterID">Edit</a> |
+                            <a asp-controller="WaterTransactions" asp-action="Details" asp-route-id="@transaction.WaterMeterID">Details</a> |
+                            <a asp-controller="WaterTransactions" asp-action="Delete" asp-route-id="@transaction.WaterMeterID">Delete</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -297,28 +339,28 @@
             <tbody>
                 @foreach (ElectricityTransaction transaction in Model.ElectricityTransaction)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => transaction.ElectricityMeterID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => transaction.ElectricityMeterLastRead)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => transaction.ImgPath)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => transaction.User.UserID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => transaction.Status)
-                    </td>
-                    <td>
-                        <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.ElectricityMeterID">Edit</a> |
-                        <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.ElectricityMeterID">Details</a> |
-                        <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@transaction.ElectricityMeterID">Delete</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.ElectricityMeterID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.ElectricityMeterLastRead)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.ImgPath)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.User.UserID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.Status)
+                        </td>
+                        <td>
+                            <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.ElectricityMeterID">Edit</a> |
+                            <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.ElectricityMeterID">Details</a> |
+                            <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@transaction.ElectricityMeterID">Delete</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -348,23 +390,89 @@
             <tbody>
                 @foreach (PropertyTaxTransaction transaction in Model.PropertyTaxTransactions)
                 {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.PropertyID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.ImgPath)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.User.UserID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => transaction.Status)
+                        </td>
+                        <td>
+                            <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.PropertyID">Edit</a> |
+                            <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.PropertyID">Details</a> |
+                            <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@transaction.PropertyID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (Model.ContactApplications != null)
+    {
+        <h3>Electricity Transactions Results:</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Application ID
+                    </th>
+                    <th>
+                        User ID
+                    </th>
+                    <th>
+                        Transaction Type
+                    </th>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Message
+                    </th>
+                    <th>
+                        Creation Date
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ContactApplication app in Model.ContactApplications)
+                {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => transaction.PropertyID)
+                        @Html.DisplayFor(modelItem => app.ContactAppID)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => transaction.ImgPath)
+                        @Html.DisplayFor(modelItem => app.UserID)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => transaction.User.UserID)
+                        @Html.DisplayFor(modelItem => app.ContactType)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => transaction.Status)
+                        @Html.DisplayFor(modelItem => app.Title)
                     </td>
                     <td>
-                        <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.PropertyID">Edit</a> |
-                        <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.PropertyID">Details</a> |
-                        <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@transaction.PropertyID">Delete</a>
+                        @Html.DisplayFor(modelItem => app.Message)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => app.CreateDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => app.Status)
+                    </td>
+                    <td>
+                        <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@app.ContactAppID">Edit</a> |
+                        <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@app.ContactAppID">Details</a> |
+                        <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@app.ContactAppID">Delete</a>
                     </td>
                 </tr>
                 }
@@ -378,6 +486,7 @@
         $('#WaterTransactionCatagories').hide();
         $('#ElectricityTransactionCatagories').hide();
         $('#PropertyTaxTransactionCatagories').hide();
+        $('#ContactApplicationCatagories').hide();
     })
 
 
@@ -388,11 +497,13 @@
                 $('#WaterTransactionCatagories').hide();
                 $('#ElectricityTransactionCatagories').hide();
                 $('#PropertyTaxTransactionCatagories').hide();
+                $('#ContactApplicationCatagories').hide();
             } else if ($('#WaterTransaction').is(':checked')) {
                 $('#UserCatagories').hide();
                 $('#WaterTransactionCatagories').show();
                 $('#ElectricityTransactionCatagories').hide();
                 $('#PropertyTaxTransactionCatagories').hide();
+                $('#ContactApplicationCatagories').hide();
                 if ($('#WaterTransactionStatus').is(':checked')) {
                     $('#WaterTransactionStatusDropDown').show();
                 } else {
@@ -403,28 +514,46 @@
                 $('#WaterTransactionCatagories').hide();
                 $('#ElectricityTransactionCatagories').show();
                 $('#PropertyTaxTransactionCatagories').hide();
+                $('#ContactApplicationCatagories').hide();
                 if ($('#ElectricityTransactionStatus').is(':checked')) {
                     $('#ElectricityTransactionStatusDropDown').show();
                 } else {
                     $('#ElectricityTransactionStatusDropDown').hide();
                 }
-            } else { // Means PropertyTaxTransaction is checked
+            } else if ($('#PropertyTaxTransaction').is(':checked')) {
                 $('#UserCatagories').hide();
                 $('#WaterTransactionCatagories').hide();
                 $('#ElectricityTransactionCatagories').hide();
                 $('#PropertyTaxTransactionCatagories').show();
+                $('#ContactApplicationCatagories').hide();
                 if ($('#PropertyTaxTransactionStatus').is(':checked')) {
                     $('#PropertyTaxTransactionStatusDropDown').show();
                 } else {
                     $('#PropertyTaxTransactionStatusDropDown').hide();
                 }
+            } else { // Means ContactApplication is checked
+                $('#UserCatagories').hide();
+                $('#WaterTransactionCatagories').hide();
+                $('#ElectricityTransactionCatagories').hide();
+                $('#PropertyTaxTransactionCatagories').hide();
+                $('#ContactApplicationCatagories').show();
+                if ($('#ApplicationType').is(':checked')) {
+                    $('#ApplicationTypeDropDown').show();
+                } else {
+                    $('#ApplicationTypeDropDown').hide();
+                }
+                if ($('#ApplicationStatus').is(':checked')) {
+                    $('#ApplicationStatusDropDown').show();
+                } else {
+                    $('#ApplicationStatusDropDown').hide();
+                }
             }
         })
     })
 
-    $(document).ready(function () {
+    $(document).ready(function () { // Hide text field when search not uses it
         $(':radio').click(function () {
-            if ($('#IsAdmin').is(':checked')) {
+            if ($('.hideTextFieldWhenSelected').is(':checked')) {
                 $('#SearchContainer').hide();
                 $('#SearchInput').prop('required', false);
             } else {
@@ -434,7 +563,8 @@
         })
     })
 
-    $(document).ready(function () {
+
+    $(document).ready(function () { // If Date input is selected
         $(':radio').click(function () {
             if ($('.dateInput').is(':checked')) {
                 $('#SearchInput').prop('type', 'date');
