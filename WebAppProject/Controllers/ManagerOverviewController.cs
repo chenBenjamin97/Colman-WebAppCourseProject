@@ -364,8 +364,39 @@ namespace WebAppProject.Controllers
             return View(model);
         }
 
-        public IActionResult Stats()
+        public async Task<IActionResult> Stats()
         {
+            // Contact Applications Group By Transaction Type:
+            var allContactApps = await _context.ContactApplication.ToListAsync();
+            
+            var queryTransactionTypes =
+                from app in allContactApps
+                group app by app.ContactType into newGroup
+                orderby newGroup.Key
+                select newGroup;
+
+            ViewData["ContactAppsAfterGroupByTransactionTypes"] = queryTransactionTypes;
+
+            // Users Group By Property City:
+            var allUsers = await _context.User.ToListAsync();
+
+            var queryUsersPropertyCities =
+                from user in allUsers
+                group user by user.PropertyCity into newGroup
+                orderby newGroup.Key
+                select newGroup;
+
+            ViewData["UsersAfterGroupByCities"] = queryUsersPropertyCities;
+
+            // Users Group By Enterance Month:
+            var queryUsersEnterenceMonth =
+                from user in allUsers
+                group user by user.EnteranceDate.Month into newGroup
+                orderby newGroup.Key
+                select newGroup;
+
+            ViewData["UsersAfterGroupByEnteranceMonth"] = queryUsersEnterenceMonth;
+
             return View();
         }
 

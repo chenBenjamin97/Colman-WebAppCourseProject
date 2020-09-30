@@ -12,8 +12,9 @@
 
     <script src="@Url.Content("~/js/jquery-3.5.1.min.js")"></script>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script> <!--Omer-->
+    <script src="https://d3js.org/d3.v5.min.js"></script> <!--3djs-->
 
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script> <!--Omer-->
 </head>
 
 <body>
@@ -65,17 +66,41 @@
         </nav>
     </header>
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    @{
+        var isHomePage = ViewData["isHomePage"];
+
+        if (ViewData["isHomePage"] != null)
+        {
+            if (isHomePage.Equals("true"))
+            {
+                <div style="
+                    background-image: url(@Url.Content("~/FrontEndElements/LoginPage/city-network.jpg"));
+                    background-position: center center;
+                    background-size: cover;
+                    width: 100%;
+                    height: 100%;
+                    ">
+                    <main role="main" class="pb-3">
+                        @RenderBody()
+                    </main>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        }
+    }
 
     <footer>
         <div class="footer-content">
             <div class="footer-section about">
                 <h2 class="logo-text"><span>HOLDERS </span>Ltd. </h2>
-                <p>
+                <p style="color: white;">
                     HOLDERS is a website that does all the billing exchange for you
                     such as Water, Electricity and Property Taxes.
                     <br><br> It doesn't matter wheter you are an entering tenant or an exiting tenant.
