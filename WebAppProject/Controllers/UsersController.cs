@@ -84,10 +84,12 @@ namespace WebAppProject.Controllers
                     HttpContext.Session.SetString("UserName", "null");
                     HttpContext.Session.SetString("IsAdmin", "false");
                     HttpContext.Session.SetString("FirstName", "null");
+
+                    return View();
                 }
             }
 
-            return RedirectToAction("Index", "ManagerOverview");
+            return RedirectToAction("Index", "ManagerOverview"); // Good Login
         }
 
 
