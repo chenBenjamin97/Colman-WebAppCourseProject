@@ -44,10 +44,14 @@
 }
 
 .register-content .register-input:hover {
-    cursor: pointer;
-    background: #343a40;
+    background: #1a1a1a;
     color: #000;
 }
+
+.register-content .register-input:focus {
+        background: #1a1a1a;
+        border: 1px solid white;
+    }
 
 .register-content .create-button {
 
@@ -72,7 +76,6 @@
     transition: all .3s;
 }
 
-
 /*for side-by-side view*/
 
 .first-column {
@@ -88,21 +91,21 @@
 .back-to-login-page {
     text-align: center;
     border: none;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding: 3px 25px 5px 25px;
     outline: none;
-    height: 50px;
+    height: 55px;
     background: #db631c;
     color: #fff;
-    font-size: 22px;
+    font-size: 20px;
     border-radius: 20px;
     transition: all .3s;
     margin-left: 50px;
 }
 
-    .back-to-login-page:hover {
-        cursor: pointer;
-        background: red;
-        color: #000;
-        transition: all .3s;
+.back-to-login-page:hover {
+    cursor: pointer;
+    background: red;
+    color: #fff;
+    transition: all .3s;
+    text-decoration: none;
 }
