@@ -4,80 +4,84 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+    <h1 class="SignUpHeader"><strong>Sign Up to <span style="color: #a00000">HOLDERS</span></strong></h1>
 
-<h4>User</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserID" class="control-label"></label>
-                <input asp-for="UserID" class="form-control" />
-                <span asp-validation-for="UserID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
+    <form asp-action="Create" class="register-content">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="first-column">
+            <h2 class="register-text">Personal Information <i class="fas fa-user-edit"></i></h2>
+            <!--Fields for personal info-->
+            <div>
+                <label asp-for="FirstName" class="register-label"></label>
+                <input asp-for="FirstName" class="register-input" placeholder="Enter your first name" required />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
+            <div>
+                <label asp-for="LastName" class="register-label"></label>
+                <input asp-for="LastName" class="register-input" placeholder="Enter your last name" required />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+            <div>
+                <label asp-for="UserID" class="register-label"></label>
+                <input asp-for="UserID" type="number" maxlength="9" class="register-input" placeholder="Enter your 9-Digit ID number" required />
+                <span asp-validation-for="UserID" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="EnteranceDate" class="control-label"></label>
-                <input asp-for="EnteranceDate" class="form-control" />
-                <span asp-validation-for="EnteranceDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PropertyCity" class="control-label"></label>
-                <input asp-for="PropertyCity" class="form-control" />
-                <span asp-validation-for="PropertyCity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PropertyStreet" class="control-label"></label>
-                <input asp-for="PropertyStreet" class="form-control" />
-                <span asp-validation-for="PropertyStreet" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PropertyStreetNumber" class="control-label"></label>
-                <input asp-for="PropertyStreetNumber" class="form-control" />
-                <span asp-validation-for="PropertyStreetNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ApartmentNumber" class="control-label"></label>
-                <input asp-for="ApartmentNumber" class="form-control" />
-                <span asp-validation-for="ApartmentNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
+            <div>
+                <label asp-for="UserName" class="register-label"></label>
+                <input asp-for="UserName" class="register-input" placeholder="Enter your user name" required />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+            <div>
+                <label asp-for="Email" class="register-label"></label>
+                <input asp-for="Email" class="register-input" placeholder="Enter your email address" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Password" class="register-label"></label>
+                <input asp-for="Password" type="password" class="register-input" placeholder="Enter your password" required />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+        <div class="second-column">
+            <h2 class="register-text">Apartment Information <i class="fas fa-building"></i></h2>
+            <!--Fields for Apartment info-->
+            <div>
+                <label asp-for="EnteranceDate" class="register-label"></label>
+                <input asp-for="EnteranceDate" class="register-input" placeholder="Enter the entrance date" required />
+                <span asp-validation-for="EnteranceDate" class="text-danger"></span>
             </div>
-        </form>
+            <div>
+                <label asp-for="PropertyCity" class="register-label"></label>
+                <input asp-for="PropertyCity" class="register-input" placeholder="Enter the city name" required />
+                <span asp-validation-for="PropertyCity" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="PropertyStreet" class="register-label"></label>
+                <input asp-for="PropertyStreet" class="register-input" placeholder="Enter the street name" required />
+                <span asp-validation-for="PropertyStreet" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="PropertyStreetNumber" class="register-label"></label>
+                <input asp-for="PropertyStreetNumber" class="register-input" placeholder="Enter the house number" required />
+                <span asp-validation-for="PropertyStreetNumber" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="ApartmentNumber" class="register-label"></label>
+                <input asp-for="ApartmentNumber" class="register-input" placeholder="Enter the apartment and entrance number" />
+                <span asp-validation-for="ApartmentNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <input type="submit" name="Create" value="Create" class="create-button" />
+        </div>
+    </form>
+
+    <div>
+        <a asp-action="Login" class="back-to-login-page">Back to Login Page</a> <!--redirect to home page-->
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+ 
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

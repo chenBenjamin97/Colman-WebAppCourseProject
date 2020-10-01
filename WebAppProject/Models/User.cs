@@ -23,7 +23,7 @@ namespace WebAppProject.Models
         [Display(Name = "Email Address")]
         public string Email { get; set; }
 
-        [Display(Name = "Enterance Date")]
+        [Display(Name = "Entrance Date")]
         [DataType(DataType.Date)]
         public DateTime EnteranceDate { get; set; }
 

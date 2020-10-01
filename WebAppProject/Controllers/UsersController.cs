@@ -1,4 +1,3 @@
-// Check if needed / conflicts
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -147,6 +146,8 @@ namespace WebAppProject.Controllers
         // GET: Users/Create
         public IActionResult Create()
         {
+            ViewData["isHomePage"] = "true";
+
             return View();
         }
 

@@ -117,12 +117,12 @@ h1{
       position: relative;
   }
 
-  /*footer{
+  footer{
       background: #303036;
       color: #d3d3d3;
       height: 400px;
       position: relative;
-  }*/
+  }
 
   footer .footer-content{
     height: 350px;
@@ -196,7 +196,7 @@ footer .footer-content .contact-form .contact-input:focus {
 }
 
 footer .footer-bottom {
-    background: #343a40;
+    background: #343a45;
     color: white;
     height: 50px;
     width: 100%;
@@ -205,7 +205,6 @@ footer .footer-bottom {
     bottom: 0px;
     left: 0px;
     padding-top: 20px;
-    border: 1px solid black;
 }
 
 video {
