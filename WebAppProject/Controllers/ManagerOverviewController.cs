@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using WebAppProject.Data;
 using WebAppProject.Models;
 
@@ -375,7 +376,44 @@ namespace WebAppProject.Controllers
                 orderby newGroup.Key
                 select newGroup;
 
-            ViewData["ContactAppsAfterGroupByTransactionTypes"] = queryTransactionTypes;
+            var ContactAppGroupByWaterJSON = new ContactAppsTypesJSON("Water", 0);         
+            var ContactAppGroupByElectricityJSON = new ContactAppsTypesJSON("Electricity", 0);          
+            var ContactAppGroupByPropertyTaxJSON = new ContactAppsTypesJSON("Property Tax", 0);
+
+            foreach (var currentKey in queryTransactionTypes)
+            {
+                switch (currentKey.Key)
+                {
+                    case Config.ContactAppType.WaterTransaction:
+                        foreach (var contactApp in currentKey)
+                        {
+                            ContactAppGroupByWaterJSON.value++;
+                        }
+                        
+                        break;
+                    case Config.ContactAppType.ElectricityTransaction:
+                        foreach (var contactApp in currentKey)
+                        {
+                            ContactAppGroupByElectricityJSON.value++;
+                        }
+
+                        break;
+                    case Config.ContactAppType.PropertyTaxTransaction:
+                        foreach (var contactApp in currentKey)
+                        {
+                            ContactAppGroupByPropertyTaxJSON.value++;
+                        }
+
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            ContactAppsTypesJSON[] ContactAppsGroupByResults = { ContactAppGroupByWaterJSON, ContactAppGroupByElectricityJSON, ContactAppGroupByPropertyTaxJSON };
+
+            ViewData["JSONContactAppsAfterGroupByTransactionTypes"] = JsonConvert.SerializeObject(ContactAppsGroupByResults, Formatting.Indented);
 
             // Users Group By Property City:
             var allUsers = await _context.User.ToListAsync();
@@ -389,13 +427,110 @@ namespace WebAppProject.Controllers
             ViewData["UsersAfterGroupByCities"] = queryUsersPropertyCities;
 
             // Users Group By Enterance Month:
+
+            var UsersMonthsAfterGroupBy = new MonthsWithValueJSON();
+            
             var queryUsersEnterenceMonth =
                 from user in allUsers
                 group user by user.EnteranceDate.Month into newGroup
                 orderby newGroup.Key
                 select newGroup;
 
-            ViewData["UsersAfterGroupByEnteranceMonth"] = queryUsersEnterenceMonth;
+            foreach (var currentKey in queryUsersEnterenceMonth)
+            {
+                switch (currentKey.Key)
+                {
+                    case 1:
+                        foreach (var user in currentKey)
+                        {
+                            UsersMonthsAfterGroupBy.January++;
+                        }
+
+                        break;
+                    case 2:
+                        foreach (var user in currentKey)
+                        {
+                            UsersMonthsAfterGroupBy.February++;
+                        }
+
+                        break;
+                    case 3:
+                        foreach (var user in currentKey)
+                        {
+                            UsersMonthsAfterGroupBy.March++;
+                        }
+
+                        break;
+                    case 4:
+                        foreach (var user in currentKey)
+                        {
+                            UsersMonthsAfterGroupBy.April++;
+                        }
+
+                        break;
+                    case 5:
+                        foreach (var user in currentKey)
+                        {
+                            UsersMonthsAfterGroupBy.May++;
+                        }
+
+                        break;
+                    case 6:
+                        foreach (var user in currentKey)
+                        {
+                            UsersMonthsAfterGroupBy.June++;
+                        }
+
+                        break;
+                    case 7:
+                        foreach (var user in currentKey)
+                        {
+                            UsersMonthsAfterGroupBy.July++;
+                        }
+
+                        break;
+                    case 8:
+                        foreach (var user in currentKey)
+                        {
+                            UsersMonthsAfterGroupBy.August++;
+                        }
+
+                        break;
+                    case 9:
+                        foreach (var user in currentKey)
+                        {
+                            UsersMonthsAfterGroupBy.September++;
+                        }
+
+                        break;
+                    case 10:
+                        foreach (var user in currentKey)
+                        {
+                            UsersMonthsAfterGroupBy.October++;
+                        }
+
+                        break;
+                    case 11:
+                        foreach (var user in currentKey)
+                        {
+                            UsersMonthsAfterGroupBy.November++;
+                        }
+
+                        break;
+                    case 12:
+                        foreach (var user in currentKey)
+                        {
+                            UsersMonthsAfterGroupBy.December++;
+                        }
+
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            ViewData["UsersAfterGroupByEnteranceMonth"] = JsonConvert.SerializeObject(UsersMonthsAfterGroupBy, Formatting.Indented);
 
             return View();
         }
