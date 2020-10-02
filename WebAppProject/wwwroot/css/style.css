@@ -9,10 +9,6 @@ html, body {
     font-size:14px;
 }
 
-.container {
-    min-height: 100%;
-}
-
 .login-box {
     width: 30%;
     height: 40%;
