@@ -338,3 +338,5 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+WebAppProject/wwwroot/css/site.css
+WebAppProject/wwwroot/UsersUploads/
