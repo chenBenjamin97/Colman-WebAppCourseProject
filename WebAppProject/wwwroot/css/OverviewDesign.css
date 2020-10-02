@@ -1,5 +1,4 @@
-﻿
-.Search-button {
+﻿.Search-button {
     text-align: center;
     border: none;
     padding: 3px 25px 5px 25px;
@@ -26,8 +25,9 @@
     background: rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     width: 75%;
-   margin-left: 12.5%;
-   margin-right: 12.5%;
+    margin-left: 12.5%;
+    margin-right: 12.5%;
+    position: relative;
 }
 
 .ManagerOverviewPageWrapper .class28{
