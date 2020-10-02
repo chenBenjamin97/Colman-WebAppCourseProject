@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -385,25 +386,13 @@ namespace WebAppProject.Controllers
                 switch (currentKey.Key)
                 {
                     case Config.ContactAppType.WaterTransaction:
-                        foreach (var contactApp in currentKey)
-                        {
-                            ContactAppGroupByWaterJSON.value++;
-                        }
-                        
+                        ContactAppGroupByWaterJSON.value = currentKey.Count();
                         break;
                     case Config.ContactAppType.ElectricityTransaction:
-                        foreach (var contactApp in currentKey)
-                        {
-                            ContactAppGroupByElectricityJSON.value++;
-                        }
-
+                        ContactAppGroupByElectricityJSON.value = currentKey.Count();
                         break;
                     case Config.ContactAppType.PropertyTaxTransaction:
-                        foreach (var contactApp in currentKey)
-                        {
-                            ContactAppGroupByPropertyTaxJSON.value++;
-                        }
-
+                        ContactAppGroupByPropertyTaxJSON.value = currentKey.Count();
                         break;
 
                     default:
