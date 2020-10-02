@@ -1,0 +1,70 @@
+﻿.Page-generic-headline {
+    padding: 30px 5px 10px;
+    text-align: center;
+    font-size: 70px;
+    font-weight: bold;
+}
+
+.pb-3{ /*to avoid white-space on short pages*/
+    height: 1200px;
+}
+
+.create-label{
+    margin: 2% 2% 2% 20%;
+    padding: 5px 15px 5px 20px;
+    background: rgba (0,0,0,0.28);
+    box-shadow: 1px 1px 1px 1px grey;
+    font-weight: bold;
+    border-radius: 5px;
+    width: 200px;
+
+}
+
+.create-input {
+    width: 250px;
+    border: none;
+    border-radius: 5px;
+    height: 33px;
+    padding: 5px 15px 5px 15px;
+    font-size: 13px;
+    background: #ffffffab;
+}
+
+.create-button {
+    text-align: center;
+    border: none;
+    padding: 3px 25px 5px 25px;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 20px;
+    background: #1c8adb;
+    margin-left: 45%;
+    margin-bottom: 1.5%;
+    margin-top: 3%;
+    transition: all .3s;
+}
+
+.create-button:hover {
+    cursor: pointer;
+    background: #39dc79;
+    color: #fff;
+    transition: all .3s;
+    text-decoration: none;
+}
+
+#PropertyTaxContractImg {
+    background: #ffffff8c;
+    border: 1px solid red;
+}
+
+#fileInputField {
+    width: 250px;
+    border: none;
+    border-radius: 5px;
+    height: 33px;
+    padding: 3px 15px 5px 15px;
+    font-size: 13px;
+    background: #ffffffa6;
+}
