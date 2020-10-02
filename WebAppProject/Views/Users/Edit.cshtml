@@ -2,10 +2,53 @@
 @using Microsoft.AspNetCore.Http
 
 @{
-    ViewData["Title"] = "Edit";
+   ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+
+<html>
+<head>
+    <style>
+        aside {
+            width: 100%;
+            padding-left: 15px;
+            margin-left: 15px;
+            float:unset;
+            font-style: italic;
+            background-color: lightgray;
+            text-align: center;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <canvas id="myCanvas" 
+            width="1000"
+            height="100" 
+            
+            style="border:0px solid #d3d3d3";>
+        </canvas>
+
+    <script>
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+            ctx.font = "39px Arial";
+            ctx.strokeText("Edit details",500,50);
+    </script>
+
+    <aside>
+        <p>
+            On this page you can edit your details
+            <br /> <br />
+            Pay attention that you will not be able to change your ID.  <br />
+            If you would like to change your ID, please contact us in the references box / open a new user
+        </p>
+    </aside>
+</body>
+</html>
+
 
 <h4>User</h4>
 <hr />
