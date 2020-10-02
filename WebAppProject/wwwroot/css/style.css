@@ -1,14 +1,8 @@
-/*html, body {
-    height: 100%;
+html, body {
     margin: 0;
     padding: 0;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
     font-family: sans-serif;
-}*/
-
-.container {
+    font-size: 14px;
     min-height: 100%;
 }
 
