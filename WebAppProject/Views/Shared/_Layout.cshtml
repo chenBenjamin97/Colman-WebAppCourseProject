@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="~/css/UserCreate.css"> <!--Register css-->
     <link rel="stylesheet" href="~/css/OverviewDesign.css"> <!--Manager Overview css-->
     <link rel="stylesheet" href="~/css/NavBarDesign.css"> <!--Navigation Bar css-->
+    <link rel="stylesheet" href="~/css/NewTransaction.css"> <!--New Transaction generic css-->
 
     <script src="@Url.Content("~/js/jquery-3.5.1.min.js")"></script>
 
@@ -27,12 +28,12 @@
         </div>
         <i id="NavBarIcon" class="fa fa-bars menu-toggle"></i>
         <ul id="NavBarList" class="nav NavBarHidden">
-            <li><a href="@Url.Action("Index", "ManagerOverview")">Home <i class="fas fa-home"></i></a></li>
             @{
                 string userFirstName = Context.Session.GetString("FirstName");
 
                 if (userFirstName != "null")
                 {
+                    <li><a href="@Url.Action("Index", "ManagerOverview")">Home <i class="fas fa-home"></i></a></li>
                     <li>
                         <a><i>Hello, @userFirstName</i></a>
                     </li>
@@ -45,7 +46,7 @@
                         </ul>
                     </li>
                     <li><a href="@Url.Action("Index", "ContactApplications")">My Contact Applications</a></li>
-                    <li><a href="@Url.Action("Users", "LogOff")">Log Off <i class="fas fa-door-open"></i></a></li>
+                    <li><a href="@Url.Action("LogOff", "Users")">Log Off <i class="fas fa-door-open"></i></a></li>
                 }
             }
         </ul>
