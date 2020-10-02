@@ -404,19 +404,8 @@ namespace WebAppProject.Controllers
 
             ViewData["JSONContactAppsAfterGroupByTransactionTypes"] = JsonConvert.SerializeObject(ContactAppsGroupByResults, Formatting.Indented);
 
-            // Users Group By Property City:
-            var allUsers = await _context.User.ToListAsync();
-
-            var queryUsersPropertyCities =
-                from user in allUsers
-                group user by user.PropertyCity into newGroup
-                orderby newGroup.Key
-                select newGroup;
-
-            ViewData["UsersAfterGroupByCities"] = queryUsersPropertyCities;
-
             // Users Group By Enterance Month:
-
+            var allUsers = await _context.User.ToListAsync();
             var UsersMonthsAfterGroupBy = new MonthsWithValueJSON();
             
             var queryUsersEnterenceMonth =
@@ -430,88 +419,40 @@ namespace WebAppProject.Controllers
                 switch (currentKey.Key)
                 {
                     case 1:
-                        foreach (var user in currentKey)
-                        {
-                            UsersMonthsAfterGroupBy.January++;
-                        }
-
+                        UsersMonthsAfterGroupBy.January = currentKey.Count();
                         break;
                     case 2:
-                        foreach (var user in currentKey)
-                        {
-                            UsersMonthsAfterGroupBy.February++;
-                        }
-
+                        UsersMonthsAfterGroupBy.February = currentKey.Count();
                         break;
                     case 3:
-                        foreach (var user in currentKey)
-                        {
-                            UsersMonthsAfterGroupBy.March++;
-                        }
-
+                        UsersMonthsAfterGroupBy.March = currentKey.Count();
                         break;
                     case 4:
-                        foreach (var user in currentKey)
-                        {
-                            UsersMonthsAfterGroupBy.April++;
-                        }
-
+                        UsersMonthsAfterGroupBy.April = currentKey.Count();
                         break;
                     case 5:
-                        foreach (var user in currentKey)
-                        {
-                            UsersMonthsAfterGroupBy.May++;
-                        }
-
+                        UsersMonthsAfterGroupBy.May = currentKey.Count();
                         break;
                     case 6:
-                        foreach (var user in currentKey)
-                        {
-                            UsersMonthsAfterGroupBy.June++;
-                        }
-
+                        UsersMonthsAfterGroupBy.June = currentKey.Count();
                         break;
                     case 7:
-                        foreach (var user in currentKey)
-                        {
-                            UsersMonthsAfterGroupBy.July++;
-                        }
-
+                        UsersMonthsAfterGroupBy.July = currentKey.Count();
                         break;
                     case 8:
-                        foreach (var user in currentKey)
-                        {
-                            UsersMonthsAfterGroupBy.August++;
-                        }
-
+                        UsersMonthsAfterGroupBy.August = currentKey.Count();
                         break;
                     case 9:
-                        foreach (var user in currentKey)
-                        {
-                            UsersMonthsAfterGroupBy.September++;
-                        }
-
+                        UsersMonthsAfterGroupBy.September = currentKey.Count();
                         break;
                     case 10:
-                        foreach (var user in currentKey)
-                        {
-                            UsersMonthsAfterGroupBy.October++;
-                        }
-
+                        UsersMonthsAfterGroupBy.October = currentKey.Count();
                         break;
                     case 11:
-                        foreach (var user in currentKey)
-                        {
-                            UsersMonthsAfterGroupBy.November++;
-                        }
-
+                        UsersMonthsAfterGroupBy.November = currentKey.Count();
                         break;
                     case 12:
-                        foreach (var user in currentKey)
-                        {
-                            UsersMonthsAfterGroupBy.December++;
-                        }
-
+                        UsersMonthsAfterGroupBy.December = currentKey.Count();
                         break;
 
                     default:
