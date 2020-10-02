@@ -204,6 +204,7 @@
             return 'translate(' + pos + ')';
         })
         .style('fill', 'black')
+        .style('font-weight', 'bold')
         .style('text-anchor', function (d) {
             var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
             return (midangle < Math.PI ? 'start' : 'end')
