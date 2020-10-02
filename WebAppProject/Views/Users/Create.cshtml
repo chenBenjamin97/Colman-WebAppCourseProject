@@ -23,7 +23,7 @@
             </div>
             <div>
                 <label asp-for="UserID" class="register-label"></label>
-                <input asp-for="UserID" type="number" maxlength="9" class="register-input" placeholder="Enter your 9-Digit ID number" required />
+                <input asp-for="UserID" type="number" maxlength="9" id="IDinputField" class="register-input" placeholder="Enter your 9-Digit ID number" required />
                 <span asp-validation-for="UserID" class="text-danger"></span>
             </div>
             <div>
@@ -72,7 +72,7 @@
             </div>
         </div>
         <div>
-            <input type="submit" name="Create" value="Create" class="create-button" />
+            <input type="submit" name="Create" value="Create" class="create-user-button" />
         </div>
     </form>
 
@@ -80,7 +80,15 @@
         <a asp-action="Login" class="back-to-login-page">Back to Login Page</a> <!--redirect to home page-->
     </div>
 
- 
+    <script>
+        $('form').submit(function (event) {
+            if ($('#IDinputField').val().length != 9) {
+                alert('ID must be exactly 9-Digits');
+                event.preventDefault();
+            }
+            return; //valid id input
+        })
+    </script>
 
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
