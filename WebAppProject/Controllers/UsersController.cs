@@ -201,15 +201,18 @@ namespace WebAppProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UserID,FirstName,LastName,Email,EnteranceDate,PropertyCity,PropertyStreet,PropertyStreetNumber,ApartmentNumber,IsAdmin,UserName,Password")] User user)
         {
-            if (id != user.UserID)
-            {
-                return NotFound();
-            }
+            user.UserID = id; // This is a disabled field. no one can edit this (not admins as well)
 
             if (ModelState.IsValid)
             {
-                var objUser = await _context.User.Where(u => u.Email.Equals(user.Email) || u.UserName.Equals(user.UserName)).ToListAsync();
-                if (objUser.Count == 0 || (objUser.Count == 1 && objUser[0].UserID.Equals(id)))
+                System.Collections.Generic.List<User> objUser;
+
+                using (_context)
+                {
+                    objUser = await _context.User.Where(u => u.Email.Equals(user.Email) || u.UserName.Equals(user.UserName)).ToListAsync();
+                }
+
+                if (objUser.Count == 0 || (objUser.Count == 1 && objUser[0].UserID.Equals(id))) // Validate no Duplicate email or username
                 {
                     try
                     {
