@@ -1,0 +1,70 @@
+﻿.Search-button {
+    text-align: center;
+    border: none;
+    padding: 3px 25px 5px 25px;
+    outline: none;
+    height: 55px;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 20px;
+    background: #1c8adb;
+    margin-left: 12.5%;
+    transition: all .3s;
+}
+
+    .Search-button:hover {
+        cursor: pointer;
+        background: #39dc79;
+        color: #fff;
+        transition: all .3s;
+        text-decoration: none;
+    }
+
+.ManagerOverviewPageWrapper {
+    margin: 50px 50px 50px 50px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    width: 75%;
+    margin-left: 12.5%;
+    margin-right: 12.5%;
+    position: relative;
+}
+
+.ManagerOverviewPageWrapper .class28{
+    height: 35px;
+    clear:both;
+}
+
+    .ManagerOverviewPageWrapper h3 {
+        text-align: center;
+        padding-bottom: 5px;
+        padding-top: 10px;
+        background: rgba(0, 0, 0, 0.50);
+        border-radius: inherit;
+        color: white;
+        font-weight: bolder;
+        margin-top: 25px;
+        border-bottom: 6px solid white;
+    }
+
+    .ManagerOverviewPageWrapper .table thead th {
+        border-bottom: 10px solid #dee2e6;
+        border-top: none;
+        font-size:16px;
+        text-align:center;
+    }
+
+    .ManagerOverviewPageWrapper .table td {
+        border-top: none;
+        text-align: center;
+    }
+
+.ManagerOverviewPageWrapper .table .OverviewActions {
+    text-align: right;
+    padding-right: 20px;
+    width:280px;
+    }
+
+    .ManagerOverviewPageWrapper .table .OverviewActions a:hover{
+        text-decoration: none;
+    }
