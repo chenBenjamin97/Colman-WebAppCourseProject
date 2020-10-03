@@ -4,45 +4,59 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<!--Water Transaction-->
+
+
+<h1 class="Page-generic-headline">Water Transaction Details</h1>
+
+<div class="ManagerOverviewPageWrapper">
+    <div>
+        <dl>
+            <dt class="Details-dt">
+                @Html.DisplayNameFor(model => model.UserID)
+            </dt>
+            <dd class="Details-dd">
+                @Html.DisplayFor(model => model.UserID)
+            </dd>
+            <br />
+            <br />
+            <dt class="Details-dt">
+                @Html.DisplayNameFor(model => model.WaterMeterLastReadDate)
+            </dt>
+            <dd class="Details-dd">
+                @Html.DisplayFor(model => model.WaterMeterLastReadDate)
+            </dd>
+            <br />
+            <br />
+            <dt class="Details-dt">
+                @Html.DisplayNameFor(model => model.ImgPath)
+            </dt>
+            <dd class="Details-dd">
+                @Html.DisplayFor(model => model.ImgPath)
+            </dd>
+            <br />
+            <br />
+            <dt class="Details-dt">
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd class="Details-dd">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+            <br />
+            <br />
+            <dt class="Details-dt">
+                @Html.DisplayNameFor(model => model.WaterMeterImg)
+            </dt>
+            <dd class="Details-dd">
+                <img src="@Url.Content("~/" + @ViewData["ImgPath"].ToString())" alt="error" style="width:70%;height:auto" />
+            </dd>
+            <br />
+            <br />
+        </dl>
+    </div>
+</div>
 
 <div>
-    <h4>Water Transaction Info:</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserID)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserID)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WaterMeterLastReadDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.WaterMeterLastReadDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ImgPath)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ImgPath)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WaterMeterImg)
-        </dt>
-        <dd class="col-sm-10">
-            <img src="@Url.Content("~/" + @ViewData["ImgPath"].ToString())" alt="error" style="width:70%;height:auto" />
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.WaterMeterID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.WaterMeterID" class="create-button" >Edit</a>
+    <a class="create-button-2" asp-action="Index">Back to List</a>
 </div>

@@ -5,22 +5,23 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
 
-<h4>WaterTransaction</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<!--Edit Water transaction-->
+
+<h1 class="Page-generic-headline">Edit Water Transaction</h1>
+
+<div class="ManagerOverviewPageWrapper">
+    <div>
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserID" class="control-label"></label>
-                <input asp-for="UserID" class="form-control" disabled="disabled" />
+            <div>
+                <label asp-for="UserID" class="create-label"></label>
+                <input asp-for="UserID" class="create-input" disabled="disabled" />
                 <span asp-validation-for="UserID" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="WaterMeterID" class="control-label"></label>
-                <input asp-for="WaterMeterID" class="form-control" disabled="disabled" />
+            <div>
+                <label asp-for="WaterMeterID" class="create-label"></label>
+                <input asp-for="WaterMeterID" class="create-input" disabled="disabled" />
                 <span asp-validation-for="WaterMeterID" class="text-danger"></span>
             </div>
             @{
@@ -28,9 +29,9 @@
 
                 if (isAdmin == "true")
                 {
-                    <div class="form-group">
-                        <label asp-for="Status" class="control-label"></label>
-                        <select asp-for="Status" class="form-control">
+                    <div>
+                        <label asp-for="Status" class="create-label"></label>
+                        <select asp-for="Status" class="create-input">
                             <option value=@Config.TransactionStatus.Open>Open</option>
                             <option value=@Config.TransactionStatus.Closed>Closed</option>
                         </select>
@@ -39,30 +40,31 @@
                 }
                 else
                 {
-                    <div class="form-group">
-                        <label asp-for="Status" class="control-label"></label>
-                        <input asp-for="Status" class="form-control" disabled="disabled" />
+                    <div>
+                        <label asp-for="Status" class="create-label"></label>
+                        <input asp-for="Status" class="create-input" disabled="disabled" />
                         <span asp-validation-for="Status" class="text-danger"></span>
                     </div>
                 }
             }
-            <div class="form-group">
-                <label asp-for="WaterMeterLastReadDate" class="control-label"></label>
-                <input asp-for="WaterMeterLastReadDate" class="form-control" />
+            <div>
+                <label asp-for="WaterMeterLastReadDate" class="create-label"></label>
+                <input asp-for="WaterMeterLastReadDate" class="create-input" />
                 <span asp-validation-for="WaterMeterLastReadDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                Change Image (Not Required): <input asp-for="WaterMeterImg" id="fileInputField" accept="image/*" /> <br>
+            <div>
+                <label class="create-label">Change image (optional)</label>
+                <input asp-for="WaterMeterImg" id="fileInputField" accept="image/*" placeholder="Choose file"/> <br>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div>
+                <input type="submit" value="Save" class="create-button" />
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="WaterMeterID" />
+                    <input type="submit" id="DeleteSubmitted" value="Delete" class="delete-button" />
+                </form>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
@@ -87,3 +89,12 @@
         return true; // No file input
     })
 </script>
+
+<script>
+    $('form').submit(function (event) {
+        if ($('#DeleteSubmitted').click()) {
+            alert('Are you sure you want to delete this transaction?');
+        }
+    })
+</script>
+

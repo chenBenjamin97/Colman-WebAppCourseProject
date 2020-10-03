@@ -5,9 +5,9 @@
     font-weight: bold;
 }
 
-.pb-3{ /*to avoid white-space on short pages*/
+/*.pb-3{ to avoid white-space on short pages
     height: 1200px;
-}
+    }*/
 
 .create-label{
     margin: 2% 2% 2% 20%;
@@ -17,7 +17,6 @@
     font-weight: bold;
     border-radius: 5px;
     width: 200px;
-
 }
 
 .create-input {
@@ -54,6 +53,66 @@
     text-decoration: none;
 }
 
+.create-button-2 {
+    text-align: center;
+    border: none;
+    padding: 3px 25px 5px 25px;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 20px;
+    background: #1c8adb;
+    margin-left: 1%;
+    margin-bottom: 1.5%;
+    margin-top: 3%;
+    transition: all .3s;
+}
+
+.create-button-2:hover {
+        cursor: pointer;
+        background: #39dc79;
+        color: #fff;
+        transition: all .3s;
+        text-decoration: none;
+    }
+
+.delete-button {
+    text-align: center;
+    border: none;
+    padding: 3px 25px 5px 25px;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 20px;
+    border-radius: 20px;
+    background: #f2423a;
+    margin-left: 1%;
+    margin-bottom: 1.5%;
+    margin-top: 3%;
+    transition: all .3s;
+}
+
+    .delete-button:hover {
+        cursor: pointer;
+        background: #39dc79;
+        color: #fff;
+        transition: all .3s;
+        text-decoration: none;
+    }
+
+
+
+
+.CRUD_Images{
+    width: 800px;
+    height: 325px;
+    margin: 3% 0% 3% 28%;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 1px 1px 1px 1px grey;
+}
+
 #PropertyTaxContractImg {
     background: #ffffff8c;
     border: 1px solid red;
@@ -67,4 +126,46 @@
     padding: 3px 15px 5px 15px;
     font-size: 13px;
     background: #ffffffa6;
+}
+
+
+.create-input-details {
+    margin-top: 1.9%;
+    width: 250px;
+    border: none;
+    border-radius: 5px;
+    height: 33px;
+    padding: 5px 15px 5px 15px;
+    font-size: 13px;
+    background: #ffffffab;
+}
+
+.ManagerOverviewPageWrapper dl{
+    height: 600px;
+}
+
+
+.ManagerOverviewPageWrapper .Details-dt {
+    margin-left: 20%;
+    margin-right: 10%;
+    margin-top: 2%;
+    padding: 5px 15px 5px 20px;
+    background: rgba (0,0,0,0.28);
+    box-shadow: 1px 1px 1px 1px grey;
+    font-weight: bold;
+    border-radius: 5px;
+    width: 200px;
+    float: left;
+}
+
+.ManagerOverviewPageWrapper .Details-dd {
+    width: 350px;
+    border: none;
+    border-radius: 5px;
+    height: 33px;
+    font-size: 13px;
+    background: #ffffffab;
+    float: left;
+    margin: 2%;
+    padding: 5px 15px 5px 15px;
 }
