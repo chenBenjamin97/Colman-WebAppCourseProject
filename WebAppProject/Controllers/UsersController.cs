@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace WebAppProject.Controllers
 {
-
     public class UsersController : Controller
     {
         private readonly MvcProjectContext _context;
