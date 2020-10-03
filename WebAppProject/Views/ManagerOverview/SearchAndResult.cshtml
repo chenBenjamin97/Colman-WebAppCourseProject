@@ -4,12 +4,34 @@
     ViewData["Title"] = "Search And Stats";
 }
 
-<a asp-action="Stats">Overall Stats, Press Here</a><br>
+<a asp-action="Stats">Overall Stats, Press Here</a>
+<br>
 
 @if (ViewData["AfterSearch"].Equals(false))
 {
-    <h1>Search By Catagory:</h1>
-    <form asp-action="SearchAndResult">
+    // Join TESTS:
+    var results = ViewData["JoinResults"] as IEnumerable<int>;
+
+    if (results != null)
+    {
+        foreach (var current in results)
+        {
+            <p>@current</p>
+        }
+    }
+
+    <div>
+        <h2>Search Type:</h2>
+        <input type="radio" id="SearchTypeSimple" name="SearchType" checked>
+        <label for="SearchTypeSimple">Single Model Search</label>
+
+        <input type="radio" id="SearchTypeJoin" name="SearchType">
+        <label for="SearchTypeJoin">Multiple Models Search</label>
+    </div>
+
+
+    <form asp-action="SearchAndResult" id="SingleSearchForm">
+        <h1>Search By Catagory:</h1>
         <h3>Search For:</h3>
 
         <input type="radio" id="User" name="SearchDB" value="User"
@@ -162,6 +184,18 @@
         </div>
 
         <input type="submit" value="Search" />
+    </form>
+
+    <form asp-action="JoinSearchAndResult" id="JoinSearchForm">
+        <h3>Search For Users Who Have More Than One Open Transaction:</h3>
+        <input type="checkbox" id="WaterCheckBox" name="WaterCheckBox" value="true">
+        <label for="WaterCheckBox">Water Transaction</label><br>
+        <input type="checkbox" id="ElectricityCheckBox" name="ElectricityCheckBox" value="true">
+        <label for="ElectricityCheckBox">Electricity Transaction</label><br>
+        <input type="checkbox" id="PropertyTaxCheckBox" name="PropertyTaxCheckBox" value="true">
+        <label for="PropertyTaxCheckBox">Property Tax Transaction</label><br>
+
+        <input type="submit" value="Search" /> <!--EDIT JQUERY WHERE NEEDED-->
     </form>
 }
 
@@ -447,34 +481,34 @@
             <tbody>
                 @foreach (ContactApplication app in Model.ContactApplications)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => app.ContactAppID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => app.UserID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => app.ContactType)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => app.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => app.Message)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => app.CreateDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => app.Status)
-                    </td>
-                    <td>
-                        <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@app.ContactAppID">Edit</a> |
-                        <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@app.ContactAppID">Details</a> |
-                        <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@app.ContactAppID">Delete</a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => app.ContactAppID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => app.UserID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => app.ContactType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => app.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => app.Message)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => app.CreateDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => app.Status)
+                        </td>
+                        <td>
+                            <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@app.ContactAppID">Edit</a> |
+                            <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@app.ContactAppID">Details</a> |
+                            <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@app.ContactAppID">Delete</a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -482,13 +516,26 @@
 }
 
 <script>
-    $(document).ready(function () { // Init form state
+    $(document).ready(function () { // Init page state
         $('#WaterTransactionCatagories').hide();
+        $('#JoinSearchForm').hide();
         $('#ElectricityTransactionCatagories').hide();
         $('#PropertyTaxTransactionCatagories').hide();
         $('#ContactApplicationCatagories').hide();
     })
 
+
+    $(document).ready(function () { // Change Search Type
+        $(':radio').click(function () {
+            if ($('#SearchTypeSimple').is(':checked')) {
+                $('#SingleSearchForm').show();
+                $('#JoinSearchForm').hide();
+            } else { // Means #SearchTypeJoin is checked
+                $('#SingleSearchForm').hide();
+                $('#JoinSearchForm').show();
+            }
+        })
+    })
 
     $(document).ready(function () {
         $(':radio').click(function () {
