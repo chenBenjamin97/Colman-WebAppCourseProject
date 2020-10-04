@@ -125,6 +125,8 @@ namespace WebAppProject.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("WaterMeterID"); // Disabled field, can't be editted
+
             if (ModelState.IsValid)
             {
                 try

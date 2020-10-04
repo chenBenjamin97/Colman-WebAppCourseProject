@@ -124,6 +124,8 @@ namespace WebAppProject.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("ElectricityMeterID"); // Disabled field, can't be editted
+
             if (ModelState.IsValid)
             {
                 try

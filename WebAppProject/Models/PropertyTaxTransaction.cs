@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAppProject.Data;
 
 namespace WebAppProject.Models
 {
@@ -17,6 +18,7 @@ namespace WebAppProject.Models
         [Display(Name = "Property ID")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key] // Primary Key
+        [PropertyIDValidation]
         public int PropertyID { get; set; }
 
         [Display(Name = "Image Path")]
@@ -29,5 +31,23 @@ namespace WebAppProject.Models
         public Config.TransactionStatus Status { get; set; }
 
         public User User { get; set; }
+    }
+
+    public class PropertyIDValidation : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var _context = (MvcProjectContext)validationContext
+                         .GetService(typeof(MvcProjectContext));
+
+            var usersWithSameID = _context.PropertyTaxTransactions.Where(property => property.PropertyID.ToString().Equals(value.ToString()));
+
+            if (usersWithSameID.Count() != 0)
+            {
+                return new ValidationResult("Another Transaction With This Property ID Already Exists");
+            }
+
+            return ValidationResult.Success;
+        }
     }
 }

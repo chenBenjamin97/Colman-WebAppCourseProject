@@ -126,6 +126,8 @@ namespace WebAppProject.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("PropertyID"); // Disabled field, can't be editted
+
             if (ModelState.IsValid)
             {
                 try
@@ -196,28 +198,6 @@ namespace WebAppProject.Controllers
         private bool PropertyTaxExists(int id)
         {
             return _context.PropertyTaxTransactions.Any(e => e.PropertyID == id);
-        }
-        public IActionResult CreateNewTransaction()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult CreateNewTransaction(WaterTransaction userInput)
-        {
-            string newFileName = userInput.UserID.ToString() + Path.GetExtension(userInput.WaterMeterImg.FileName);
-
-            string PhysicalAddressOfSaveNewFile = Path.Combine(Config.PhysicalWaterFilesPath, newFileName);
-            userInput.WaterMeterImg.CopyTo(new FileStream(PhysicalAddressOfSaveNewFile, FileMode.Create));
-
-            string RelativeAddressOfNewFile = Path.Combine(Config.RelativeWaterFilesPath, newFileName);
-            WaterTransaction insertToDb = new WaterTransaction { UserID = userInput.UserID, ImgPath = RelativeAddressOfNewFile, WaterMeterID = userInput.WaterMeterID, WaterMeterLastReadDate = userInput.WaterMeterLastReadDate };
-
-            _context.WaterTransactions.Add(insertToDb);
-
-            _context.SaveChanges();
-
-            return RedirectToAction("Index");
         }
     }
 }

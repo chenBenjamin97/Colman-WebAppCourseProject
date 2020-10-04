@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using WebAppProject.Data;
 
 namespace WebAppProject.Models
 {
@@ -22,6 +23,7 @@ namespace WebAppProject.Models
         [Display(Name = "Electricity Meter ID")]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key] // Primary Key
+        [ElectricityMeterIDValidation]
         public int ElectricityMeterID { get; set; }
 
         [NotMapped] //Make this property not be written to the DB
@@ -34,5 +36,23 @@ namespace WebAppProject.Models
         public Config.TransactionStatus Status { get; set; }
 
         public User User { get; set; }
+    }
+
+    public class ElectricityMeterIDValidation : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var _context = (MvcProjectContext)validationContext
+                         .GetService(typeof(MvcProjectContext));
+
+            var usersWithSameID = _context.ElectricityTransactions.Where(electricity => electricity.ElectricityMeterID.ToString().Equals(value.ToString()));
+
+            if (usersWithSameID.Count() != 0)
+            {
+                return new ValidationResult("Another Transaction With This Electricity Meter ID Already Exists");
+            }
+
+            return ValidationResult.Success;
+        }
     }
 }
