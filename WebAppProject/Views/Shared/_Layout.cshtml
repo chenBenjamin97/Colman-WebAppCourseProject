@@ -39,6 +39,10 @@
                     <li>
                         <a><i>Hello, @userFirstName</i></a>
                     </li>
+                    if (Context.Session.GetString("IsAdmin").Equals("true"))
+                    {
+                        <li><a href="@Url.Action("Stats", "ManagerOverview")">Administrator Statistics</a></li>
+                    }
                     <li>
                         <a href="#">Services <i class="fa fa-chevron-down" style="font-size: .8em;"></i></a>
                         <ul style="left: 0px;">
