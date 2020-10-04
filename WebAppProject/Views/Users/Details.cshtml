@@ -4,84 +4,85 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<!--User Details-->
 
-<!--TEST:-->
-<a asp-action="UserAddressMap" asp-route-id="@Model.UserID">User's Address Map</a><br>
+<h1 class="Page-generic-headline">User Details</h1>
 
-<div>
-    <h4>User</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
+
+
+<div class="ManagerOverviewPageWrapper">
+    <dl style="height:1100px">
+        <dt class = "Details-dt">
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "Details-dd">
             @Html.DisplayFor(model => model.FirstName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "Details-dt">
             @Html.DisplayNameFor(model => model.LastName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "Details-dd">
             @Html.DisplayFor(model => model.LastName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "Details-dt">
             @Html.DisplayNameFor(model => model.Email)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "Details-dd">
             @Html.DisplayFor(model => model.Email)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "Details-dt">
             @Html.DisplayNameFor(model => model.EnteranceDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "Details-dd">
             @Html.DisplayFor(model => model.EnteranceDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "Details-dt">
             @Html.DisplayNameFor(model => model.PropertyCity)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "Details-dd">
             @Html.DisplayFor(model => model.PropertyCity)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "Details-dt">
             @Html.DisplayNameFor(model => model.PropertyStreet)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "Details-dd">
             @Html.DisplayFor(model => model.PropertyStreet)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "Details-dt">
             @Html.DisplayNameFor(model => model.PropertyStreetNumber)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "Details-dd">
             @Html.DisplayFor(model => model.PropertyStreetNumber)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "Details-dt">
             @Html.DisplayNameFor(model => model.ApartmentNumber)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "Details-dd">
             @Html.DisplayFor(model => model.ApartmentNumber)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "Details-dt">
             @Html.DisplayNameFor(model => model.IsAdmin)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "Details-dd">
             @Html.DisplayFor(model => model.IsAdmin)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "Details-dt">
             @Html.DisplayNameFor(model => model.UserName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "Details-dd">
             @Html.DisplayFor(model => model.UserName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "Details-dt">
             @Html.DisplayNameFor(model => model.Password)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "Details-dd">
             @Html.DisplayFor(model => model.Password)
         </dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.UserID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="create-button" asp-action="Edit" asp-route-id="@Model.UserID">Edit</a>
+    <a class="create-button-2" asp-controller="ManagerOverview" asp-action="Index">Back to List</a>
+    <a class="create-button-2" asp-action="UserAddressMap" asp-route-id="@Model.UserID">User's Address Map</a><br>
 </div>

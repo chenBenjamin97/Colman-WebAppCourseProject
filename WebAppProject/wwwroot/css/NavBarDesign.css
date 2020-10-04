@@ -24,10 +24,11 @@
     font-size: 40px;
 }
 
-.NavigationBar .logo-text span{
-    color: rgb(255, 51, 0);
-    font-weight: bold;
-}
+    .NavigationBar .logo-text span {
+        color: #ff0303;
+        font-weight: bold;
+        font-size: 45px;
+    }
 
 .NavigationBar ul{
     float:right;

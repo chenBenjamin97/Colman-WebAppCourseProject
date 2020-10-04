@@ -5,54 +5,55 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<!--Edit Contact Application-->
 
-<h4>ContactApplication</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<h1 class="Page-generic-headline">Edit Contact Application</h1>
+
+<div class="ManagerOverviewPageWrapper">
+    <div>
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ContactAppID" class="control-label"></label>
-                <input asp-for="ContactAppID" class="form-control" disabled="disabled" />
+                <label asp-for="ContactAppID" class="create-label"></label>
+                <input asp-for="ContactAppID" class="create-input" disabled="disabled" />
                 <span asp-validation-for="ContactAppID" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+            <div>
+                <label asp-for="Title" class="create-label"></label>
+                <input asp-for="Title" class="create-input" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Message" class="control-label"></label>
-                <input asp-for="Message" class="form-control" />
+            <div>
+                <label asp-for="Message" class="create-label"></label>
+                <input asp-for="Message" class="create-input" />
                 <span asp-validation-for="Message" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ContactType" class="control-label"></label>
-                <select asp-for="ContactType" class="form-control">
+            <div>
+                <label asp-for="ContactType" class="create-label"></label>
+                <select asp-for="ContactType" class="create-input">
                     <option value=@Config.ContactAppType.WaterTransaction>Water</option>
                     <option value=@Config.ContactAppType.ElectricityTransaction>Electricity</option>
                     <option value=@Config.ContactAppType.PropertyTaxTransaction>Property Tax</option>
                 </select>
                 <span asp-validation-for="ContactType" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CreateDate" class="control-label"></label>
-                <input asp-for="CreateDate" class="form-control" disabled="disabled" />
+            <div>
+                <label asp-for="CreateDate" class="create-label"></label>
+                <input asp-for="CreateDate" class="create-input" disabled="disabled" />
                 <span asp-validation-for="CreateDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                Change Image (Not Required): <input asp-for="Img" id="fileInputField" accept="image/*" /> <br>
+            <div>
+                <label class="create-label">Change image (optional)</label>
+                <input asp-for="Img" id="fileInputField" accept="image/*" placeholder="Choose file" /> <br>
             </div>
             @{
                 string isAdmin = Context.Session.GetString("IsAdmin");
 
                 if (isAdmin == "true")
                 {
-                    <div class="form-group">
-                        <label asp-for="Status" class="control-label"></label>
-                        <select asp-for="Status" class="form-control">
+                    <div>
+                        <label asp-for="Status" class="create-label"></label>
+                        <select asp-for="Status" class="create-input">
                             <option value=@Config.TransactionStatus.Open>Open</option>
                             <option value=@Config.TransactionStatus.Closed>Closed</option>
                         </select>
@@ -61,15 +62,15 @@
                 }
                 else
                 {
-                    <div class="form-group">
-                        <label asp-for="Status" class="control-label"></label>
-                        <input asp-for="Status" class="form-control" disabled="disabled" />
+                    <div>
+                        <label asp-for="Status" class="create-label"></label>
+                        <input asp-for="Status" class="create-input" disabled="disabled" />
                         <span asp-validation-for="Status" class="text-danger"></span>
                     </div>
                 }
             }
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div>
+                <input type="submit" value="Save" class="create-button" />
             </div>
         </form>
         <form asp-action="Delete">
@@ -77,10 +78,6 @@
             <input type="submit" id="DeleteSubmitted" value="Delete" class="delete-button" />
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
