@@ -35,8 +35,6 @@ namespace WebAppProject.Controllers
                 var allowedToSee = _context.ContactApplication.Where(u => u.UserID == userID);
                 return View(await allowedToSee.ToListAsync());
             }
-
-            return View(await _context.ContactApplication.ToListAsync());
         }
 
         // GET: ContactApplications/Details/5
@@ -99,7 +97,7 @@ namespace WebAppProject.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            return View(contactApplication);
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         // GET: ContactApplications/Edit/5
@@ -163,7 +161,7 @@ namespace WebAppProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(ContactAppAfterEdit);
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         // GET: ContactApplications/Delete/5

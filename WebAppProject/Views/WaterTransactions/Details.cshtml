@@ -18,45 +18,35 @@
             <dd class="Details-dd">
                 @Html.DisplayFor(model => model.UserID)
             </dd>
-            <br />
-            <br />
             <dt class="Details-dt">
                 @Html.DisplayNameFor(model => model.WaterMeterLastReadDate)
             </dt>
             <dd class="Details-dd">
                 @Html.DisplayFor(model => model.WaterMeterLastReadDate)
             </dd>
-            <br />
-            <br />
             <dt class="Details-dt">
                 @Html.DisplayNameFor(model => model.ImgPath)
             </dt>
             <dd class="Details-dd">
                 @Html.DisplayFor(model => model.ImgPath)
             </dd>
-            <br />
-            <br />
             <dt class="Details-dt">
                 @Html.DisplayNameFor(model => model.Status)
             </dt>
             <dd class="Details-dd">
                 @Html.DisplayFor(model => model.Status)
             </dd>
-            <br />
-            <br />
             <dt class="Details-dt">
                 @Html.DisplayNameFor(model => model.WaterMeterImg)
             </dt>
             <dd class="Details-dd">
                 <img src="@Url.Content("~/" + @ViewData["ImgPath"].ToString())" alt="error" style="width:70%;height:auto" />
             </dd>
-            <br />
-            <br />
         </dl>
     </div>
 </div>
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model.WaterMeterID" class="create-button" >Edit</a>
-    <a class="create-button-2" asp-action="Index">Back to List</a>
+    <a class="create-button-2" asp-controller="ManagerOverview" asp-action="Index">Back to List</a>
 </div>

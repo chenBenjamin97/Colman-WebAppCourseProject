@@ -90,9 +90,11 @@
 </script>
 
 <script>
-    $('form').submit(function (event) {
-        if ($('#DeleteSubmitted').click()) {
-            alert('Are you sure you want to delete this transaction?');
+    $('#DeleteSubmitted').click(function(event) {
+        if (!confirm('Are You Sure You Want To Delete This Transaction?')) {
+            event.preventDefault();
         }
+        
+        return true;
     })
 </script>
