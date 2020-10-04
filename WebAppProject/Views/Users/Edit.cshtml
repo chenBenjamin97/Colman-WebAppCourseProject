@@ -70,11 +70,12 @@
                     </div>
                 }
             }
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <input type="hidden" asp-for="UserName" />
+            <label asp-for="UserName" class="control-label"></label>
+            <input asp-for="UserName" class="form-control" disabled="disabled" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" />

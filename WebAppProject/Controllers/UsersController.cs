@@ -202,40 +202,37 @@ namespace WebAppProject.Controllers
         {
             user.UserID = id; // This is a disabled field. no one can edit this (not admins as well)
 
+            ModelState.Remove("UserName"); // UserName Cannot be editted - a disabled field
+            ModelState.Remove("UserID"); // UserName Cannot be editted - a disabled field
+
             if (ModelState.IsValid)
             {
-                System.Collections.Generic.List<User> objUser;
-
-                using (_context)
+                try
                 {
-                    objUser = await _context.User.Where(u => u.Email.Equals(user.Email) || u.UserName.Equals(user.UserName)).ToListAsync();
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
                 }
-
-                if (objUser.Count == 0 || (objUser.Count == 1 && objUser[0].UserID.Equals(id))) // Validate no Duplicate email or username
+                catch (DbUpdateConcurrencyException)
                 {
-                    try
+                    if (!UserExists(user.UserID))
                     {
-                        _context.Update(user);
-                        await _context.SaveChangesAsync();
+                        return NotFound();
                     }
-                    catch (DbUpdateConcurrencyException)
+                    else
                     {
-                        if (!UserExists(user.UserID))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
+                        throw;
                     }
-                    return View(user);
                 }
-                else
-                {
-                    ModelState.AddModelError("", "This Email address / username is already taken");
-                }
+
+                return View(user);
             }
+            else
+            {
+                //ModelState.AddModelError("", "This Email address / username is already taken");
+
+                //Throwing a message from User Validations if needed
+            }
+
             return View();
         }
 
