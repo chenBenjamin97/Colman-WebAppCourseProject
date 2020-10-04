@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewData["Title"] = "User's Address Map View";
+}
+
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            border: inherit;
+            border-radius: inherit;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: white;
+        }
+
+        th {
+            font-weight: bolder;
+        }
+    </style>
+</head>
+
+<h1 class="Page-generic-headline">Near By</h1>
+
+<div class="ManagerOverviewPageWrapper">
+    <div style="float: inherit">
+        <iframe src="@ViewData["MapIframeSrc"].ToString()" width="100%" height="400"></iframe>
+    </div>
+</div>
+
+<div class="ManagerOverviewPageWrapper">
+    <table id="NearbyResturantsTable">
+        <tr>
+            <th>Index</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Open Now</th>
+            <th>Price Level</th>
+            <th>Rating</th>
+            <th>Total Ratings</th>
+        </tr>
+    </table>
+</div>
+
+<script>
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        contentType: 'application/json',
+        url: '/Users/GetNearbyResturants',
+        data: { id: @ViewData["RequestUserID"].ToString()},
+        success: function (jsonData) {
+            if (jsonData != null) {
+                console.log(jsonData);
+                $.each(jsonData.results, function (i, resturant) {
+                    $('<tr>').append(
+                        $('<td>').text(i+1),
+                        $('<td>').text(resturant.name),
+                        $('<td>').text(resturant.vicinity),
+                        $('<td>').text(resturant.opening_hours.open_now),
+                        $('<td>').text(resturant.price_level),
+                        $('<td>').text(resturant.rating),
+                        $('<td>').text(resturant.user_ratings_total)
+                    ).appendTo('#NearbyResturantsTable');
+                })
+
+            } else {
+                console.log("NULL Response from action")
+            }
+        }
+    })
+</script>

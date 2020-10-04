@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace WebAppProject
@@ -24,6 +25,9 @@ namespace WebAppProject
         public static string RelativePropertyTaxFilesPath = Path.Combine(StaticImagesDirName, "PropertyTax"); //Used when client looks for file via http request to the web server
         public static string RelativeContactApplicationFilesPath = Path.Combine(StaticImagesDirName, "ContactApplication"); //Used when client looks for file via http request to the web server
 
+        public static string GoogleMapsAPIKey = "AIzaSyDlZpqRaWW6LOCh0xvTCONg9vaZ8pkH0X0";
+
+        public static HttpClient APIHttpClient = new HttpClient();
 
         public enum TransactionStatus
         {
