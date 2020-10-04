@@ -85,7 +85,8 @@
             </div>
         </form>
         @{
-            if (isAdmin == "true") // Only Admin can delete users
+            string is_Admin = Context.Session.GetString("IsAdmin");
+            if (is_Admin == "true") // Only Admin can delete users
             {
                 <form asp-action="Delete">
                     <input type="hidden" value="@Model.UserID" name="id" asp-for="UserID" />
