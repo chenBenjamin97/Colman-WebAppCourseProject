@@ -38,8 +38,10 @@
             <dt class="Details-dt">
                 @Html.DisplayNameFor(model => model.PropertyTaxContractImg)
             </dt>
-            <dd class="Details-dd">
-                <img src="@Url.Content("~/" + @ViewData["ImgPath"].ToString())" alt="error" style="width:70%;height:auto" />
+            <dd class="Details-dd-image">
+                <a target="_blank" href="@Url.Content("~/" + @ViewData["ImgPath"].ToString())">
+                    <img src="@Url.Content("~/" + @ViewData["ImgPath"].ToString())" alt="ERROR" class="ImageContainer" />
+                </a>
             </dd>
         </dl>
     </div>

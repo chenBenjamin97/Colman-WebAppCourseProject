@@ -55,17 +55,22 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Img)
         </dt>
-        <dd class="col-sm-10">
             @if (ViewData["ImgPath"].ToString().Equals("No Image Attached"))
             {
-                <div>No image attached to this application</div>
+                <dd class="col-sm-10">
+                    <div>No image attached to this application</div>
+                </dd>
             }
             else
             {
-                <img src="@Url.Content("~/" + @ViewData["ImgPath"].ToString())" alt="No image attached to this application." style="width:70%;height:auto" />
+                <dd class="Details-dd-image">
+                    <a target="_blank" href="@Url.Content("~/" + @ViewData["ImgPath"].ToString())">
+                        <img src="@Url.Content("~/" + @ViewData["ImgPath"].ToString())" alt="ERROR" class="ImageContainer" />
+                    </a>
+                </dd>
             }
-        </dd>
-    </dl>
+        <!--Complete-->
+        </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ContactAppID">Edit</a> |
