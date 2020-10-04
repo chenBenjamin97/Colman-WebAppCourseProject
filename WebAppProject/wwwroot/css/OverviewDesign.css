@@ -22,12 +22,10 @@
     }
 
 .ManagerOverviewPageWrapper {
-    margin: 50px 50px 50px 50px;
+    margin: 2% 12.5% 5% 12.5%;
     background: rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     width: 75%;
-    margin-left: 12.5%;
-    margin-right: 12.5%;
     position: relative;
     box-shadow: 3px 0px 3px 5px white;
 }
