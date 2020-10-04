@@ -6,6 +6,8 @@ using WebAppProject.Data;
 using WebAppProject.Models;
 using System.Data;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace WebAppProject.Controllers
 {
@@ -203,7 +205,7 @@ namespace WebAppProject.Controllers
             user.UserID = id; // This is a disabled field. no one can edit this (not admins as well)
 
             ModelState.Remove("UserName"); // UserName Cannot be editted - a disabled field
-            ModelState.Remove("UserID"); // UserName Cannot be editted - a disabled field
+            ModelState.Remove("UserID"); // UserID Cannot be editted - a disabled field
 
             if (ModelState.IsValid)
             {
@@ -263,6 +265,88 @@ namespace WebAppProject.Controllers
             _context.User.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UserAddressMap(int id)
+        {
+            var user = await _context.User.FindAsync(id);
+            
+            var PropertyCity = user.PropertyCity;
+            PropertyCity = PropertyCity.Trim();
+            string PropertyCityForEmbedMap = PropertyCity.Replace(" ", "+");
+
+            var PropertyStreet = user.PropertyStreet;
+            PropertyStreet = PropertyStreet.Trim();
+            string PropertyStreetForEmbedMap = PropertyStreet.Replace(" ", "+");
+
+            var PropertyStreetNumber = user.PropertyStreetNumber.ToString();
+            PropertyStreetNumber = PropertyStreetNumber.Trim();
+
+            string FullUserAddressMapQueryFormat = string.Format("{0}+{1},{2}+Israel", PropertyStreetForEmbedMap, PropertyStreetNumber, PropertyCityForEmbedMap);
+
+            string MapToUserAddressSrc = string.Format("https://www.google.com/maps/embed/v1/place?key={0}&q={1}", Config.GoogleMapsAPIKey, FullUserAddressMapQueryFormat);
+
+            ViewData["MapIframeSrc"] = MapToUserAddressSrc;
+            ViewData["RequestUserID"] = id;
+
+            return View();
+        }
+        
+        [HttpGet]
+        public async Task<string> GetNearbyResturants(int id)
+        {
+            string responseBody = null;
+            string radius = "1500"; // meters
+
+            var user = await _context.User.FindAsync(id);
+
+            var PropertyCity = user.PropertyCity;
+            PropertyCity = PropertyCity.Trim();
+            string PropertyCityForGeoLocation = PropertyCity.Replace(" ", "+");
+
+            var PropertyStreet = user.PropertyStreet;
+            PropertyStreet = PropertyStreet.Trim();
+            string PropertyStreetForGeoLocation = PropertyStreet.Replace(" ", "+");
+
+            var PropertyStreetNumber = user.PropertyStreetNumber.ToString();
+            PropertyStreetNumber = PropertyStreetNumber.Trim();
+
+            string FullUserAddressGeoLocationFormat = string.Format("{0}+{1}+{2}+Israel", PropertyStreetForGeoLocation, PropertyStreetNumber, PropertyCityForGeoLocation);
+
+            string UserAddressGeoLocation = await GeoCodeAddress(FullUserAddressGeoLocationFormat);
+
+            string NearbyResturantsSrc = string.Format("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0}&radius={1}&type=restaurant&key={2}", UserAddressGeoLocation, radius, Config.GoogleMapsAPIKey);
+
+            HttpResponseMessage response = await Config.APIHttpClient.GetAsync(NearbyResturantsSrc);
+
+            if (response.IsSuccessStatusCode)
+            {
+                responseBody = await response.Content.ReadAsStringAsync();
+            }
+
+            return responseBody;
+        }
+
+        public async Task<string> GeoCodeAddress(string queryAddress)
+        {
+            string GeoCodeAddressURL = string.Format("https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}", queryAddress, Config.GoogleMapsAPIKey);
+
+            HttpResponseMessage response = await Config.APIHttpClient.GetAsync(GeoCodeAddressURL);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+
+                JObject responseBodyJSON = JObject.Parse(responseBody);
+
+                string lat = (string)responseBodyJSON.SelectToken("results[0].geometry.location.lat");
+                string lng = (string)responseBodyJSON.SelectToken("results[0].geometry.location.lng");
+
+                return string.Format("{0},{1}", lat, lng);
+            }
+
+            return null;
         }
 
         private bool UserExists(int id)
