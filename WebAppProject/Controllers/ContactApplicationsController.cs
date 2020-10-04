@@ -94,8 +94,6 @@ namespace WebAppProject.Controllers
                     _context.Add(contactApplication);
                     await _context.SaveChangesAsync(); // let this contact application get ID from SQL server
                 }
-
-                return RedirectToAction(nameof(Index));
             }
             return RedirectToAction("Index", "ManagerOverview");
         }
@@ -199,7 +197,7 @@ namespace WebAppProject.Controllers
             _context.ContactApplication.Remove(contactApplication);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         private bool ContactApplicationExists(int id)

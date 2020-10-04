@@ -89,7 +89,7 @@ namespace WebAppProject.Controllers
                 propertyTax.ImgPath = ImgPathAfterSave;
                 _context.Add(propertyTax);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "ManagerOverview");
             }
 
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", propertyTax.UserID);
@@ -191,7 +191,7 @@ namespace WebAppProject.Controllers
             _context.PropertyTaxTransactions.Remove(propertTaxTransaction);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         private bool PropertyTaxExists(int id)

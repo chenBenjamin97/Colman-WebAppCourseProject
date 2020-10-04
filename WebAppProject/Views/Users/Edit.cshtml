@@ -81,12 +81,29 @@
                 }
             }
             <div>
-               <input type="submit" value="Save" class="create-button" />
+                <input type="submit" value="Save" class="create-button" />
             </div>
         </form>
+        @{
+            if (isAdmin == "true") // Only Admin can delete users
+            {
+                <form asp-action="Delete">
+                    <input type="hidden" value="@Model.UserID" name="id" asp-for="UserID" />
+                    <input type="submit" id="DeleteSubmitted" value="Delete" class="delete-button" />
+                </form>
+            }
+        }
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script>
+    $('#DeleteSubmitted').click(function (event) {
+        if (!confirm('Are You Sure You Want To Delete This Transaction?')) {
+            event.preventDefault();
+        }
+    })
+</script>

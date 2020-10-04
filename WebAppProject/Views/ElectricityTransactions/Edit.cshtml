@@ -57,11 +57,11 @@
             </div>
             <div>
                 <input type="submit" value="Save" class="create-button" />
-                <form asp-action="Delete">
-                    <input type="hidden" asp-for="ElectricityMeterID" />
-                    <input type="submit" id="DeleteSubmitted" value="Delete" class="delete-button" />
-                </form>
             </div>
+        </form>
+        <form asp-action="Delete">
+            <input type="hidden" value="@Model.ElectricityMeterID" name="id" asp-for="ElectricityMeterID" />
+            <input type="submit" id="DeleteSubmitted" value="Delete" class="delete-button" />
         </form>
     </div>
 </div>
@@ -94,7 +94,5 @@
         if (!confirm('Are You Sure You Want To Delete This Transaction?')) {
             event.preventDefault();
         }
-        
-        return true;
     })
 </script>

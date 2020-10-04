@@ -183,13 +183,19 @@ namespace WebAppProject.Controllers
             var electricityTransaction = await _context.ElectricityTransactions.FindAsync(id);
 
             // Delete file from disk:
+            try
+            {
             Image.Delete(electricityTransaction.ImgPath);
+            } catch
+            {
+                // Logic Error, Transaction With No Image
+            }
 
             // Delete transaction from DB:
             _context.ElectricityTransactions.Remove(electricityTransaction);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         private bool ElectricityTransactionExists(int id)

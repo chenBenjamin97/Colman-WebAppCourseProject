@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "User's Address Map View";
+    ViewData["Title"] = "My Neighborhood";
 }
 
 <head>
@@ -30,13 +30,15 @@
     </style>
 </head>
 
-<h1 class="Page-generic-headline">Near By</h1>
+<h1 class="Page-generic-headline">My Neighborhood</h1>
 
 <div class="ManagerOverviewPageWrapper">
     <div style="float: inherit">
         <iframe src="@ViewData["MapIframeSrc"].ToString()" width="100%" height="400"></iframe>
     </div>
 </div>
+
+<h3 class="Page-generic-headline">Resturants Near You:</h3>
 
 <div class="ManagerOverviewPageWrapper">
     <table id="NearbyResturantsTable">

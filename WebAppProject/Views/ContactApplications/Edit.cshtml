@@ -72,6 +72,10 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+        <form asp-action="Delete">
+            <input type="hidden" value="@Model.ContactAppID" name="id" asp-for="ContactAppID" />
+            <input type="submit" id="DeleteSubmitted" value="Delete" class="delete-button" />
+        </form>
     </div>
 </div>
 
@@ -99,5 +103,13 @@
         }
 
         return true; // No file input
+    })
+</script>
+
+<script>
+    $('#DeleteSubmitted').click(function (event) {
+        if (!confirm('Are You Sure You Want To Delete This Transaction?')) {
+            event.preventDefault();
+        }
     })
 </script>
