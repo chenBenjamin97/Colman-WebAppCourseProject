@@ -32,12 +32,17 @@
         <ul id="NavBarList" class="nav NavBarHidden">
             @{
                 string userFirstName = Context.Session.GetString("FirstName");
+                var userID = Context.Session.GetInt32("UserID");
 
                 if (userFirstName != "null")
                 {
                     <li><a href="@Url.Action("Index", "ManagerOverview")">Home <i class="fas fa-home"></i></a></li>
                     <li>
-                        <a><i>Hello, @userFirstName</i></a>
+                        <a><i>Hello, @userFirstName <i class="fa fa-chevron-down" style="font-size: .8em;"></i></i></a>
+                        <ul style="left:0px;">
+                            <li><a asp-controller="Users" asp-action="Edit" asp-route-id="@userID.ToString()">Edit User <span style="float:right"><i class="fas fa-user-edit"></i></span></a></li>
+                            <li><a asp-controller="Users" asp-action="UserAddressMap" asp-route-id="@userID.ToString()">Near Restourants <span style="float:right"><i class="fas fa-utensils"></i></span></a></li>
+                        </ul>
                     </li>
                     if (Context.Session.GetString("IsAdmin").Equals("true"))
                     {
