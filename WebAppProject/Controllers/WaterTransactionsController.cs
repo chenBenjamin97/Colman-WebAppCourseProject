@@ -88,7 +88,7 @@ namespace WebAppProject.Controllers
                 waterTransaction.ImgPath = ImgPathAfterSave;
                 _context.Add(waterTransaction);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "ManagerOverview");
             }
 
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", waterTransaction.UserID);
@@ -153,10 +153,9 @@ namespace WebAppProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", waterTransactionAfterEdit.UserID);
-            return View(waterTransactionAfterEdit);
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         // GET: WaterTransactions/Delete/5
@@ -192,7 +191,7 @@ namespace WebAppProject.Controllers
             _context.WaterTransactions.Remove(waterTransaction);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         private bool WaterTransactionExists(int id)

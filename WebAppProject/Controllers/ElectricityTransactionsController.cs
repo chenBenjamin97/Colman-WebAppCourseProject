@@ -87,11 +87,10 @@ namespace WebAppProject.Controllers
                 electricityTransaction.ImgPath = ImgPathAfterSave;
                 _context.Add(electricityTransaction);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
 
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", electricityTransaction.UserID);
-            return View(electricityTransaction);
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         // GET: ElectricityTransactions/Edit/5
@@ -152,10 +151,9 @@ namespace WebAppProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["UserID"] = new SelectList(_context.User, "UserID", "UserID", electricityTransactionAfterEdit.UserID);
-            return View(electricityTransactionAfterEdit);
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         // GET: ElectricityTransactions/Delete/5
@@ -185,13 +183,19 @@ namespace WebAppProject.Controllers
             var electricityTransaction = await _context.ElectricityTransactions.FindAsync(id);
 
             // Delete file from disk:
+            try
+            {
             Image.Delete(electricityTransaction.ImgPath);
+            } catch
+            {
+                // Logic Error, Transaction With No Image
+            }
 
             // Delete transaction from DB:
             _context.ElectricityTransactions.Remove(electricityTransaction);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         private bool ElectricityTransactionExists(int id)

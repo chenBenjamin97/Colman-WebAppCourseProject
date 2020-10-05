@@ -35,8 +35,6 @@ namespace WebAppProject.Controllers
                 var allowedToSee = _context.ContactApplication.Where(u => u.UserID == userID);
                 return View(await allowedToSee.ToListAsync());
             }
-
-            return View(await _context.ContactApplication.ToListAsync());
         }
 
         // GET: ContactApplications/Details/5
@@ -96,10 +94,8 @@ namespace WebAppProject.Controllers
                     _context.Add(contactApplication);
                     await _context.SaveChangesAsync(); // let this contact application get ID from SQL server
                 }
-
-                return RedirectToAction(nameof(Index));
             }
-            return View(contactApplication);
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         // GET: ContactApplications/Edit/5
@@ -163,7 +159,7 @@ namespace WebAppProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(ContactAppAfterEdit);
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         // GET: ContactApplications/Delete/5
@@ -201,7 +197,7 @@ namespace WebAppProject.Controllers
             _context.ContactApplication.Remove(contactApplication);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         private bool ContactApplicationExists(int id)

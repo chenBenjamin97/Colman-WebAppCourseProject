@@ -4,45 +4,42 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<!--Create Contact Application-->
 
-<h4>Contact Us</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<h1 class="Page-generic-headline">New Contact Application</h1>
+
+<div class="ManagerOverviewPageWrapper">
+    <div>
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ContactType" class="control-label"></label>
-                <select asp-for="ContactType" class="form-control">
+            <div>
+                <label asp-for="ContactType" class="create-label"></label>
+                <select asp-for="ContactType" style="width:400px;" class="create-input">
                     <option value=@Config.ContactAppType.WaterTransaction>Water</option>
                     <option value=@Config.ContactAppType.ElectricityTransaction>Electricity</option>
                     <option value=@Config.ContactAppType.PropertyTaxTransaction>Property Tax</option>
                 </select>
                 <span asp-validation-for="ContactType" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" placeholder="Enter Application's Title Here.." required />
+            <div>
+                <label asp-for="Title" class="create-label"></label>
+                <input asp-for="Title" class="create-input" style="width:400px;" placeholder="Enter Application's Title.." required />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Message" class="control-label"></label>
-                <textarea asp-for="Message" class="form-control" rows="4" placeholder="Enter Application's Content Here.." required></textarea>
+            <div>
+                <label asp-for="Message" class="create-label"></label>
+                <textarea asp-for="Message" class="create-input" rows="4" style="width:400px; height:85px;" placeholder="Enter Application's Content Here.." required></textarea>
                 <span asp-validation-for="Message" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                Image (Not Required): <input asp-for="Img" id="fileInputField" accept="image/*" /> <br>
+            <div>
+                <label class="create-label">Image (Not required)</label>
+                <input asp-for="Img" id="fileInputField" style="width:400px;" accept="image/*" placeholder="Choose File.." /><br>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="create-button" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

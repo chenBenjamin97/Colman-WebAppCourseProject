@@ -213,6 +213,8 @@ namespace WebAppProject.Controllers
                 {
                     _context.Update(user);
                     await _context.SaveChangesAsync();
+                    
+                    HttpContext.Session.SetString("FirstName", user.FirstName);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -226,7 +228,7 @@ namespace WebAppProject.Controllers
                     }
                 }
 
-                return View(user);
+                return RedirectToAction("Index", "ManagerOverview");
             }
             else
             {
@@ -264,7 +266,7 @@ namespace WebAppProject.Controllers
             var user = await _context.User.FindAsync(id);
             _context.User.Remove(user);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "ManagerOverview");
         }
 
         [HttpGet]
