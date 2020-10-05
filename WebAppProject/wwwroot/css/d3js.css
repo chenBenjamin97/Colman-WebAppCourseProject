@@ -10,7 +10,6 @@ div#container {
 }
 
 div#month_pie_chart {
-    width: 1000px;
     height: 650px;
     margin: auto;
 }
@@ -20,9 +19,23 @@ svg {
     height: 100%;
 }
 
-.bar {
-  fill: #80cbc4;
+.statswrapper {
+    margin: 2% 12.5% 5% 12.5%;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    width: 75%;
+    position: relative;
+    box-shadow: 3px 0px 3px 5px white;
 }
+
+.statswrapper svg{
+    margin-left: 25%;
+    width: 75%;
+}
+
+    .bar {
+        fill: #80cbc4;
+    }
 
 text {
   font-size: 12px;

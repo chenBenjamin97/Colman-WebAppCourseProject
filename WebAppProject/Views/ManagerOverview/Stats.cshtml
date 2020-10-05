@@ -4,17 +4,17 @@
     ViewData["Title"] = "Stats";
 }
 
-<h1>Stats</h1>
+<h1 class="Page-generic-headline">Admin Statistics</h1>
 
 <!--Columns Chart, Contact apps grouped by transaction type:-->
-<div id='layout'>
+<div class="ManagerOverviewPageWrapper" id='layout'>
     <div id='container'>
         <svg />
     </div>
 </div>
 
 <!--Dount Chart, Users grouped by enterance MONTH:-->
-<div id="month_pie_chart" style="padding-top: 50px"></div>
+<div class="statswrapper" id="month_pie_chart" style="padding-top: 50px; width:75%;"></div>
 
 <!--Columns Chart, Contact apps grouped by transaction type:-->
 <script>
@@ -217,7 +217,7 @@
         .attr('x', margin)
         .attr('y', 0 - ( (height / 2) - (margin / 2) ))
         .attr('text-anchor', 'middle')
-        .style("text-decoration", "underline")  
+        .style("text-decoration", "none")
         .text('Users Grouped By Entrance Month')
 
 </script>
