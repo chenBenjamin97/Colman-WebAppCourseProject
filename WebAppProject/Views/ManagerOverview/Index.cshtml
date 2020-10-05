@@ -9,10 +9,11 @@
 <!--ManagerOverview-->
 
 <h1 class="Page-generic-headline">Overview</h1>
-@if (Context.Session.GetString("IsAdmin").Equals("true")) {
+@if (Context.Session.GetString("IsAdmin").Equals("true"))
+{
     <a class="Search-button" asp-action="SearchAndResult">Search <i class="fas fa-search"></i></a>
 
-    <div class="ManagerOverviewPageWrapper">
+    <div class="ManagerOverviewPageWrapper" style="margin-bottom:2%">
         <h3>Registered Users List</h3>
         <table class="table">
             <thead>
@@ -100,6 +101,12 @@
         </table>
     </div>
     <div class="clear28"></div>
+}
+
+@if (Context.Session.GetString("IsAdmin").Equals("true"))
+{
+ <h1 class="Page-generic-headline">All Listed Transactions</h1>
+
 }
 
 <div class="ManagerOverviewPageWrapper">
