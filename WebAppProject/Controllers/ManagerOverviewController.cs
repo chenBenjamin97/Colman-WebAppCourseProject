@@ -480,7 +480,8 @@ namespace WebAppProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> JoinSearchAndResult(string? WaterCheckBox, string? ElectricityCheckBox, string? PropertyTaxCheckBox)
+        public async Task<IActionResult> JoinSearchAndResult(string? WaterCheckBox, string? ElectricityCheckBox, string? PropertyTaxCheckBox, 
+            Config.TransactionStatus? WaterwantedStatus, Config.TransactionStatus? ElectricitywantedStatus, Config.TransactionStatus? PropertyTaxwantedStatus)
         {
             ViewModel model = new ViewModel();
 
@@ -493,7 +494,7 @@ namespace WebAppProject.Controllers
 
             if (WaterCheckBox != null && ElectricityCheckBox == null && PropertyTaxCheckBox == null)
             {
-                var allWaterOpenTransactions = await _context.WaterTransactions.Where(water => water.Status == Config.TransactionStatus.Open).ToListAsync();
+                var allWaterOpenTransactions = await _context.WaterTransactions.Where(water => water.Status == WaterwantedStatus).ToListAsync();
                 var allUsers = await _context.User.ToListAsync();
 
                 var UserJoinResult =
@@ -502,13 +503,13 @@ namespace WebAppProject.Controllers
                     on transaction.UserID equals user.UserID into result
                     select result;
 
+                ViewData["SearchType"] = string.Format("All Users Who Have {0} Water Transaction: ", WaterwantedStatus);
                 model.Users = UserJoinResult.Distinct().SelectMany(x => x).ToList(); // Using Select Many in order to flat from IEnumerable<IEnumerable<int>> to IEnumerable<int> and than to List<int>
-                ViewData["SearchType"] = "All Users Who Have Open Water Transaction Only:";
             }
 
             if (WaterCheckBox == null && ElectricityCheckBox != null && PropertyTaxCheckBox == null)
             {
-                var allElectricityOpenTransactions = await _context.ElectricityTransactions.Where(electricity => electricity.Status == Config.TransactionStatus.Open).ToListAsync();
+                var allElectricityOpenTransactions = await _context.ElectricityTransactions.Where(electricity => electricity.Status == ElectricitywantedStatus).ToListAsync();
                 var allUsers = await _context.User.ToListAsync();
 
                 var UserJoinResult =
@@ -517,13 +518,13 @@ namespace WebAppProject.Controllers
                     on transaction.UserID equals user.UserID into result
                     select result;
 
+                ViewData["SearchType"] = string.Format("All Users Who Have {0} Electricity Transaction: ", ElectricitywantedStatus);
                 model.Users = UserJoinResult.Distinct().SelectMany(x => x).ToList(); // Using Select Many in order to flat from IEnumerable<IEnumerable<int>> to IEnumerable<int> and than to List<int>
-                ViewData["SearchType"] = "All Users Who Have Open Electricity Transaction Only:";
             }
 
             if (WaterCheckBox == null && ElectricityCheckBox == null && PropertyTaxCheckBox != null)
             {
-                var allPropertyTaxOpenTransactions = await _context.PropertyTaxTransactions.Where(property => property.Status == Config.TransactionStatus.Open).ToListAsync();
+                var allPropertyTaxOpenTransactions = await _context.PropertyTaxTransactions.Where(property => property.Status == PropertyTaxwantedStatus).ToListAsync();
                 var allUsers = await _context.User.ToListAsync();
 
                 var UserJoinResult =
@@ -532,17 +533,17 @@ namespace WebAppProject.Controllers
                      on transaction.UserID equals user.UserID into result
                      select result;
 
+                ViewData["SearchType"] = string.Format("All Users Who Have {0} Property Tax Transaction: ", PropertyTaxwantedStatus);
                 model.Users = UserJoinResult.Distinct().SelectMany(x => x).ToList(); // Using Select Many in order to flat from IEnumerable<IEnumerable<int>> to IEnumerable<int> and than to List<int>
-                ViewData["SearchType"] = "All Users Who Have Open Property Tax Transaction Only:";
             }
 
             if (WaterCheckBox != null && ElectricityCheckBox != null && PropertyTaxCheckBox == null)
             {
-                var allWaterOpenTransactions = await _context.WaterTransactions.Where(water => water.Status == Config.TransactionStatus.Open).ToListAsync();
-                var allElectricityOpenTransactions = await _context.ElectricityTransactions.Where(electricity => electricity.Status == Config.TransactionStatus.Open).ToListAsync();
+                var allWaterOpenTransactions = await _context.WaterTransactions.Where(water => water.Status == WaterwantedStatus).ToListAsync();
+                var allElectricityOpenTransactions = await _context.ElectricityTransactions.Where(electricity => electricity.Status == ElectricitywantedStatus).ToListAsync();
                 var allUsers = await _context.User.ToListAsync();
 
-                // Get all UserID who have both water transaction OPEN && electricity transaction OPEN
+                // Get all UserID who have both water transaction as wanted && electricity transaction as wanted
                 var transactionJoinUserIDResult =
                     from waterTransaction in allWaterOpenTransactions
                     join electricityTransaction in allElectricityOpenTransactions
@@ -558,17 +559,17 @@ namespace WebAppProject.Controllers
                     on foundTransactions.UserID equals user.UserID into result
                     select result;
 
+                ViewData["SearchType"] = string.Format("All Users Who Have {0} Water Transaction And {1} Electricity Transaction: ", WaterwantedStatus, ElectricitywantedStatus);
                 model.Users = UserJoinResult.Distinct().SelectMany(x => x).ToList(); // Using Select Many in order to flat from IEnumerable<IEnumerable<int>> to IEnumerable<int> and than to List<int>
-                ViewData["SearchType"] = "All Users Who Have Both Electricity Transaction And Water Transaction Open:";
             }
 
             if (WaterCheckBox != null && ElectricityCheckBox == null && PropertyTaxCheckBox != null)
             {
-                var allWaterOpenTransactions = await _context.WaterTransactions.Where(water => water.Status == Config.TransactionStatus.Open).ToListAsync();
-                var allPropertyTaxOpenTransactions = await _context.PropertyTaxTransactions.Where(property => property.Status == Config.TransactionStatus.Open).ToListAsync();
+                var allWaterOpenTransactions = await _context.WaterTransactions.Where(water => water.Status == WaterwantedStatus).ToListAsync();
+                var allPropertyTaxOpenTransactions = await _context.PropertyTaxTransactions.Where(property => property.Status == PropertyTaxwantedStatus).ToListAsync();
                 var allUsers = await _context.User.ToListAsync();
 
-                // Get all UserID who have both propertyTax transaction OPEN && water transaction OPEN
+                // Get all UserID who have both propertyTax transaction as wanted && water transaction as wanted
                 var transactionJoinUserIDResult =
                     from waterTransaction in allWaterOpenTransactions
                     join propertyTaxTransaction in allPropertyTaxOpenTransactions
@@ -584,17 +585,17 @@ namespace WebAppProject.Controllers
                     on foundTransactions.UserID equals user.UserID into result
                     select result;
 
+                ViewData["SearchType"] = string.Format("All Users Who Have {0} Water Transaction And {1} Property Tax Transaction: ", WaterwantedStatus, PropertyTaxwantedStatus);
                 model.Users = UserJoinResult.Distinct().SelectMany(x => x).ToList(); // Using Select Many in order to flat from IEnumerable<IEnumerable<int>> to IEnumerable<int> and than to List<int>
-                ViewData["SearchType"] = "All Users Who Have Both Water Transaction And Property Tax Transaction Open:";
             }
 
             if (WaterCheckBox == null && ElectricityCheckBox != null && PropertyTaxCheckBox != null)
             {
-                var allElectricityOpenTransactions = await _context.ElectricityTransactions.Where(electricity => electricity.Status == Config.TransactionStatus.Open).ToListAsync();
-                var allPropertyTaxOpenTransactions = await _context.PropertyTaxTransactions.Where(property => property.Status == Config.TransactionStatus.Open).ToListAsync();
+                var allElectricityOpenTransactions = await _context.ElectricityTransactions.Where(electricity => electricity.Status == ElectricitywantedStatus).ToListAsync();
+                var allPropertyTaxOpenTransactions = await _context.PropertyTaxTransactions.Where(property => property.Status == PropertyTaxwantedStatus).ToListAsync();
                 var allUsers = await _context.User.ToListAsync();
 
-                // Get all UserID who have both propertyTax transaction OPEN && electricity transaction OPEN
+                // Get all UserID who have both propertyTax transaction as wanted && electricity transaction as wanted
                 var transactionJoinUserIDResult =
                     from electricityTransaction in allElectricityOpenTransactions
                     join propertyTaxTransaction in allPropertyTaxOpenTransactions
@@ -610,18 +611,18 @@ namespace WebAppProject.Controllers
                     on foundTransactions.UserID equals user.UserID into result
                     select result;
 
+                ViewData["SearchType"] = string.Format("All Users Who Have {0} Electricity Transaction And {1} Property Tax Transaction: ", ElectricitywantedStatus, PropertyTaxwantedStatus);
                 model.Users = UserJoinResult.Distinct().SelectMany(x => x).ToList(); // Using Select Many in order to flat from IEnumerable<IEnumerable<int>> to IEnumerable<int> and than to List<int>
-                ViewData["SearchType"] = "All Users Who Have Both Electricity Transaction And Property Tax Transaction Open:";
             }
 
             if (WaterCheckBox != null && ElectricityCheckBox != null && PropertyTaxCheckBox != null)
             {
-                var allElectricityOpenTransactions = await _context.ElectricityTransactions.Where(electricity => electricity.Status == Config.TransactionStatus.Open).ToListAsync();
-                var allPropertyTaxOpenTransactions = await _context.PropertyTaxTransactions.Where(property => property.Status == Config.TransactionStatus.Open).ToListAsync();
-                var allWaterOpenTransactions = await _context.WaterTransactions.Where(water => water.Status == Config.TransactionStatus.Open).ToListAsync();
+                var allElectricityOpenTransactions = await _context.ElectricityTransactions.Where(electricity => electricity.Status == ElectricitywantedStatus).ToListAsync();
+                var allPropertyTaxOpenTransactions = await _context.PropertyTaxTransactions.Where(property => property.Status == PropertyTaxwantedStatus).ToListAsync();
+                var allWaterOpenTransactions = await _context.WaterTransactions.Where(water => water.Status == WaterwantedStatus).ToListAsync();
                 var allUsers = await _context.User.ToListAsync();
 
-                // Get all UserID who have both propertyTax transaction OPEN && electricity transaction OPEN
+                // Get all UserID who have both propertyTax transaction as wanted && electricity transaction as wanted
                 var transactionJoinUserIDResultFirstJoin =
                     from electricityTransaction in allElectricityOpenTransactions
                     join propertyTaxTransaction in allPropertyTaxOpenTransactions
@@ -630,7 +631,7 @@ namespace WebAppProject.Controllers
 
                 var PropertyTaxAndElectricityOpen = transactionJoinUserIDResultFirstJoin.SelectMany(x => x); // Using Select Many in order to flat from IEnumerable<IEnumerable<TransactionType>> to IEnumerable<TransactionType>
 
-                // Get all UserID who have both water transaction OPEN && electricity transaction OPEN
+                // Get all UserID who have both water transaction as wanted && electricity transaction as wanted
                 var transactionJoinUserIDResult =
                     from waterTransaction in allWaterOpenTransactions
                     join electricityTransaction in allElectricityOpenTransactions
@@ -639,14 +640,14 @@ namespace WebAppProject.Controllers
 
                 var WaterAndElectricityOpenSecondJoin = transactionJoinUserIDResult.SelectMany(x => x); // Using Select Many in order to flat from IEnumerable<IEnumerable<TransactionType>> to IEnumerable<TransactionType>
 
-                // Get Electricity Transactions of users who have all types of transaction with OPEN status
+                // Get Electricity Transactions of users who have all types of transaction with as wanted status
                 var allFoundUserIDsResult =
                     from transactionsFirstJoin in PropertyTaxAndElectricityOpen
                     join transactionsSecondJoin in WaterAndElectricityOpenSecondJoin
                     on transactionsFirstJoin.UserID equals transactionsSecondJoin.UserID into result
                     select result.Distinct();
 
-                var UsersWithAllTransactionsTypesOpen = transactionJoinUserIDResult.SelectMany(x => x); // Using Select Many in order to flat from IEnumerable<IEnumerable<TransactionType>> to IEnumerable<TransactionType>
+                var UsersWithAllTransactionsTypesOpen = allFoundUserIDsResult.SelectMany(x => x); // Using Select Many in order to flat from IEnumerable<IEnumerable<TransactionType>> to IEnumerable<TransactionType>
 
                 // Get User Object by UserID
                 var UserJoinResult =
@@ -655,8 +656,8 @@ namespace WebAppProject.Controllers
                     on transaction.UserID equals user.UserID into result
                     select result;
 
+                ViewData["SearchType"] = string.Format("All Users Who Have {0} Electricity Transaction, {1} Property Tax Transaction And {2} Water Transaction:", ElectricitywantedStatus, PropertyTaxwantedStatus, WaterwantedStatus);
                 model.Users = UserJoinResult.Distinct().SelectMany(x => x).ToList(); // Using Select Many in order to flat from IEnumerable<IEnumerable<int>> to IEnumerable<int> and than to List<int>
-                ViewData["SearchType"] = "All Users Who Have Both Electricity Transaction, Property Tax Transaction Open And Water Transaction Open:";
             }
 
             return View(model);

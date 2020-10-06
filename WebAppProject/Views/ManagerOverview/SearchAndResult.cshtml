@@ -187,15 +187,36 @@
     </form>
 
     <form asp-action="JoinSearchAndResult" id="JoinSearchForm">
-        <h3>Search For Users Who Have More Than One Open Transaction:</h3>
-        <input type="checkbox" id="WaterCheckBox" name="WaterCheckBox" value="true">
+        <h3>Search For Users By Transaction's Type And Status:</h3>
+        <input type="checkbox" id="WaterCheckBox" name="WaterCheckBox" value="true" class="WantedTransactionChangedTrigger">
         <label for="WaterCheckBox">Water Transaction</label><br>
-        <input type="checkbox" id="ElectricityCheckBox" name="ElectricityCheckBox" value="true">
+        <div id="WaterJoinApplicationStatusDropDown">
+            <label for="WaterJoinApplicationStatusDropDown">With Status: </label>
+            <select name="WaterwantedStatus">
+                <option value=@Config.TransactionStatus.Open>Open</option>
+                <option value=@Config.TransactionStatus.Closed>Closed</option>
+            </select>
+        </div>
+        <input type="checkbox" id="ElectricityCheckBox" name="ElectricityCheckBox" value="true" class="WantedTransactionChangedTrigger">
         <label for="ElectricityCheckBox">Electricity Transaction</label><br>
-        <input type="checkbox" id="PropertyTaxCheckBox" name="PropertyTaxCheckBox" value="true">
+        <div id="ElectricityJoinApplicationStatusDropDown">
+            <label for="ElectricityJoinApplicationStatusDropDown">With Status: </label>
+            <select name="ElectricitywantedStatus">
+                <option value=@Config.TransactionStatus.Open>Open</option>
+                <option value=@Config.TransactionStatus.Closed>Closed</option>
+            </select>
+        </div>
+        <input type="checkbox" id="PropertyTaxCheckBox" name="PropertyTaxCheckBox" value="true" class="WantedTransactionChangedTrigger">
         <label for="PropertyTaxCheckBox">Property Tax Transaction</label><br>
+        <div id="PropertyTaxJoinApplicationStatusDropDown">
+            <label for="PropertyTaxJoinApplicationStatusDropDown">With Status: </label>
+            <select name="PropertyTaxwantedStatus">
+                <option value=@Config.TransactionStatus.Open>Open</option>
+                <option value=@Config.TransactionStatus.Closed>Closed</option>
+            </select>
+        </div>
 
-        <input type="submit" value="Search" /> <!--EDIT JQUERY WHERE NEEDED-->
+        <input type="submit" value="Search" />
     </form>
 }
 
@@ -522,6 +543,9 @@
         $('#ElectricityTransactionCatagories').hide();
         $('#PropertyTaxTransactionCatagories').hide();
         $('#ContactApplicationCatagories').hide();
+        $('#WaterJoinApplicationStatusDropDown').hide();
+        $('#ElectricityJoinApplicationStatusDropDown').hide();
+        $('#PropertyTaxJoinApplicationStatusDropDown').hide();
     })
 
 
@@ -537,7 +561,29 @@
         })
     })
 
-    $(document).ready(function () {
+    $(document).ready(function () { // Change Transaction checked in Join Search Type
+        $('.WantedTransactionChangedTrigger').change(function() {
+            if ($('#WaterCheckBox').is(':checked')) {
+                $('#WaterJoinApplicationStatusDropDown').show();
+            } else {
+                $('#WaterJoinApplicationStatusDropDown').hide();
+            }
+
+            if ($('#ElectricityCheckBox').is(':checked')) {
+                $('#ElectricityJoinApplicationStatusDropDown').show();
+            } else {
+                $('#ElectricityJoinApplicationStatusDropDown').hide();
+            }
+
+            if ($('#PropertyTaxCheckBox').is(':checked')) {
+                $('#PropertyTaxJoinApplicationStatusDropDown').show();
+            } else {
+                $('#PropertyTaxJoinApplicationStatusDropDown').hide();
+            }
+        });
+    })
+
+    $(document).ready(function () { // Single Model Search view
         $(':radio').click(function () {
             if ($('#User').is(':checked')) {
                 $('#UserCatagories').show();
