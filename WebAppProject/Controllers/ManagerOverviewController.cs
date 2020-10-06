@@ -750,11 +750,10 @@ namespace WebAppProject.Controllers
                 string DateIndex = string.Format("{0}-{1}-1 00:00:00", user.EnteranceDate.Year.ToString(), user.EnteranceDate.Month.ToString());
                 try
                 {
-                    if (user.EnteranceDate.Year > DateTime.Now.Year)
+                    if (user.EnteranceDate.Year <= DateTime.Now.Year) // Do Not Enter To Model Stats where entrance data is in next year
                     {
-                        // Dont Enter This Data To Model
+                        UsersDataReady.Add(DateIndex, 1); // First time a user in this exact year and month register
                     }
-                    UsersDataReady.Add(DateIndex, 1); // First time a user in this exact year and month register
                 }
                 catch (ArgumentException) // Means a date and month same as this user's (key)already exists
                 {
