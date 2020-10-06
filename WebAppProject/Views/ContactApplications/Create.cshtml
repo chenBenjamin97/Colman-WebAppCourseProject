@@ -4,67 +4,119 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
 
-<h4>Contact Us</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ContactType" class="control-label"></label>
-                <select asp-for="ContactType" class="form-control">
-                    <option value=@Config.ContactAppType.WaterTransaction>Water</option>
-                    <option value=@Config.ContactAppType.ElectricityTransaction>Electricity</option>
-                    <option value=@Config.ContactAppType.PropertyTaxTransaction>Property Tax</option>
-                </select>
-                <span asp-validation-for="ContactType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" placeholder="Enter Application's Title Here.." required />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Message" class="control-label"></label>
-                <textarea asp-for="Message" class="form-control" rows="4" placeholder="Enter Application's Content Here.." required></textarea>
-                <span asp-validation-for="Message" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                Image (Not Required): <input asp-for="Img" id="fileInputField" accept="image/*" /> <br>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-
-<script>
-    $('form').submit(function (event) {
-        if ($('#fileInputField').val()) { // Means user filled this field
-            var fileExtension = $('#fileInputField').val().split('.').pop().toLowerCase();
-            switch (fileExtension) {
-                case 'jpg':
-                case 'jpeg':
-                case 'png':
-                    return true;
-                default:
-                    alert("Only jpg/jpeg/png files are allowed");
-                    return false;
-            }
+<head>
+    <style>
+        h1 {
+            color: white;
+            text-shadow: 2px 2px 4px #000000;
         }
 
-        return true; // No file input
-    })
+        aside {
+            width: 50%;
+            padding-left: 15px;
+            margin-left: 15px;
+            float: right;
+            font-style: italic;
+            background-color: lightgray;
+            font-size: 35px;
+        }
 
-</script>
+        .newspaper {
+            column-count: 3;
+        }
+
+        ont-face {
+            font-family: myFirstFont;
+            src: url(sansation_light.woff);
+        }
+
+        div {
+            font-family: myFirstFont;
+        }
+
+    </style>
+</head>
+
+    <h1>Create</h1>
+
+
+    <h4>Contact Us</h4>
+    <hr />
+
+    <aside>
+        <p>
+
+            <div class="newspaper">
+                On this page you can contact us on any topic you choose: problems / faults / special requests / and optimization suggestions. <br />
+                All inquiries will be answered by our call center staff within about 24 hours.<br /><br />
+
+                We will be happy to be at your service to provide you with the best user experiences.<br /><br />
+
+                HOLDERS TEAM
+            </div>
+
+        </p>
+    </aside>
+
+
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="ContactType" class="control-label"></label>
+                    <select asp-for="ContactType" class="form-control">
+                        <option value=@Config.ContactAppType.WaterTransaction>Water</option>
+                        <option value=@Config.ContactAppType.ElectricityTransaction>Electricity</option>
+                        <option value=@Config.ContactAppType.PropertyTaxTransaction>Property Tax</option>
+                    </select>
+                    <span asp-validation-for="ContactType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Enter Application's Title Here.." required />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Message" class="control-label"></label>
+                    <textarea asp-for="Message" class="form-control" rows="4" placeholder="Enter Application's Content Here.." required></textarea>
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    Image (Not Required): <input asp-for="Img" id="fileInputField" accept="image/*" /> <br>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+    <script>
+        $('form').submit(function (event) {
+            if ($('#fileInputField').val()) { // Means user filled this field
+                var fileExtension = $('#fileInputField').val().split('.').pop().toLowerCase();
+                switch (fileExtension) {
+                    case 'jpg':
+                    case 'jpeg':
+                    case 'png':
+                        return true;
+                    default:
+                        alert("Only jpg/jpeg/png files are allowed");
+                        return false;
+                }
+            }
+
+            return true; // No file input
+        })
+
+    </script>

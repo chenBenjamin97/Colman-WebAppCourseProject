@@ -4,11 +4,36 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+
+<canvas id="myCanvas"
+        width="1000"
+        height="100"
+        style="border:0px solid #d3d3d3" ;>
+</canvas>
+
+<script>
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    ctx.font = "39px Arial";
+    ctx.strokeText("My contact Application", 500, 50);
+</script>
+
+
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+
+<section>
+    <p>
+        On this page you can watch all your references <br />
+
+        If you want to open a new one, go to "Create new" page above
+    </p>
+</section>
+
+
 <table class="table">
     <thead>
         <tr>
@@ -34,32 +59,33 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Message)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContactType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImgPath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ContactAppID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ContactAppID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ContactAppID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImgPath)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ContactAppID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ContactAppID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ContactAppID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
