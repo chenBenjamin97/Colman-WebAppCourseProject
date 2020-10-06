@@ -226,24 +226,24 @@
         <h3>Search For Users By Parameters:</h3>
         <input type="checkbox" id="FirstNameCheckBox" name="FirstNameCheckBox" value="true" class="WantedUserParameterChangedTrigger">
         <label for="FirstNameCheckBox">First Name</label><br>
-        <div id="UserFirstNameTextBox">
+        <div id="UserFirstNameTextBoxDiv">
             <label for="wantedFirstName">Contains: </label>
-            <input type="text" name="wantedFirstName" />
+            <input type="text" name="wantedFirstName" id="UserFirstNameTextBox" />
         </div>
         <input type="checkbox" id="LastNameCheckBox" name="LastNameCheckBox" value="true" class="WantedUserParameterChangedTrigger">
         <label for="LastNameCheckBox">Last Name</label><br>
-        <div id="UserLastNameTextBox">
+        <div id="UserLastNameTextBoxDiv">
             <label for="wantedLastName">Contains: </label>
-            <input type="text" name="wantedLastName" />
+            <input type="text" name="wantedLastName" id="UserLastNameTextBox" />
         </div>
         <input type="checkbox" id="CityNameCheckBox" name="CityCheckBox" value="true" class="WantedUserParameterChangedTrigger">
         <label for="CityCheckBox">Property City</label><br>
-        <div id="UserCityNameTextBox">
+        <div id="UserCityNameTextBoxDiv">
             <label for="wantedCity">Contains: </label>
-            <input type="text" name="wantedCity" />
+            <input type="text" name="wantedCity" id="UserCityNameTextBox" />
         </div>
 
-        <input type="submit" value="Search" />
+        <input type="submit" value="Search" id="UserAdvancedSearchButton"/>
     </form>
 }
 
@@ -574,9 +574,9 @@
         $('#ElectricityJoinApplicationStatusDropDown').hide();
         $('#PropertyTaxJoinApplicationStatusDropDown').hide();
         $('#UsersAdvancedSearchForm').hide();
-        $('#UserFirstNameTextBox').hide();
-        $('#UserLastNameTextBox').hide();
-        $('#UserCityNameTextBox').hide();
+        $('#UserFirstNameTextBoxDiv').hide();
+        $('#UserLastNameTextBoxDiv').hide();
+        $('#UserCityNameTextBoxDiv').hide();
     })
 
     $(document).ready(function () { // Change Search Type
@@ -597,32 +597,50 @@
         });
     })
 
+
     $(document).ready(function () { // Change User Parameter checked in Join Search Type
         $('.WantedUserParameterChangedTrigger').change(function() {
             if ($('#FirstNameCheckBox').is(':checked')) {
-                $('#UserFirstNameTextBox').show();
-                $("#UserFirstNameTextBox").attr("required", "true");    
+                $('#UserFirstNameTextBoxDiv').show();
+                $("#UserFirstNameTextBox").prop('required', true);    
             } else {
-                $('#UserFirstNameTextBox').hide();
-                $("#UserFirstNameTextBox").attr("required", "false");    
+                $('#UserFirstNameTextBoxDiv').hide();
+                $("#UserFirstNameTextBox").prop('required', false);       
             }
 
             if ($('#LastNameCheckBox').is(':checked')) {
-                $('#UserLastNameTextBox').show();
-                $("#UserLastNameTextBox").attr("required", "true");    
+                $('#UserLastNameTextBoxDiv').show();
+                $("#UserLastNameTextBox").prop('required', true);     
             } else {
-                $('#UserLastNameTextBox').hide();
-                $("#UserLastNameTextBox").attr("required", "false");
+                $('#UserLastNameTextBoxDiv').hide();
+                $("#UserLastNameTextBox").prop('required', false);  
             }
 
             if ($('#CityNameCheckBox').is(':checked')) {
-                $('#UserCityNameTextBox').show();
-                $("#UserCityNameTextBox").attr("required", "true");    
+                $('#UserCityNameTextBoxDiv').show();
+                $("#UserCityNameTextBox").prop('required', true);       
             } else {
-                $('#UserCityNameTextBox').hide();
-                $("#UserCityNameTextBox").attr("required", "false");    
+                $('#UserCityNameTextBoxDiv').hide();
+                $("#UserCityNameTextBox").prop('required', false);     
             }
         });
+    })
+
+    $('#UserAdvancedSearchButton').click(function (event) {
+        if (($('#FirstNameCheckBox').is(':checked')) && ($("#UserFirstNameTextBox").val().trim() == '')) {
+            alert('First Name Field Is Checked But Empty. Uncheck This Field / Add Value');
+            event.preventDefault();
+        }
+
+        if (($('#LastNameCheckBox').is(':checked')) && ($("#UserLastNameTextBox").val().trim() == '')) {
+            alert('Last Name Field Is Checked But Empty. Uncheck This Field / Add Value');
+            event.preventDefault();
+        }
+
+        if (($('#CityNameCheckBox').is(':checked')) && ($("#UserCityNameTextBox").val().trim() == '')) {
+            alert('Property City Field Is Checked But Empty. Uncheck This Field / Add Value');
+            event.preventDefault();
+        }
     })
 
     $(document).ready(function () { // Change Transaction checked in Join Search Type
