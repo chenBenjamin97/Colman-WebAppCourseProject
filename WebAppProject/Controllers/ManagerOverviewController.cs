@@ -663,6 +663,90 @@ namespace WebAppProject.Controllers
             return View(model);
         }
 
+        //Search by a number of parameters
+        [HttpPost]
+        public async Task<IActionResult> UsersAdvancedSearch(string? FirstNameCheckBox, string? LastNameCheckBox, string? CityCheckBox,
+            string? wantedFirstName, string? wantedLastName, string? wantedCity)
+        {
+            ViewModel model = new ViewModel();
+
+            // Init:
+            model.Users = null;
+            model.WaterTransactions = null;
+            model.ElectricityTransaction = null;
+            model.PropertyTaxTransactions = null;
+            model.ContactApplications = null;
+
+            var allUsers = await _context.User.ToListAsync();
+            IEnumerable<User> result = new List<User>();
+
+            if (FirstNameCheckBox != null && LastNameCheckBox == null && CityCheckBox == null)
+            {
+                result = from u in allUsers
+                              where u.FirstName.Contains(wantedFirstName)
+                              select u;
+
+                ViewData["SearchResultHeader"] = string.Format("Users Who Their First Name Contains \"{0}\":", wantedFirstName);
+            }
+
+            if (FirstNameCheckBox == null && LastNameCheckBox != null && CityCheckBox == null)
+            {
+                result = from u in allUsers
+                         where u.LastName.Contains(wantedLastName)
+                         select u;
+
+                ViewData["SearchResultHeader"] = string.Format("Users Who Their Last Name Contains \"{0}\":", wantedLastName);
+            }
+
+            if (FirstNameCheckBox == null && LastNameCheckBox == null && CityCheckBox != null)
+            {
+                result = from u in allUsers
+                         where u.PropertyCity.Contains(wantedCity)
+                         select u;
+
+                ViewData["SearchResultHeader"] = string.Format("Users Who Their Property's City Name Contains \"{0}\":", wantedCity);
+            }
+
+            if (FirstNameCheckBox != null && LastNameCheckBox != null && CityCheckBox == null)
+            {
+                result = from u in allUsers
+                         where u.FirstName.Contains(wantedFirstName) && u.LastName.Contains(wantedLastName)
+                         select u;
+
+                ViewData["SearchResultHeader"] = string.Format("Users Who Their First Name Contains \"{0}\" And Their Last Name Contains \"{1}\":", wantedFirstName, wantedLastName);
+            }
+
+            if (FirstNameCheckBox != null && LastNameCheckBox == null && CityCheckBox != null)
+            {
+                result = from u in allUsers
+                         where u.FirstName.Contains(wantedFirstName) && u.PropertyCity.Contains(wantedCity)
+                         select u;
+
+                ViewData["SearchResultHeader"] = string.Format("Users Who Their First Name Contains \"{0}\" And Their Property's City Name Contains \"{1}\":", wantedFirstName, wantedCity);
+            }
+
+            if (FirstNameCheckBox == null && LastNameCheckBox != null && CityCheckBox != null)
+            {
+                result = from u in allUsers
+                         where u.LastName.Contains(wantedLastName) && u.PropertyCity.Contains(wantedCity)
+                         select u;
+
+                ViewData["SearchResultHeader"] = string.Format("Users Who Their Last Name Contains \"{0}\" And Their Property's City Name Contains \"{1}\":", wantedLastName, wantedCity);
+            }
+
+            if (FirstNameCheckBox != null && LastNameCheckBox != null && CityCheckBox != null)
+            {
+                result = from u in allUsers
+                         where u.FirstName.Contains(wantedFirstName) && u.LastName.Contains(wantedLastName) && u.PropertyCity.Contains(wantedCity)
+                         select u;
+
+                ViewData["SearchResultHeader"] = string.Format("Users Who Their First Name Contains \"{0}\",Users Who Their Last Name Contains \"{1}\" And Their Property's City Name Contains \"{2}\":", wantedFirstName, wantedLastName, wantedCity);
+            }
+
+            model.Users = result.ToList();
+            return View(model);
+        }
+
         [HttpGet]
         public IActionResult JoinSearchAndResult()
         {

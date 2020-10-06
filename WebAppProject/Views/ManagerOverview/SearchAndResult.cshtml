@@ -20,14 +20,17 @@
         }
     }
 
-    <div>
-        <h2>Search Type:</h2>
-        <input type="radio" id="SearchTypeSimple" name="SearchType" checked>
-        <label for="SearchTypeSimple">Single Model Search</label>
+<div>
+    <h2>Search Type:</h2>
+    <input type="radio" id="SearchTypeSimple" name="SearchType" checked>
+    <label for="SearchTypeSimple">Single Model Search</label>
 
-        <input type="radio" id="SearchTypeJoin" name="SearchType">
-        <label for="SearchTypeJoin">Multiple Models Search</label>
-    </div>
+    <input type="radio" id="SearchTypeJoin" name="SearchType">
+    <label for="SearchTypeJoin">Multiple Models Search</label>
+
+    <input type="radio" id="SearchUserAdvanced" name="SearchType">
+    <label for="SearchUserAdvanced">Advanced user Search</label>
+</div>
 
 
     <form asp-action="SearchAndResult" id="SingleSearchForm">
@@ -214,6 +217,30 @@
                 <option value=@Config.TransactionStatus.Open>Open</option>
                 <option value=@Config.TransactionStatus.Closed>Closed</option>
             </select>
+        </div>
+
+        <input type="submit" value="Search" />
+    </form>
+
+    <form asp-action="UsersAdvancedSearch" id="UsersAdvancedSearchForm">
+        <h3>Search For Users By Parameters:</h3>
+        <input type="checkbox" id="FirstNameCheckBox" name="FirstNameCheckBox" value="true" class="WantedUserParameterChangedTrigger">
+        <label for="FirstNameCheckBox">First Name</label><br>
+        <div id="UserFirstNameTextBox">
+            <label for="wantedFirstName">Contains: </label>
+            <input type="text" name="wantedFirstName" />
+        </div>
+        <input type="checkbox" id="LastNameCheckBox" name="LastNameCheckBox" value="true" class="WantedUserParameterChangedTrigger">
+        <label for="LastNameCheckBox">Last Name</label><br>
+        <div id="UserLastNameTextBox">
+            <label for="wantedLastName">Contains: </label>
+            <input type="text" name="wantedLastName" />
+        </div>
+        <input type="checkbox" id="CityNameCheckBox" name="CityCheckBox" value="true" class="WantedUserParameterChangedTrigger">
+        <label for="CityCheckBox">Property City</label><br>
+        <div id="UserCityNameTextBox">
+            <label for="wantedCity">Contains: </label>
+            <input type="text" name="wantedCity" />
         </div>
 
         <input type="submit" value="Search" />
@@ -546,19 +573,56 @@
         $('#WaterJoinApplicationStatusDropDown').hide();
         $('#ElectricityJoinApplicationStatusDropDown').hide();
         $('#PropertyTaxJoinApplicationStatusDropDown').hide();
+        $('#UsersAdvancedSearchForm').hide();
+        $('#UserFirstNameTextBox').hide();
+        $('#UserLastNameTextBox').hide();
+        $('#UserCityNameTextBox').hide();
     })
-
 
     $(document).ready(function () { // Change Search Type
         $(':radio').click(function () {
             if ($('#SearchTypeSimple').is(':checked')) {
                 $('#SingleSearchForm').show();
                 $('#JoinSearchForm').hide();
-            } else { // Means #SearchTypeJoin is checked
+                $('#UsersAdvancedSearchForm').hide();
+            } else if ($('#SearchTypeJoin').is(':checked')) { 
                 $('#SingleSearchForm').hide();
                 $('#JoinSearchForm').show();
+                $('#UsersAdvancedSearchForm').hide();
+            } else if ($('#SearchUserAdvanced').is(':checked')) { // Means #SearchUserAdvanced is checked
+                $('#SingleSearchForm').hide();
+                $('#JoinSearchForm').hide();
+                $('#UsersAdvancedSearchForm').show();
             }
-        })
+        });
+    })
+
+    $(document).ready(function () { // Change User Parameter checked in Join Search Type
+        $('.WantedUserParameterChangedTrigger').change(function() {
+            if ($('#FirstNameCheckBox').is(':checked')) {
+                $('#UserFirstNameTextBox').show();
+                $("#UserFirstNameTextBox").attr("required", "true");    
+            } else {
+                $('#UserFirstNameTextBox').hide();
+                $("#UserFirstNameTextBox").attr("required", "false");    
+            }
+
+            if ($('#LastNameCheckBox').is(':checked')) {
+                $('#UserLastNameTextBox').show();
+                $("#UserLastNameTextBox").attr("required", "true");    
+            } else {
+                $('#UserLastNameTextBox').hide();
+                $("#UserLastNameTextBox").attr("required", "false");
+            }
+
+            if ($('#CityNameCheckBox').is(':checked')) {
+                $('#UserCityNameTextBox').show();
+                $("#UserCityNameTextBox").attr("required", "true");    
+            } else {
+                $('#UserCityNameTextBox').hide();
+                $("#UserCityNameTextBox").attr("required", "false");    
+            }
+        });
     })
 
     $(document).ready(function () { // Change Transaction checked in Join Search Type
