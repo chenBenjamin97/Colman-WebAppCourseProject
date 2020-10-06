@@ -27,6 +27,8 @@ namespace WebAppProject
 
         public static string GoogleMapsAPIKey = "AIzaSyDlZpqRaWW6LOCh0xvTCONg9vaZ8pkH0X0";
 
+        public static string CsvFilePath = Path.Combine(Directory.GetCurrentDirectory(), "MlDataStats.csv");
+
         public static HttpClient APIHttpClient = new HttpClient();
 
         public enum TransactionStatus

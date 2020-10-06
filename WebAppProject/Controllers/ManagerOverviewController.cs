@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Dynamic;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.ML;
+using Microsoft.ML.Data;
+using Microsoft.ML.Transforms.TimeSeries;
 using Newtonsoft.Json;
 using WebAppProject.Data;
 using WebAppProject.Models;
@@ -674,6 +679,50 @@ namespace WebAppProject.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Predications()
+        {
+            var MlContext = new MLContext();
+
+            var allUsers = await _context.User.ToListAsync();
+            var UsersDataDict = GetDataDict(allUsers);
+            int csvLineCount;
+
+            using (var stream = new StreamReader(Config.CsvFilePath))
+            {
+                int i = 0;
+                while (stream.ReadLine() != null) { i++; }
+
+                csvLineCount = i;
+            }
+
+            var data = MlContext.Data.LoadFromTextFile<DataStructML>(Config.CsvFilePath,
+                hasHeader: false, separatorChar: ',');
+
+            var pipeline = MlContext.Forecasting.ForecastBySsa(
+                nameof(CountForecast.ForeCast), // Output column name
+                nameof(DataStructML.Count), //Input column name
+                windowSize: (int)((csvLineCount/2) - 1), // The length of the window on the series for building the trajectory matrix 
+                seriesLength: 10, // The length of series that is kept in buffer for modeling
+                trainSize: csvLineCount, // Input size for training
+                horizon: 3 // Amount of Forecasts to predict
+                );
+
+            // Train.
+            var model = pipeline.Fit(data);
+
+            // Forecast next 3 values.
+            var forecastEngine = model.CreateTimeSeriesEngine<DataStructML, CountForecast>(MlContext);
+
+            var forecasts = forecastEngine.Predict();
+
+            ViewData["In1MonthsFromNowForecast"] = forecasts.ForeCast[0].ToString();
+            ViewData["In2MonthsFromNowForecast"] = forecasts.ForeCast[1].ToString();
+            ViewData["In3MonthsFromNowForecast"] = forecasts.ForeCast[2].ToString();
+            ViewData["NextYearNumber"] = (DateTime.Now.Year + 1).ToString();
+
+            return View();
+        }
+
         private bool ViewModelExists(int id)
         {
             return _context.ViewModel.Any(e => e.ID == id);
@@ -687,6 +736,48 @@ namespace WebAppProject.Controllers
         public bool isAdmin(HttpContext context)
         {
             return context.Session.GetString("IsAdmin") == "true" ? true : false;
+        }
+
+        public Dictionary<string, int> GetDataDict(List<User> allUsers)
+        {
+            //var allUsers = await _context.User.ToListAsync();
+
+            // Data saved as: "yearNumber-monthNumber-1 00:00:00" (Added 1 to the day and 00:00:00 to hour in order to keep on Date structure) - count
+            var UsersDataReady = new Dictionary<string, int>();
+
+            foreach (var user in allUsers)
+            {
+                string DateIndex = string.Format("{0}-{1}-1 00:00:00", user.EnteranceDate.Year.ToString(), user.EnteranceDate.Month.ToString());
+                try
+                {
+                    if (user.EnteranceDate.Year > DateTime.Now.Year)
+                    {
+                        // Dont Enter This Data To Model
+                    }
+                    UsersDataReady.Add(DateIndex, 1); // First time a user in this exact year and month register
+                }
+                catch (ArgumentException) // Means a date and month same as this user's (key)already exists
+                {
+                    UsersDataReady[DateIndex]++;
+                }
+            }
+
+            var csvDataFormat = new StringBuilder();
+
+            foreach (var dictItem in UsersDataReady)
+            {
+                var newLine = string.Format("{0},{1}", dictItem.Key, dictItem.Value.ToString());
+                csvDataFormat.AppendLine(newLine);
+            }
+
+            // Create the file, or overwrite if the file exists.
+            using (StreamWriter writer = new StreamWriter(new FileStream(Config.CsvFilePath,
+            FileMode.Create, FileAccess.Write)))
+            {
+                writer.Write(csvDataFormat);
+            }
+            
+            return UsersDataReady;
         }
     }
 }
