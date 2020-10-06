@@ -1,0 +1,99 @@
+﻿@model ViewModel
+
+@{
+    ViewData["Title"] = "Search And Stats";
+}
+
+@{
+    <h2>@ViewData["SearchResultHeader"].ToString()</h2>
+
+    if (Model.Users.Count > 0)
+    {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    User ID
+                </th>
+                <th>
+                    First Name
+                </th>
+                <th>
+                    Last Name
+                </th>
+                <th>
+                    Email Address
+                </th>
+                <th>
+                    Enterance Date
+                </th>
+                <th>
+                    City
+                </th>
+                <th>
+                    Street
+                </th>
+                <th>
+                    Street Number
+                </th>
+                <th>
+                    Apartment Number
+                </th>
+                <th>
+                    Is Admin
+                </th>
+                <th>
+                    User Name
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (User user in Model.Users)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.UserID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.EnteranceDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.PropertyCity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.PropertyStreet)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.PropertyStreetNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.ApartmentNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.IsAdmin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.UserName)
+                </td>
+                <td>
+                    <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserID">Edit</a> |
+                    <a asp-controller="Users" asp-action="Details" asp-route-id="@user.UserID">Details</a> |
+                    <a asp-controller="Users" asp-action="Delete" asp-route-id="@user.UserID">Delete</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    }else{
+    <h3>No Users Found</h3>
+    }
+}

@@ -20,14 +20,17 @@
         }
     }
 
-    <div>
-        <h2>Search Type:</h2>
-        <input type="radio" id="SearchTypeSimple" name="SearchType" checked>
-        <label for="SearchTypeSimple">Single Model Search</label>
+<div>
+    <h2>Search Type:</h2>
+    <input type="radio" id="SearchTypeSimple" name="SearchType" checked>
+    <label for="SearchTypeSimple">Single Model Search</label>
 
-        <input type="radio" id="SearchTypeJoin" name="SearchType">
-        <label for="SearchTypeJoin">Multiple Models Search</label>
-    </div>
+    <input type="radio" id="SearchTypeJoin" name="SearchType">
+    <label for="SearchTypeJoin">Multiple Models Search</label>
+
+    <input type="radio" id="SearchUserAdvanced" name="SearchType">
+    <label for="SearchUserAdvanced">Advanced user Search</label>
+</div>
 
 
     <form asp-action="SearchAndResult" id="SingleSearchForm">
@@ -187,15 +190,60 @@
     </form>
 
     <form asp-action="JoinSearchAndResult" id="JoinSearchForm">
-        <h3>Search For Users Who Have More Than One Open Transaction:</h3>
-        <input type="checkbox" id="WaterCheckBox" name="WaterCheckBox" value="true">
+        <h3>Search For Users By Transaction's Type And Status:</h3>
+        <input type="checkbox" id="WaterCheckBox" name="WaterCheckBox" value="true" class="WantedTransactionChangedTrigger">
         <label for="WaterCheckBox">Water Transaction</label><br>
-        <input type="checkbox" id="ElectricityCheckBox" name="ElectricityCheckBox" value="true">
+        <div id="WaterJoinApplicationStatusDropDown">
+            <label for="WaterJoinApplicationStatusDropDown">With Status: </label>
+            <select name="WaterwantedStatus">
+                <option value=@Config.TransactionStatus.Open>Open</option>
+                <option value=@Config.TransactionStatus.Closed>Closed</option>
+            </select>
+        </div>
+        <input type="checkbox" id="ElectricityCheckBox" name="ElectricityCheckBox" value="true" class="WantedTransactionChangedTrigger">
         <label for="ElectricityCheckBox">Electricity Transaction</label><br>
-        <input type="checkbox" id="PropertyTaxCheckBox" name="PropertyTaxCheckBox" value="true">
+        <div id="ElectricityJoinApplicationStatusDropDown">
+            <label for="ElectricityJoinApplicationStatusDropDown">With Status: </label>
+            <select name="ElectricitywantedStatus">
+                <option value=@Config.TransactionStatus.Open>Open</option>
+                <option value=@Config.TransactionStatus.Closed>Closed</option>
+            </select>
+        </div>
+        <input type="checkbox" id="PropertyTaxCheckBox" name="PropertyTaxCheckBox" value="true" class="WantedTransactionChangedTrigger">
         <label for="PropertyTaxCheckBox">Property Tax Transaction</label><br>
+        <div id="PropertyTaxJoinApplicationStatusDropDown">
+            <label for="PropertyTaxJoinApplicationStatusDropDown">With Status: </label>
+            <select name="PropertyTaxwantedStatus">
+                <option value=@Config.TransactionStatus.Open>Open</option>
+                <option value=@Config.TransactionStatus.Closed>Closed</option>
+            </select>
+        </div>
 
-        <input type="submit" value="Search" /> <!--EDIT JQUERY WHERE NEEDED-->
+        <input type="submit" value="Search" />
+    </form>
+
+    <form asp-action="UsersAdvancedSearch" id="UsersAdvancedSearchForm">
+        <h3>Search For Users By Parameters:</h3>
+        <input type="checkbox" id="FirstNameCheckBox" name="FirstNameCheckBox" value="true" class="WantedUserParameterChangedTrigger">
+        <label for="FirstNameCheckBox">First Name</label><br>
+        <div id="UserFirstNameTextBoxDiv">
+            <label for="wantedFirstName">Contains: </label>
+            <input type="text" name="wantedFirstName" id="UserFirstNameTextBox" />
+        </div>
+        <input type="checkbox" id="LastNameCheckBox" name="LastNameCheckBox" value="true" class="WantedUserParameterChangedTrigger">
+        <label for="LastNameCheckBox">Last Name</label><br>
+        <div id="UserLastNameTextBoxDiv">
+            <label for="wantedLastName">Contains: </label>
+            <input type="text" name="wantedLastName" id="UserLastNameTextBox" />
+        </div>
+        <input type="checkbox" id="CityNameCheckBox" name="CityCheckBox" value="true" class="WantedUserParameterChangedTrigger">
+        <label for="CityCheckBox">Property City</label><br>
+        <div id="UserCityNameTextBoxDiv">
+            <label for="wantedCity">Contains: </label>
+            <input type="text" name="wantedCity" id="UserCityNameTextBox" />
+        </div>
+
+        <input type="submit" value="Search" id="UserAdvancedSearchButton"/>
     </form>
 }
 
@@ -522,22 +570,102 @@
         $('#ElectricityTransactionCatagories').hide();
         $('#PropertyTaxTransactionCatagories').hide();
         $('#ContactApplicationCatagories').hide();
+        $('#WaterJoinApplicationStatusDropDown').hide();
+        $('#ElectricityJoinApplicationStatusDropDown').hide();
+        $('#PropertyTaxJoinApplicationStatusDropDown').hide();
+        $('#UsersAdvancedSearchForm').hide();
+        $('#UserFirstNameTextBoxDiv').hide();
+        $('#UserLastNameTextBoxDiv').hide();
+        $('#UserCityNameTextBoxDiv').hide();
     })
-
 
     $(document).ready(function () { // Change Search Type
         $(':radio').click(function () {
             if ($('#SearchTypeSimple').is(':checked')) {
                 $('#SingleSearchForm').show();
                 $('#JoinSearchForm').hide();
-            } else { // Means #SearchTypeJoin is checked
+                $('#UsersAdvancedSearchForm').hide();
+            } else if ($('#SearchTypeJoin').is(':checked')) { 
                 $('#SingleSearchForm').hide();
                 $('#JoinSearchForm').show();
+                $('#UsersAdvancedSearchForm').hide();
+            } else if ($('#SearchUserAdvanced').is(':checked')) { // Means #SearchUserAdvanced is checked
+                $('#SingleSearchForm').hide();
+                $('#JoinSearchForm').hide();
+                $('#UsersAdvancedSearchForm').show();
             }
-        })
+        });
     })
 
-    $(document).ready(function () {
+
+    $(document).ready(function () { // Change User Parameter checked in Join Search Type
+        $('.WantedUserParameterChangedTrigger').change(function() {
+            if ($('#FirstNameCheckBox').is(':checked')) {
+                $('#UserFirstNameTextBoxDiv').show();
+                $("#UserFirstNameTextBox").prop('required', true);    
+            } else {
+                $('#UserFirstNameTextBoxDiv').hide();
+                $("#UserFirstNameTextBox").prop('required', false);       
+            }
+
+            if ($('#LastNameCheckBox').is(':checked')) {
+                $('#UserLastNameTextBoxDiv').show();
+                $("#UserLastNameTextBox").prop('required', true);     
+            } else {
+                $('#UserLastNameTextBoxDiv').hide();
+                $("#UserLastNameTextBox").prop('required', false);  
+            }
+
+            if ($('#CityNameCheckBox').is(':checked')) {
+                $('#UserCityNameTextBoxDiv').show();
+                $("#UserCityNameTextBox").prop('required', true);       
+            } else {
+                $('#UserCityNameTextBoxDiv').hide();
+                $("#UserCityNameTextBox").prop('required', false);     
+            }
+        });
+    })
+
+    $('#UserAdvancedSearchButton').click(function (event) {
+        if (($('#FirstNameCheckBox').is(':checked')) && ($("#UserFirstNameTextBox").val().trim() == '')) {
+            alert('First Name Field Is Checked But Empty. Uncheck This Field / Add Value');
+            event.preventDefault();
+        }
+
+        if (($('#LastNameCheckBox').is(':checked')) && ($("#UserLastNameTextBox").val().trim() == '')) {
+            alert('Last Name Field Is Checked But Empty. Uncheck This Field / Add Value');
+            event.preventDefault();
+        }
+
+        if (($('#CityNameCheckBox').is(':checked')) && ($("#UserCityNameTextBox").val().trim() == '')) {
+            alert('Property City Field Is Checked But Empty. Uncheck This Field / Add Value');
+            event.preventDefault();
+        }
+    })
+
+    $(document).ready(function () { // Change Transaction checked in Join Search Type
+        $('.WantedTransactionChangedTrigger').change(function() {
+            if ($('#WaterCheckBox').is(':checked')) {
+                $('#WaterJoinApplicationStatusDropDown').show();
+            } else {
+                $('#WaterJoinApplicationStatusDropDown').hide();
+            }
+
+            if ($('#ElectricityCheckBox').is(':checked')) {
+                $('#ElectricityJoinApplicationStatusDropDown').show();
+            } else {
+                $('#ElectricityJoinApplicationStatusDropDown').hide();
+            }
+
+            if ($('#PropertyTaxCheckBox').is(':checked')) {
+                $('#PropertyTaxJoinApplicationStatusDropDown').show();
+            } else {
+                $('#PropertyTaxJoinApplicationStatusDropDown').hide();
+            }
+        });
+    })
+
+    $(document).ready(function () { // Single Model Search view
         $(':radio').click(function () {
             if ($('#User').is(':checked')) {
                 $('#UserCatagories').show();
