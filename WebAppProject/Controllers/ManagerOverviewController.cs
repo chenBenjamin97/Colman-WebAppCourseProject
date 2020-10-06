@@ -701,7 +701,7 @@ namespace WebAppProject.Controllers
             var pipeline = MlContext.Forecasting.ForecastBySsa(
                 nameof(CountForecast.ForeCast), // Output column name
                 nameof(DataStructML.Count), //Input column name
-                windowSize: (int)((csvLineCount/2) - 1), // The length of the window on the series for building the trajectory matrix 
+                windowSize: (int)((csvLineCount/2) - 1), // The length of the window on the series for building the trajectory matrix, must be at least 2 and smaller than half of real data size
                 seriesLength: 10, // The length of series that is kept in buffer for modeling
                 trainSize: csvLineCount, // Input size for training
                 horizon: 3 // Amount of Forecasts to predict
