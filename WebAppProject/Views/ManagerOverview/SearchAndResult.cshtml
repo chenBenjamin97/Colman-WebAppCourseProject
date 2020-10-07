@@ -4,563 +4,605 @@
     ViewData["Title"] = "Search And Stats";
 }
 
-<a asp-action="Stats">Overall Stats, Press Here</a>
-<br>
+<canvas id="myCanvas"
+        width="1000"
+        height="100"
+        style="border:0px solid #d3d3d3; margin:3% 0% 0% 25%;">
+</canvas>
 
-@if (ViewData["AfterSearch"].Equals(false))
-{
-    // Join TESTS:
-    var results = ViewData["JoinResults"] as IEnumerable<int>;
+<script>
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    ctx.font = "60px Arial";
+    ctx.strokeText("Search", 500, 50);
+</script>
 
-    if (results != null)
+ <!--Search-->
+
+<div class="ManagerOverviewPageWrapper">
+    @if (ViewData["AfterSearch"].Equals(false))
     {
-        foreach (var current in results)
+        // Join TESTS:
+        var results = ViewData["JoinResults"] as IEnumerable<int>;
+
+        if (results != null)
         {
-            <p>@current</p>
+            foreach (var current in results)
+            {
+                <p>@current</p>
+            }
         }
+
+        <!--Choosing search method-->
+        <div>
+            <h3>Choose the search method you wish to use:</h3>
+            <input type="radio" id="SearchTypeSimple" name="SearchType" style="margin-left:2%;" checked>
+            <label class="Search-type" for="SearchTypeSimple">User/Transaction Single Model Search</label>
+
+            <input type="radio" id="SearchTypeJoin" name="SearchType" style="margin-left:2%;">
+            <label class="Search-type" for="SearchTypeJoin">User Multiple Models Search</label>
+
+            <input type="radio" id="SearchUserAdvanced" name="SearchType" style="margin-left:2%;">
+            <label class="Search-type" for="SearchUserAdvanced">Advanced Users Search</label>
+        </div>
+
+        <!--Search Method: Single Model-->
+        <form asp-action="SearchAndResult" id="SingleSearchForm">
+            <!--Choosing type of listing-->
+            <div>
+                <h3>Choose the type of listing you wish to find:</h3>
+                <input type="radio" id="User" name="SearchDB" value="User"
+                       checked>
+                <label for="User">User</label> <br>
+
+                <input type="radio" id="WaterTransaction" name="SearchDB" value="WaterTransaction">
+                <label for="WaterTransaction">Water Transaction</label> <br>
+
+                <input type="radio" id="ElectricityTransaction" name="SearchDB" value="ElectricityTransaction">
+                <label for="ElectricityTransaction">Electricity Transaction</label> <br>
+
+                <input type="radio" id="PropertyTaxTransaction" name="SearchDB" value="PropertyTaxTransaction">
+                <label for="PropertyTaxTransaction">Property Tax Transaction</label> <br>
+
+                <input type="radio" id="ContactApplications" name="SearchDB" value="ContactApplication">
+                <label for="ContactApplications">Contact Applications</label> <br>
+            </div>
+
+            <!--Searching for User-->
+            <div id="UserCatagories">
+                <h3>Choose the attribute you wish to search by:</h3>
+
+                <input type="radio" id="UserID" name="SearchCatagory" value="UserID"
+                       checked>
+                <label for="UserID"><i>ID</i></label>
+
+                <input type="radio" id="UserFirstName" name="SearchCatagory" value="FirstName">
+                <label for="UserFirstName"><i>First Name</i></label>
+
+                <input type="radio" id="UserLastName" name="SearchCatagory" value="LastName">
+                <label for="UserLastName"><i>Last Name</i></label>
+
+                <input type="radio" id="UserEmail" name="SearchCatagory" value="Email">
+                <label for="UserEmail"><i>Email Address</i></label>
+
+                <input type="radio" id="UserCity" name="SearchCatagory" value="City">
+                <label for="UserCity"><i>City</i></label>
+
+                <input type="radio" id="UserStreet" name="SearchCatagory" value="Street">
+                <label for="UserStreet"><i>Street</i></label>
+
+                <input type="radio" class="dateInput" id="EnteranceDate" name="SearchCatagory" value="EnteranceDate">
+                <label for="EnteranceDate"><i>Enterance Date</i></label>
+
+                <input type="radio" class="hideTextFieldWhenSelected" id="IsAdmin" name="SearchCatagory" value="IsAdmin">
+                <label for="IsAdmin"><i>Admins</i></label>
+            </div>
+
+            <!--Searching for Water-->
+            <div id="WaterTransactionCatagories">
+                <h3>Choose the attribute you wish to search by:</h3>
+
+                <input type="radio" id="WaterID" name="SearchCatagory" value="UserID" checked>
+                <label for="WaterID"><i>User ID</i></label>
+
+                <input type="radio" id="WaterMeterID" name="SearchCatagory" value="WaterMeterID">
+                <label for="WaterMeterID"><i>Water Meter ID</i></label>
+
+                <input type="radio" class="dateInput" id="WaterMeterLastReadDate" name="SearchCatagory" value="WaterMeterLastReadDate">
+                <label for="WaterMeterLastReadDate"><i>Last Read Date</i></label>
+
+                <input type="radio" class="hideTextFieldWhenSelected" id="WaterTransactionStatus" name="SearchCatagory" value="Status">
+                <label for="WaterTransactionStatus">Status</label>
+                <select id="WaterTransactionStatusDropDown" name="wantedStatusWater">
+                    <option value=@Config.TransactionStatus.Open>Open</option>
+                    <option value=@Config.TransactionStatus.Closed>Closed</option>
+                </select>
+            </div>
+
+            <!--Searching for Electricity-->
+            <div id="ElectricityTransactionCatagories">
+                <h3>Choose the attribute you wish to search by:</h3>
+
+                <input type="radio" id="UserIDelectricity" name="SearchCatagory" value="UserID"
+                       checked>
+                <label for="UserIDelectricity"><i>User ID</i></label>
+
+                <input type="radio" id="ElectricityMeterID" name="SearchCatagory" value="ElectricityMeterID">
+                <label for="ElectricityMeterID"><i>Electricity Meter ID</i></label>
+
+                <input type="radio" class="dateInput" id="ElectricityMeterLastRead" name="SearchCatagory" value="ElectricityMeterLastRead">
+                <label for="ElectricityMeterLastRead"><i>Last Read Date</i></label>
+
+                <input type="radio" class="hideTextFieldWhenSelected" id="ElectricityTransactionStatus" name="SearchCatagory" value="Status">
+                <label for="ElectricityTransactionStatus">Status</label>
+                <select id="ElectricityTransactionStatusDropDown" name="wantedStatusElectricity">
+                    <option value=@Config.TransactionStatus.Open>Open</option>
+                    <option value=@Config.TransactionStatus.Closed>Closed</option>
+                </select>
+            </div>
+
+
+            <!--Searching for Property Tax-->
+            <div id="PropertyTaxTransactionCatagories">
+                <h3>Choose the attribute you wish to search by:</h3>
+
+                <input type="radio" id="PropertyUserID" name="SearchCatagory" value="UserID"
+                       checked>
+                <label for="PropertyUserID"><i>User ID</i></label>
+
+                <input type="radio" id="PropertyTaxTransactionID" name="SearchCatagory" value="PropertyID">
+                <label for="PropertyTaxTransactionID"><i>Property ID</i></label>
+
+                <input type="radio" class="hideTextFieldWhenSelected" id="PropertyTaxTransactionStatus" name="SearchCatagory" value="Status">
+                <label for="PropertyTaxTransactionStatus">Status</label>
+                <select id="PropertyTaxTransactionStatusDropDown" name="wantedStatusPropertyTax">
+                    <option value=@Config.TransactionStatus.Open>Open</option>
+                    <option value=@Config.TransactionStatus.Closed>Closed</option>
+                </select>
+            </div>
+
+            <!--Searching for Application-->
+            <div id="ContactApplicationCatagories">
+                <h3>Choose the attribute you wish to search by:</h3>
+
+                <input type="radio" id="UserIDapp" name="SearchCatagory" value="UserID"
+                       checked>
+                <label for="UserIDapp"><i>User ID</i></label>
+
+                <input type="radio" id="ApplicationID" name="SearchCatagory" value="ApplicationID">
+                <label for="ApplicationID"><i>Application ID</i></label>
+
+                <input type="radio" id="ApplicationTitle" name="SearchCatagory" value="ApplicationTitle">
+                <label for="ApplicationTitle"><i>Title</i></label>
+
+                <input type="radio" id="ApplicationMessage" name="SearchCatagory" value="ApplicationMessage">
+                <label for="ApplicationMessage"><i>Message</i></label>
+
+                <input type="radio" class="dateInput" id="CreationDate" name="SearchCatagory" value="CreationDate">
+                <label for="CreationDate"><i>Creation Date</i></label>
+
+                <input type="radio" class="hideTextFieldWhenSelected" id="ApplicationType" name="SearchCatagory" value="ApplicationType">
+                <label for="ApplicationType">Transaction Type</label>
+
+                <select id="ApplicationTypeDropDown" name="ContactType">
+                    <option value=@Config.ContactAppType.WaterTransaction>Water Transaction</option>
+                    <option value=@Config.ContactAppType.ElectricityTransaction>Electricity Transaction</option>
+                    <option value=@Config.ContactAppType.PropertyTaxTransaction>Property Tax Transaction</option>
+                </select>
+
+                <input type="radio" class="hideTextFieldWhenSelected" id="ApplicationStatus" name="SearchCatagory" value="Status">
+                <label for="ApplicationStatus">Status</label>
+
+                <select id="ApplicationStatusDropDown" name="wantedStatusContactApp">
+                    <option value=@Config.TransactionStatus.Open>Open</option>
+                    <option value=@Config.TransactionStatus.Closed>Closed</option>
+                </select>
+            </div>
+
+            <!--Search Container-->
+            <div id="SearchContainer">
+                <h3>Enter Key Word:</h3>
+
+                <input type="search" id="SearchInput" placeholder="Key Word" name="SearchKeyWord" required />
+            </div>
+
+            <input type="submit" class="create-button" value="Search" />
+
+        </form>
+
+        <!--Multiple Model Search-->
+        <form asp-action="JoinSearchAndResult" id="JoinSearchForm">
+            <h3>Search For Users By Transaction Type And Status:</h3>
+
+            <input type="checkbox" id="WaterCheckBox" name="WaterCheckBox" value="true" class="WantedTransactionChangedTrigger" style="margin-left:2%;">
+            <label for="WaterCheckBox" style="cursor:pointer;">Water Transaction</label><br>
+            <div id="WaterJoinApplicationStatusDropDown">
+                <label style="margin-left: 8%; margin-right: 2%; background: #5d5151;" for="WaterJoinApplicationStatusDropDown">With Status: </label>
+                <select name="WaterwantedStatus" id="JoinedWaterTransaction">
+                    <option value=@Config.TransactionStatus.Open>Open</option>
+                    <option value=@Config.TransactionStatus.Closed>Closed</option>
+                </select>
+            </div>
+
+            <input type="checkbox" id="ElectricityCheckBox" name="ElectricityCheckBox" value="true" class="WantedTransactionChangedTrigger" style="margin-left:2%;">
+            <label for="ElectricityCheckBox" style="cursor:pointer;">Electricity Transaction</label><br>
+            <div id="ElectricityJoinApplicationStatusDropDown">
+                <label style="margin-left:8%;margin-right:2%; background:#5d5151;" for="ElectricityJoinApplicationStatusDropDown">With Status: </label>
+                <select name="ElectricitywantedStatus" id="JoinedElectricityTransaction">
+                    <option value=@Config.TransactionStatus.Open>Open</option>
+                    <option value=@Config.TransactionStatus.Closed>Closed</option>
+                </select>
+            </div>
+
+            <input type="checkbox" id="PropertyTaxCheckBox" name="PropertyTaxCheckBox" value="true" class="WantedTransactionChangedTrigger" style="margin-left:2%;">
+            <label for="PropertyTaxCheckBox" style="cursor:pointer;">Property Tax Transaction</label><br>
+            <div id="PropertyTaxJoinApplicationStatusDropDown">
+                <label style="margin-left:8%;margin-right:2%; background:#5d5151;" for="PropertyTaxJoinApplicationStatusDropDown">With Status: </label>
+                <select name="PropertyTaxwantedStatus" id="JoinedPropertyTaxTransaction">
+                    <option value=@Config.TransactionStatus.Open>Open</option>
+                    <option value=@Config.TransactionStatus.Closed>Closed</option>
+                </select>
+            </div>
+
+            <input type="submit" value="Search" class="create-button" />
+        </form>
+
+        <!--Advanced User Search-->
+        <form asp-action="UsersAdvancedSearch" id="UsersAdvancedSearchForm">
+            <h3>Search For Users By Parameters:</h3>
+
+            <input type="checkbox" id="FirstNameCheckBox" name="FirstNameCheckBox" value="true" class="WantedUserParameterChangedTrigger" style="margin-left:2%;">
+            <label for="FirstNameCheckBox" style="cursor:pointer;">First Name</label><br>
+            <div id="UserFirstNameTextBoxDiv">
+                <label for="wantedFirstName" style="margin-left: 8%; margin-right: 2%; background: #5d5151;">Contains: </label>
+                <input type="text" name="wantedFirstName" id="UserFirstNameTextBox" placeholder="Fill This Box"/>
+            </div>
+
+            <input type="checkbox" id="LastNameCheckBox" name="LastNameCheckBox" value="true" class="WantedUserParameterChangedTrigger" style="margin-left:2%;">
+            <label for="LastNameCheckBox" style="cursor:pointer;">Last Name</label><br>
+            <div id="UserLastNameTextBoxDiv">
+                <label for="wantedLastName" style="margin-left: 8%; margin-right: 2%; background: #5d5151;">Contains: </label>
+                <input type="text" name="wantedLastName" id="UserLastNameTextBox" placeholder="Fill This Box"/>
+            </div>
+
+            <input type="checkbox" id="CityNameCheckBox" name="CityCheckBox" value="true" class="WantedUserParameterChangedTrigger" style="margin-left:2%;">
+            <label for="CityNameCheckBox" style="cursor:pointer;">Property City</label><br>
+            <div id="UserCityNameTextBoxDiv">
+                <label for="wantedCity" style="margin-left: 8%; margin-right: 2%; background: #5d5151;">Contains: </label>
+                <input type="text" name="wantedCity" id="UserCityNameTextBox" placeholder="Fill This Box"/>
+            </div>
+
+            <input type="submit" value="Search" id="UserAdvancedSearchButton" class="create-button" />
+        </form>
     }
-
-<div>
-    <h2>Search Type:</h2>
-    <input type="radio" id="SearchTypeSimple" name="SearchType" checked>
-    <label for="SearchTypeSimple">Single Model Search</label>
-
-    <input type="radio" id="SearchTypeJoin" name="SearchType">
-    <label for="SearchTypeJoin">Multiple Models Search</label>
-
-    <input type="radio" id="SearchUserAdvanced" name="SearchType">
-    <label for="SearchUserAdvanced">Advanced user Search</label>
 </div>
 
-
-    <form asp-action="SearchAndResult" id="SingleSearchForm">
-        <h1>Search By Catagory:</h1>
-        <h3>Search For:</h3>
-
-        <input type="radio" id="User" name="SearchDB" value="User"
-               checked>
-        <label for="User">User</label> <br>
-
-        <input type="radio" id="WaterTransaction" name="SearchDB" value="WaterTransaction">
-        <label for="WaterTransaction">Water Transaction</label> <br>
-
-        <input type="radio" id="ElectricityTransaction" name="SearchDB" value="ElectricityTransaction">
-        <label for="ElectricityTransaction">Electricity Transaction</label> <br>
-
-        <input type="radio" id="PropertyTaxTransaction" name="SearchDB" value="PropertyTaxTransaction">
-        <label for="PropertyTaxTransaction">Property Tax Transaction</label> <br>
-
-        <input type="radio" id="ContactApplications" name="SearchDB" value="ContactApplication">
-        <label for="ContactApplications">Contact Applications</label> <br>
-
-        <div id="UserCatagories">
-            <h5>Where:</h5>
-
-            <input type="radio" id="UserID" name="SearchCatagory" value="UserID"
-                   checked>
-            <label for="UserID"><i>ID</i></label>
-
-            <input type="radio" id="UserFirstName" name="SearchCatagory" value="FirstName">
-            <label for="UserFirstName"><i>First Name</i></label>
-
-            <input type="radio" id="UserLastName" name="SearchCatagory" value="LastName">
-            <label for="UserLastName"><i>Last Name</i></label>
-
-            <input type="radio" id="UserEmail" name="SearchCatagory" value="Email">
-            <label for="User"><i>Email Address</i></label>
-
-            <input type="radio" id="UserCity" name="SearchCatagory" value="City">
-            <label for="UserCity"><i>City</i></label>
-
-            <input type="radio" id="UserStreet" name="SearchCatagory" value="Street">
-            <label for="UserStreet"><i>Street</i></label>
-
-            <input type="radio" class="dateInput" id="EnteranceDate" name="SearchCatagory" value="EnteranceDate">
-            <label for="EnteranceDate"><i>Enterance Date</i></label>
-
-            <input type="radio" class="hideTextFieldWhenSelected" id="IsAdmin" name="SearchCatagory" value="IsAdmin">
-            <label for="IsAdmin"><i>Admins</i></label>
-        </div>
-
-
-        <div id="WaterTransactionCatagories">
-            <h5>Where:</h5>
-
-            <input type="radio" id="WaterID" name="SearchCatagory" value="UserID"
-                   checked>
-            <label for="WaterID"><i>User ID</i></label>
-
-            <input type="radio" id="WaterMeterID" name="SearchCatagory" value="WaterMeterID">
-            <label for="WaterMeterID"><i>Water Meter ID</i></label>
-
-            <input type="radio" class="dateInput" id="WaterMeterLastReadDate" name="SearchCatagory" value="WaterMeterLastReadDate">
-            <label for="WaterMeterLastReadDate"><i>Last Read Date</i></label>
-
-            <input type="radio" class="hideTextFieldWhenSelected" id="WaterTransactionStatus" name="SearchCatagory" value="Status">
-            <label for="WaterTransactionStatus">Status</label>
-            <select id="WaterTransactionStatusDropDown" name="wantedStatusWater">
-                <option value=@Config.TransactionStatus.Open>Open</option>
-                <option value=@Config.TransactionStatus.Closed>Closed</option>
-            </select>
-        </div>
-
-
-        <div id="ElectricityTransactionCatagories">
-            <h5>Where:</h5>
-
-            <input type="radio" id="UserID" name="SearchCatagory" value="UserID"
-                   checked>
-            <label for="ElectricityID"><i>User ID</i></label>
-
-            <input type="radio" id="ElectricityMeterID" name="SearchCatagory" value="ElectricityMeterID">
-            <label for="ElectricityMeterID"><i>Electricity Meter ID</i></label>
-
-            <input type="radio" class="dateInput" id="ElectricityMeterLastRead" name="SearchCatagory" value="ElectricityMeterLastRead">
-            <label for="ElectricityMeterLastRead"><i>Last Read Date</i></label>
-
-            <input type="radio" class="hideTextFieldWhenSelected" id="ElectricityTransactionStatus" name="SearchCatagory" value="Status">
-            <label for="ElectricityTransactionStatus">Status</label>
-            <select id="ElectricityTransactionStatusDropDown" name="wantedStatusElectricity">
-                <option value=@Config.TransactionStatus.Open>Open</option>
-                <option value=@Config.TransactionStatus.Closed>Closed</option>
-            </select>
-        </div>
-
-        <div id="PropertyTaxTransactionCatagories">
-            <h5>Where:</h5>
-
-            <input type="radio" id="PropertyUserID" name="SearchCatagory" value="UserID"
-                   checked>
-            <label for="PropertyUserID"><i>User ID</i></label>
-
-            <input type="radio" id="PropertyTaxTransactionID" name="SearchCatagory" value="PropertyID">
-            <label for="PropertyTaxTransactionID"><i>Property ID</i></label>
-
-            <input type="radio" class="hideTextFieldWhenSelected" id="PropertyTaxTransactionStatus" name="SearchCatagory" value="Status">
-            <label for="PropertyTaxyTransactionStatus">Status</label>
-            <select id="PropertyTaxTransactionStatusDropDown" name="wantedStatusPropertyTax">
-                <option value=@Config.TransactionStatus.Open>Open</option>
-                <option value=@Config.TransactionStatus.Closed>Closed</option>
-            </select>
-        </div>
-
-        <div id="ContactApplicationCatagories">
-            <h5>Where:</h5>
-
-            <input type="radio" id="UserID" name="SearchCatagory" value="UserID"
-                   checked>
-            <label for="UserID"><i>User ID</i></label>
-
-            <input type="radio" id="ApplicationID" name="SearchCatagory" value="ApplicationID">
-            <label for="ApplicationID"><i>Application ID</i></label>
-
-            <input type="radio" id="ApplicationTitle" name="SearchCatagory" value="ApplicationTitle">
-            <label for="ApplicationTitle"><i>Title</i></label>
-
-            <input type="radio" id="ApplicationMessage" name="SearchCatagory" value="ApplicationMessage">
-            <label for="ApplicationMessage"><i>Message</i></label>
-
-            <input type="radio" class="dateInput" id="CreationDate" name="SearchCatagory" value="CreationDate">
-            <label for="CreationDate"><i>Creation Date</i></label>
-
-            <input type="radio" class="hideTextFieldWhenSelected" id="ApplicationType" name="SearchCatagory" value="ApplicationType">
-            <label for="ApplicationType">Transaction Type</label>
-
-            <select id="ApplicationTypeDropDown" name="ContactType">
-                <option value=@Config.ContactAppType.WaterTransaction>Water Transaction</option>
-                <option value=@Config.ContactAppType.ElectricityTransaction>Electricity Transaction</option>
-                <option value=@Config.ContactAppType.PropertyTaxTransaction>Property Tax Transaction</option>
-            </select>
-
-            <input type="radio" class="hideTextFieldWhenSelected" id="ApplicationStatus" name="SearchCatagory" value="Status">
-            <label for="ApplicationStatus">Status</label>
-
-            <select id="ApplicationStatusDropDown" name="wantedStatusContactApp">
-                <option value=@Config.TransactionStatus.Open>Open</option>
-                <option value=@Config.TransactionStatus.Closed>Closed</option>
-            </select>
-        </div>
-
-        <div id="SearchContainer">
-            <b>Contains:</b> <br>
-            <input type="search" id="SearchInput" placeholder="Key Word" name="SearchKeyWord" required />
-        </div>
-
-        <input type="submit" value="Search" />
-    </form>
-
-    <form asp-action="JoinSearchAndResult" id="JoinSearchForm">
-        <h3>Search For Users By Transaction's Type And Status:</h3>
-        <input type="checkbox" id="WaterCheckBox" name="WaterCheckBox" value="true" class="WantedTransactionChangedTrigger">
-        <label for="WaterCheckBox">Water Transaction</label><br>
-        <div id="WaterJoinApplicationStatusDropDown">
-            <label for="WaterJoinApplicationStatusDropDown">With Status: </label>
-            <select name="WaterwantedStatus">
-                <option value=@Config.TransactionStatus.Open>Open</option>
-                <option value=@Config.TransactionStatus.Closed>Closed</option>
-            </select>
-        </div>
-        <input type="checkbox" id="ElectricityCheckBox" name="ElectricityCheckBox" value="true" class="WantedTransactionChangedTrigger">
-        <label for="ElectricityCheckBox">Electricity Transaction</label><br>
-        <div id="ElectricityJoinApplicationStatusDropDown">
-            <label for="ElectricityJoinApplicationStatusDropDown">With Status: </label>
-            <select name="ElectricitywantedStatus">
-                <option value=@Config.TransactionStatus.Open>Open</option>
-                <option value=@Config.TransactionStatus.Closed>Closed</option>
-            </select>
-        </div>
-        <input type="checkbox" id="PropertyTaxCheckBox" name="PropertyTaxCheckBox" value="true" class="WantedTransactionChangedTrigger">
-        <label for="PropertyTaxCheckBox">Property Tax Transaction</label><br>
-        <div id="PropertyTaxJoinApplicationStatusDropDown">
-            <label for="PropertyTaxJoinApplicationStatusDropDown">With Status: </label>
-            <select name="PropertyTaxwantedStatus">
-                <option value=@Config.TransactionStatus.Open>Open</option>
-                <option value=@Config.TransactionStatus.Closed>Closed</option>
-            </select>
-        </div>
-
-        <input type="submit" value="Search" />
-    </form>
-
-    <form asp-action="UsersAdvancedSearch" id="UsersAdvancedSearchForm">
-        <h3>Search For Users By Parameters:</h3>
-        <input type="checkbox" id="FirstNameCheckBox" name="FirstNameCheckBox" value="true" class="WantedUserParameterChangedTrigger">
-        <label for="FirstNameCheckBox">First Name</label><br>
-        <div id="UserFirstNameTextBoxDiv">
-            <label for="wantedFirstName">Contains: </label>
-            <input type="text" name="wantedFirstName" id="UserFirstNameTextBox" />
-        </div>
-        <input type="checkbox" id="LastNameCheckBox" name="LastNameCheckBox" value="true" class="WantedUserParameterChangedTrigger">
-        <label for="LastNameCheckBox">Last Name</label><br>
-        <div id="UserLastNameTextBoxDiv">
-            <label for="wantedLastName">Contains: </label>
-            <input type="text" name="wantedLastName" id="UserLastNameTextBox" />
-        </div>
-        <input type="checkbox" id="CityNameCheckBox" name="CityCheckBox" value="true" class="WantedUserParameterChangedTrigger">
-        <label for="CityCheckBox">Property City</label><br>
-        <div id="UserCityNameTextBoxDiv">
-            <label for="wantedCity">Contains: </label>
-            <input type="text" name="wantedCity" id="UserCityNameTextBox" />
-        </div>
-
-        <input type="submit" value="Search" id="UserAdvancedSearchButton"/>
-    </form>
-}
+<!--Results-->
 
 @if (ViewData["AfterSearch"].Equals(true))
 {
-    <a asp-action="SearchAndResult">Change Search Parameters Here</a>
+    <a class="Search-button" asp-action="SearchAndResult">Back To Search <i class="fas fa-search"></i></a>
+    <div class="ManagerOverviewPageWrapper">
 
-    @if (Model.Users != null)
-    {
-        <h3>Users Results:</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        User ID
-                    </th>
-                    <th>
-                        First Name
-                    </th>
-                    <th>
-                        Last Name
-                    </th>
-                    <th>
-                        Email Address
-                    </th>
-                    <th>
-                        Enterance Date
-                    </th>
-                    <th>
-                        City
-                    </th>
-                    <th>
-                        Street
-                    </th>
-                    <th>
-                        Street Number
-                    </th>
-                    <th>
-                        Apartment Number
-                    </th>
-                    <th>
-                        Is Admin
-                    </th>
-                    <th>
-                        User Name
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (User user in Model.Users)
-                {
+        <!--User Search Results-->
+        @if (Model.Users != null)
+        {
+            <h3>User Search Results:</h3>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => user.UserID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => user.FirstName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => user.LastName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => user.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => user.EnteranceDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => user.PropertyCity)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => user.PropertyStreet)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => user.PropertyStreetNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => user.ApartmentNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => user.IsAdmin)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => user.UserName)
-                        </td>
-                        <td>
-                            <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserID">Edit</a> |
-                            <a asp-controller="Users" asp-action="Details" asp-route-id="@user.UserID">Details</a> |
-                            <a asp-controller="Users" asp-action="Delete" asp-route-id="@user.UserID">Delete</a>
-                        </td>
+                        <th>
+                            User ID
+                        </th>
+                        <th>
+                            First Name
+                        </th>
+                        <th>
+                            Last Name
+                        </th>
+                        <th>
+                            Email Address
+                        </th>
+                        <th>
+                            Enterance Date
+                        </th>
+                        <th>
+                            City
+                        </th>
+                        <th>
+                            Street
+                        </th>
+                        <th>
+                            Street Number
+                        </th>
+                        <th>
+                            Apartment Number
+                        </th>
+                        <th>
+                            Is Admin
+                        </th>
+                        <th>
+                            User Name
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    }
+                </thead>
+                <tbody>
+                    @foreach (User user in Model.Users)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => user.UserID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => user.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => user.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => user.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => user.EnteranceDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => user.PropertyCity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => user.PropertyStreet)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => user.PropertyStreetNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => user.ApartmentNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => user.IsAdmin)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => user.UserName)
+                            </td>
+                            <td class="OverviewActions">
+                                <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserID">Edit <i class="far fa-edit"></i></a> |
+                                <a asp-controller="Users" asp-action="Details" asp-route-id="@user.UserID">Details <i class="fas fa-info"></i></a> |
+                                <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.UserID">Delete <i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
 
-    @if (Model.WaterTransactions != null)
-    {
-        <h3>Water Transactions Results:</h3>
+        <!--Water Search Results-->
+        @if (Model.WaterTransactions != null)
+        {
+            <h3>Water Transactions Search Results:</h3>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Water Meter ID
-                    </th>
-                    <th>
-                        Water Meter Last Read Date
-                    </th>
-                    <th>
-                        Image File Path
-                    </th>
-                    <th>
-                        User ID
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (WaterTransaction transaction in Model.WaterTransactions)
-                {
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.WaterMeterID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.WaterMeterLastReadDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.ImgPath)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.User.UserID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.Status)
-                        </td>
-                        <td>
-                            <a asp-controller="WaterTransactions" asp-action="Edit" asp-route-id="@transaction.WaterMeterID">Edit</a> |
-                            <a asp-controller="WaterTransactions" asp-action="Details" asp-route-id="@transaction.WaterMeterID">Details</a> |
-                            <a asp-controller="WaterTransactions" asp-action="Delete" asp-route-id="@transaction.WaterMeterID">Delete</a>
-                        </td>
+                        <th>
+                            Water Meter ID
+                        </th>
+                        <th>
+                            Water Meter Last Read Date
+                        </th>
+                        <th>
+                            Image File Path
+                        </th>
+                        <th>
+                            User ID
+                        </th>
+                        <th>
+                            Status
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    }
+                </thead>
+                <tbody>
+                    @foreach (WaterTransaction transaction in Model.WaterTransactions)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.WaterMeterID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.WaterMeterLastReadDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.ImgPath)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.User.UserID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.Status)
+                            </td>
+                            <td class="OverviewActions">
+                                <a asp-controller="WaterTransactions" asp-action="Edit" asp-route-id="@transaction.WaterMeterID">Edit <i class="far fa-edit"></i></a> |
+                                <a asp-controller="WaterTransactions" asp-action="Details" asp-route-id="@transaction.WaterMeterID">Details <i class="fas fa-info"></i></a> |
+                                <a asp-controller="WaterTransactions" asp-action="Edit" asp-route-id="@transaction.WaterMeterID">Delete <i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
 
-    @if (Model.ElectricityTransaction != null)
-    {
-        <h3>Electricity Transactions Results:</h3>
+        <!--Electricity Search Results-->
+        @if (Model.ElectricityTransaction != null)
+        {
+            <h3>Electricity Transactions Search Results:</h3>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Electricity Meter ID
-                    </th>
-                    <th>
-                        Electricity Meter Last Read Date
-                    </th>
-                    <th>
-                        Image File Path
-                    </th>
-                    <th>
-                        User ID
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (ElectricityTransaction transaction in Model.ElectricityTransaction)
-                {
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.ElectricityMeterID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.ElectricityMeterLastRead)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.ImgPath)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.User.UserID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.Status)
-                        </td>
-                        <td>
-                            <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.ElectricityMeterID">Edit</a> |
-                            <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.ElectricityMeterID">Details</a> |
-                            <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@transaction.ElectricityMeterID">Delete</a>
-                        </td>
+                        <th>
+                            Electricity Meter ID
+                        </th>
+                        <th>
+                            Electricity Meter Last Read Date
+                        </th>
+                        <th>
+                            Image File Path
+                        </th>
+                        <th>
+                            User ID
+                        </th>
+                        <th>
+                            Status
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    }
+                </thead>
+                <tbody>
+                    @foreach (ElectricityTransaction transaction in Model.ElectricityTransaction)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.ElectricityMeterID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.ElectricityMeterLastRead)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.ImgPath)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.User.UserID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.Status)
+                            </td>
+                            <td class="OverviewActions">
+                                <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.ElectricityMeterID">Edit <i class="far fa-edit"></a> |
+                                <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.ElectricityMeterID">Details <i class="fas fa-info"></a> |
+                                <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.ElectricityMeterID">Delete <i class="fas fa-trash-alt"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
 
-    @if (Model.PropertyTaxTransactions != null)
-    {
-        <h3>Electricity Transactions Results:</h3>
+        <!--Property Tax Search Results-->
+        @if (Model.PropertyTaxTransactions != null)
+        {
+            <h3>Electricity Transactions Search Results:</h3>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Property ID
-                    </th>
-                    <th>
-                        Image File Path
-                    </th>
-                    <th>
-                        User ID
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (PropertyTaxTransaction transaction in Model.PropertyTaxTransactions)
-                {
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.PropertyID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.ImgPath)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.User.UserID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => transaction.Status)
-                        </td>
-                        <td>
-                            <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.PropertyID">Edit</a> |
-                            <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.PropertyID">Details</a> |
-                            <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@transaction.PropertyID">Delete</a>
-                        </td>
+                        <th>
+                            Property ID
+                        </th>
+                        <th>
+                            Image File Path
+                        </th>
+                        <th>
+                            User ID
+                        </th>
+                        <th>
+                            Status
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    }
+                </thead>
+                <tbody>
+                    @foreach (PropertyTaxTransaction transaction in Model.PropertyTaxTransactions)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.PropertyID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.ImgPath)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.User.UserID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => transaction.Status)
+                            </td>
+                            <td class="OverviewActions">
+                                <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.PropertyID">Edit <i class="far fa-edit"></a> |
+                                <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@transaction.PropertyID">Details <i class="fas fa-info"></a> |
+                                <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@transaction.PropertyID">Delete <i class="fas fa-trash-alt"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
 
-    @if (Model.ContactApplications != null)
-    {
-        <h3>Electricity Transactions Results:</h3>
+        <!--Contact App Search Results-->
+        @if (Model.ContactApplications != null)
+        {
+            <h3>Electricity Transactions Search Results:</h3>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Application ID
-                    </th>
-                    <th>
-                        User ID
-                    </th>
-                    <th>
-                        Transaction Type
-                    </th>
-                    <th>
-                        Title
-                    </th>
-                    <th>
-                        Message
-                    </th>
-                    <th>
-                        Creation Date
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (ContactApplication app in Model.ContactApplications)
-                {
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => app.ContactAppID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => app.UserID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => app.ContactType)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => app.Title)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => app.Message)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => app.CreateDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => app.Status)
-                        </td>
-                        <td>
-                            <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@app.ContactAppID">Edit</a> |
-                            <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@app.ContactAppID">Details</a> |
-                            <a asp-controller="ElectricityTransactions" asp-action="Delete" asp-route-id="@app.ContactAppID">Delete</a>
-                        </td>
+                        <th>
+                            Application ID
+                        </th>
+                        <th>
+                            User ID
+                        </th>
+                        <th>
+                            Transaction Type
+                        </th>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Message
+                        </th>
+                        <th>
+                            Creation Date
+                        </th>
+                        <th>
+                            Status
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    }
+                </thead>
+                <tbody>
+                    @foreach (ContactApplication app in Model.ContactApplications)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => app.ContactAppID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => app.UserID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => app.ContactType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => app.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => app.Message)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => app.CreateDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => app.Status)
+                            </td>
+                            <td class="OverviewActions">
+                                <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@app.ContactAppID">Edit <i class="far fa-edit"></a> |
+                                <a asp-controller="ElectricityTransactions" asp-action="Details" asp-route-id="@app.ContactAppID">Details <i class="fas fa-info"></a> |
+                                <a asp-controller="ElectricityTransactions" asp-action="Edit" asp-route-id="@app.ContactAppID">Delete <i class="fas fa-trash-alt"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        <img class="CRUD_Images" src="~/FrontEndElements/DefaultOverview/search-project.jpg" alt="Search and Results" />
+
+    </div>
 }
 
 <script>
@@ -585,7 +627,7 @@
                 $('#SingleSearchForm').show();
                 $('#JoinSearchForm').hide();
                 $('#UsersAdvancedSearchForm').hide();
-            } else if ($('#SearchTypeJoin').is(':checked')) { 
+            } else if ($('#SearchTypeJoin').is(':checked')) {
                 $('#SingleSearchForm').hide();
                 $('#JoinSearchForm').show();
                 $('#UsersAdvancedSearchForm').hide();
@@ -599,29 +641,29 @@
 
 
     $(document).ready(function () { // Change User Parameter checked in Join Search Type
-        $('.WantedUserParameterChangedTrigger').change(function() {
+        $('.WantedUserParameterChangedTrigger').change(function () {
             if ($('#FirstNameCheckBox').is(':checked')) {
                 $('#UserFirstNameTextBoxDiv').show();
-                $("#UserFirstNameTextBox").prop('required', true);    
+                $("#UserFirstNameTextBox").prop('required', true);
             } else {
                 $('#UserFirstNameTextBoxDiv').hide();
-                $("#UserFirstNameTextBox").prop('required', false);       
+                $("#UserFirstNameTextBox").prop('required', false);
             }
 
             if ($('#LastNameCheckBox').is(':checked')) {
                 $('#UserLastNameTextBoxDiv').show();
-                $("#UserLastNameTextBox").prop('required', true);     
+                $("#UserLastNameTextBox").prop('required', true);
             } else {
                 $('#UserLastNameTextBoxDiv').hide();
-                $("#UserLastNameTextBox").prop('required', false);  
+                $("#UserLastNameTextBox").prop('required', false);
             }
 
             if ($('#CityNameCheckBox').is(':checked')) {
                 $('#UserCityNameTextBoxDiv').show();
-                $("#UserCityNameTextBox").prop('required', true);       
+                $("#UserCityNameTextBox").prop('required', true);
             } else {
                 $('#UserCityNameTextBoxDiv').hide();
-                $("#UserCityNameTextBox").prop('required', false);     
+                $("#UserCityNameTextBox").prop('required', false);
             }
         });
     })
@@ -644,7 +686,7 @@
     })
 
     $(document).ready(function () { // Change Transaction checked in Join Search Type
-        $('.WantedTransactionChangedTrigger').change(function() {
+        $('.WantedTransactionChangedTrigger').change(function () {
             if ($('#WaterCheckBox').is(':checked')) {
                 $('#WaterJoinApplicationStatusDropDown').show();
             } else {

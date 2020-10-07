@@ -82,3 +82,99 @@
     box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
     cursor: zoom-in;
 }
+
+.ManagerOverviewPageWrapper .Search-type{
+    margin-right: 10%;
+    font-size: 16px;
+    padding: 10px 20px 10px 20px;
+    color: white;
+    font-weight: bold;
+    background: #5d515182;
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 10px;
+    margin-top: 0.5%;
+}
+
+
+input[type=radio] + label, .ManagerOverviewPageWrapper #JoinSearchForm label, .ManagerOverviewPageWrapper #UsersAdvancedSearchForm label{
+    font-size: 16px;
+    padding: 10px 20px 10px 20px;
+    color: white;
+    font-weight: bold;
+    background: #5d515182;
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 10px;
+    margin-top: 0.5%;
+}
+
+input[type=radio]:hover + label {
+    background: #5d5151;
+    cursor: pointer;
+}
+
+input[type=radio]:checked + label {
+    background: #5d5151;
+}
+
+.ManagerOverviewPageWrapper #SingleSearchForm label{
+    margin-right: 2%;
+}
+
+#WaterTransactionStatusDropDown, #PropertyTaxTransactionStatusDropDown, #ElectricityTransactionStatusDropDown, #ApplicationTypeDropDown, #ApplicationStatusDropDown, #JoinedWaterTransaction, #JoinedElectricityTransaction, #JoinedPropertyTaxTransaction {
+    width: 100px;
+    height: 38px;
+    border-radius: 5px;
+}
+
+#SingleSearchForm #SearchInput{
+    width: 250px;
+    margin: 1% 0% 0% 4%;
+    height: 40px;
+    border-radius: 5px;
+
+}
+
+
+.ManagerOverviewPageWrapper #UsersAdvancedSearchForm div input {
+    width: 150px;
+    height: 38px;
+    border-radius: 5px;
+}
+
+
+aside {
+    width: 11%;
+    font-style: italic;
+    background-color: #3ab7f226;
+    font-size: 18px;
+    border-radius:10px;
+    float:right;
+    position:fixed;
+    z-index:1;
+    top:200px;
+    right:5px;
+    overflow-x: hidden;
+}
+
+aside h2 {
+    font-family: roboto;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: #40508a;
+    color:white;
+    padding:10px;
+    text-align:center;
+}
+
+aside ul li{
+    display:block;
+}
+
+aside ul{
+    margin: 0px 0px 0px 1%;
+    padding:0px 5px 5px 3px;
+}
