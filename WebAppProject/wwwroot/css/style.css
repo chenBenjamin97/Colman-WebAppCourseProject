@@ -118,17 +118,17 @@ h1{
       position: relative;
   }
 
-  footer .footer-content{
+footer .footer-content{
     height: 350px;
     display: flex;
 }
 
-    footer .footer-content .footer-section {
-        flex: 1;
-        padding: 25px;
-        border: 1px solid black;
-        background-color: #343a40;
-    }
+footer .footer-content .footer-section {
+    flex: 1;
+    padding: 25px;
+    border: 1px solid black;
+    background-color: #343a40;
+}
 
 footer .footer-content h2{
     color: white;
@@ -200,6 +200,15 @@ footer .footer-bottom {
     left: 0px;
     padding-top: 20px;
 }
+
+footer .footer-paragraph {
+    font-family: roboto;
+    font-weight: 500;
+    font-size: 20px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
 
 video {
     position: relative;

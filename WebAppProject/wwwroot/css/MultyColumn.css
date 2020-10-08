@@ -1,0 +1,115 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Lato|Prata&display=swap');
+
+.ArticleWrapper {
+    margin: 0% 10% 3% 10%;
+    background: rgb(15,15,15);
+    color: white;
+    text-align: center;
+    width: 80%;
+    padding: 1em;
+    border-radius:0.5em;
+}
+
+.ArticleWrapper h1, .ArticleWrapper h2, .ArticleWrapper h3 {
+    font-family: 'Prata';
+    margin-top: 0;
+    margin-bottom: 2em;
+}
+
+.ArticleWrapper h3 {
+    color: rgb(199,199,199);
+}
+
+.ArticleWrapper p {
+        font-family: 'Lato';
+        color: rgb(160, 160, 160);
+        margin-top: 0;
+}
+
+.ArticleSection {
+    column-count: 2;
+    column-gap: 2em;
+}
+
+.ArticleWrapper img {
+    width: 80%;
+    margin: 1em 0 0;
+}
+
+
+@media only screen and (min-width: 768px) {
+
+    .ArticleWrapper {
+        text-align: left;
+        font-size: 18px;
+        padding: 2em 4em 2em 4em;
+        margin-top: 2%;
+        display:inline-block;
+    }
+
+    .ArticleWrapper p {
+        line-height: 1.6em;
+    }
+
+    .ArticleWrapper .ArticleSection {
+        column-count: 3;
+        column-rule-style: solid;
+        column-rule-color: rgb(43,43,43);
+    }
+
+        .ArticleSection > * {
+            margin-top: 0;
+        }
+
+    .ArticleWrapper h1 {
+        font-size: 3rem;
+        margin: 1em 0 1em;
+    }
+
+
+    .ArticleWrapper article {
+        padding: 2em;
+        background: #181818;
+    }
+
+    .ArticleWrapper img {
+        width: 100%;
+    }
+
+    .ArticleWrapper h3 {
+        color: rgb(199,199,199);
+        margin: 1.5em 0 1em;
+    }
+
+    .ArticleWrapper p.span-all {
+        column-span: all;
+        font-size: 1.6em;
+        padding: .5em;
+        margin: 2em 0;
+        color: white;
+        text-align: center;
+        font-style:italic;
+        font-size:18px;
+    }
+
+    .ArticleWrapper h2::before {
+        content: ' ';
+        position: absolute;
+        width: 30%;
+        height: 10px;
+        z-index: -1;
+        bottom: -.3em;
+        left: -1em;
+        background: purple;
+        border-radius: 1em;
+    }
+
+    .ArticleWrapper h2 {
+        display: inline-block;
+        position: relative;
+        z-index: 1;
+        margin-top: 2em;
+    }
+
+
+}
