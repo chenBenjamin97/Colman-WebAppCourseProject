@@ -484,6 +484,12 @@ namespace WebAppProject.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Article()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> JoinSearchAndResult(string? WaterCheckBox, string? ElectricityCheckBox, string? PropertyTaxCheckBox, 
             Config.TransactionStatus? WaterwantedStatus, Config.TransactionStatus? ElectricitywantedStatus, Config.TransactionStatus? PropertyTaxwantedStatus)
@@ -864,4 +870,5 @@ namespace WebAppProject.Controllers
             return UsersDataReady;
         }
     }
+
 }

@@ -40,7 +40,7 @@
 .NavigationBar ul li{
     float: left;
     position: relative;
-
+    z-index:1;
 }
 
 .NavigationBar ul li ul{
