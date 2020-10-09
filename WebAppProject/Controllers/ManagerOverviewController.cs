@@ -786,6 +786,14 @@ namespace WebAppProject.Controllers
                 csvLineCount = i;
             }
 
+            if ((int)((csvLineCount / 2) - 1) <= 2){
+                ViewData["ErrorMsg"] = "Not Enogh Data In Order To Train A Model And Prediction."
+                return View();
+            } else
+            {
+                ViewData["ErrorMsg"] = "null";
+            }
+
             var data = MlContext.Data.LoadFromTextFile<DataStructML>(Config.CsvFilePath,
                 hasHeader: false, separatorChar: ',');
 
