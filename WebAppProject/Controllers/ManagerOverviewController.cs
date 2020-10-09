@@ -787,7 +787,7 @@ namespace WebAppProject.Controllers
             }
 
             if ((int)((csvLineCount / 2) - 1) <= 2){
-                ViewData["ErrorMsg"] = "Not Enogh Data In Order To Train A Model And Prediction."
+                ViewData["ErrorMsg"] = "Not Enogh Data In Order To Train A Model And Prediction.";
                 return View();
             } else
             {
