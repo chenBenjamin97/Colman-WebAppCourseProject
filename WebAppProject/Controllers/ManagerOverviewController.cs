@@ -786,8 +786,8 @@ namespace WebAppProject.Controllers
                 csvLineCount = i;
             }
 
-            if ((int)((csvLineCount / 2) - 1) <= 2){
-                ViewData["ErrorMsg"] = "Not Enogh Data In Order To Train A Model And Prediction.";
+            if ((int)((csvLineCount / 2) - 1) < 2){
+                ViewData["ErrorMsg"] = "Not Enough Data In Order To Train A Model And Prediction";
                 return View();
             } else
             {
