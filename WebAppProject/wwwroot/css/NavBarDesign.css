@@ -2,8 +2,8 @@
     box-sizing: border-box;
 }
 
-.NavigationBar{
-    background: #006989;
+.NavigationBar {
+    background: #40508a;
     height: 66px;
     width: 100%;
 }
@@ -62,12 +62,12 @@
     width: 100%;
 }
 
-.NavigationBar ul li ul li a{
-    padding: 10px;
-    text-align: left;
-    height: 55px;
-    background: #167d9c;
-}
+    .NavigationBar ul li ul li a {
+        padding: 10px;
+        text-align: left;
+        height: 55px;
+        background: #40508a;
+    }
 
 .NavigationBar ul li a{
     display: block;
@@ -79,7 +79,7 @@
 }
 
     .NavigationBar ul li a:hover {
-        background: #003849;
+        background: #0d163a;
         transition: 0.4s;
         color: white;
     }
