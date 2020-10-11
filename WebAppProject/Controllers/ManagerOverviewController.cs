@@ -261,6 +261,11 @@ namespace WebAppProject.Controllers
                     {
                         model.Users = await _context.User.Where(user => user.PropertyCity.Contains(SearchKeyWord)).ToListAsync();
                     }
+                    else if (SearchCatagory.Equals("Street"))
+                    {
+                        model.Users = await _context.User.Where(user => user.PropertyStreet.Contains(SearchKeyWord)).ToListAsync();
+                    }
+
                     else if (SearchCatagory.Equals("EnteranceDate")) {
                         var ParsedDate = DateTime.Parse(SearchKeyWord);
                         model.Users = await _context.User.Where(user => user.EnteranceDate.Equals(ParsedDate)).ToListAsync();
