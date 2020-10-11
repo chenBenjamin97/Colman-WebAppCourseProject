@@ -244,7 +244,7 @@
                 </select>
             </div>
 
-            <input type="submit" value="Search" class="create-button" />
+            <input type="submit" value="Search" id="SearchButtonJoinSearchForm" class="create-button" />
         </form>
 
         <!--Advanced User Search-->
@@ -681,6 +681,18 @@
 
         if (($('#CityNameCheckBox').is(':checked')) && ($("#UserCityNameTextBox").val().trim() == '')) {
             alert('Property City Field Is Checked But Empty. Uncheck This Field / Add Value');
+            event.preventDefault();
+        }
+
+        if ((!$('#FirstNameCheckBox').is(':checked')) && (!$('#LastNameCheckBox').is(':checked')) && (!$('#CityNameCheckBox').is(':checked'))) {
+            alert('Please Select At Least One Filter');
+            event.preventDefault();
+        }
+    })
+
+    $('#SearchButtonJoinSearchForm').click(function (event) {
+        if ((!$('#WaterCheckBox').is(':checked')) && (!$('#ElectricityCheckBox').is(':checked')) && (!$('#PropertyTaxCheckBox').is(':checked'))) {
+            alert('Please Select At Least One Filter');
             event.preventDefault();
         }
     })
